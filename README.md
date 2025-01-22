@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,3 +69,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+=======
+# event-frontend
+This is the frontend application for the Event Management System built with React.js (latest stable version) and styled using Tailwind CSS. It provides a clean and responsive user interface for managing and participating in events.
+>>>>>>> 77190f2d6f2f9eb6baf4a89aff95e1dd7971a438
