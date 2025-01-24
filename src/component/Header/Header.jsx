@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom"; // Use NavLink instead of Link
 import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
@@ -8,26 +8,47 @@ const Header = () => {
   return (
     <header className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold">
+        <NavLink to="/" className="text-2xl font-bold">
           Eventify
-        </Link>
+        </NavLink>
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <Link to="/" className="hover:text-gray-400">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-yellow-400 underline hover:text-yellow-400"
+                    : "hover:text-gray-400"
+                }
+              >
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to="/events" className="hover:text-gray-400">
+              <NavLink
+                to="/events"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-yellow-400 underline hover:text-yellow-400"
+                    : "hover:text-gray-400"
+                }
+              >
                 Events
-              </Link>
+              </NavLink>
             </li>
             {isAuthenticated && (
               <li>
-                <Link to="/profile" className="hover:text-gray-400">
+                <NavLink
+                  to="/profile"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-yellow-400 underline hover:text-yellow-400"
+                      : "hover:text-gray-400"
+                  }
+                >
                   Profile
-                </Link>
+                </NavLink>
               </li>
             )}
           </ul>
@@ -42,18 +63,18 @@ const Header = () => {
             </button>
           ) : (
             <>
-              <Link
+              <NavLink
                 to="/login"
                 className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded"
               >
                 Login
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/signup"
                 className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded"
               >
                 Sign Up
-              </Link>
+              </NavLink>
             </>
           )}
         </div>
