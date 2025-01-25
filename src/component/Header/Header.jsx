@@ -1,9 +1,15 @@
 import React from "react";
-import { NavLink } from "react-router-dom"; // Use NavLink instead of Link
+import { NavLink, useNavigate } from "react-router-dom"; // Add useNavigate
 import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleLogout = () => {
+    logout(); // Call the logout function from AuthContext
+    navigate("/"); // Navigate to the root after logout
+  };
 
   return (
     <header className="bg-gray-800 text-white p-4">
@@ -56,7 +62,7 @@ const Header = () => {
         <div className="flex space-x-4">
           {isAuthenticated ? (
             <button
-              onClick={logout}
+              onClick={handleLogout} // Use handleLogout instead of logout directly
               className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
             >
               Logout
