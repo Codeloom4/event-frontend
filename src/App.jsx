@@ -31,8 +31,11 @@ const App = () => {
     <AuthProvider>
       <Router>
         <div className="flex flex-col min-h-screen">
+          {/* Fixed Header */}
           <Header />
-          <main className="flex-grow p-5">
+
+          {/* Main Content with Padding for Fixed Header */}
+          <main className="flex-grow pt-24 p-4">
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
@@ -82,6 +85,8 @@ const App = () => {
               />
             </Routes>
           </main>
+
+          {/* Footer */}
           <Footer />
         </div>
       </Router>
