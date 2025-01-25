@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assest/logo/mainLogo.svg";
+import SignUpButton from "../Buttons/SignUpButton";
+import { FaTicketAlt, FaWifi } from "react-icons/fa";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -34,8 +36,8 @@ const Header = () => {
                   to="/"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-yellow-400 text-xl underline hover:text-yellow-400 text-xl font-extrabold"
-                      : "hover:text-gray-400 text-xl font-extrabold"
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
                   }
                 >
                   Home
@@ -46,8 +48,8 @@ const Header = () => {
                   to="/events"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-yellow-400 text-xl underline hover:text-yellow-400 text-xl font-extrabold"
-                      : "hover:text-gray-400 text-xl font-extrabold"
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
                   }
                 >
                   Events
@@ -58,8 +60,8 @@ const Header = () => {
                   to="/about"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-yellow-400 text-xl underline hover:text-yellow-400 text-xl font-extrabold"
-                      : "hover:text-gray-400 text-xl font-extrabold"
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
                   }
                 >
                   About
@@ -70,53 +72,88 @@ const Header = () => {
                   to="/contact"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-yellow-400 text-xl underline hover:text-yellow-400 text-xl font-extrabold"
-                      : "hover:text-gray-400 text-xl font-extrabold"
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
                   }
                 >
                   Contact
                 </NavLink>
               </li>
-              {isAuthenticated && (
-                <li>
-                  <NavLink
-                    to="/create-event"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-yellow-400 text-xl underline hover:text-yellow-400 text-xl font-extrabold"
-                        : "hover:text-gray-400 text-xl font-extrabold"
-                    }
-                  >
-                    Create Event
-                  </NavLink>
-                </li>
-              )}
+              {/* {isAuthenticated && (
+              )} */}
             </ul>
           </nav>
         </div>
         {/* Authentication Buttons: Aligned to the right */}
         <div className="flex space-x-4">
           {isAuthenticated ? (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
-            >
-              Logout
-            </button>
+            <>
+              <div>
+                <nav>
+                  <ul className="flex space-x-4">
+                    <li>
+                      <NavLink
+                        to="/create-event"
+                        className={({ isActive }) =>
+                          `flex justify-center items-center ${
+                            isActive
+                              ? "text-yellow-400 text-2xl underline hover:text-yellow-400"
+                              : "hover:text-gray-400 text-2xl"
+                          }`
+                        }
+                      >
+                        Create Event
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/tickets"
+                        className={({ isActive }) =>
+                          `flex flex-col items-center ${
+                            isActive
+                              ? "text-yellow-400 underline hover:text-yellow-400"
+                              : "hover:text-gray-400"
+                          }`
+                        }
+                      >
+                        <FaTicketAlt className="text-lg mb-1" /> {/* Icon */}
+                        <span className="text-md">Tickets</span> {/* Text */}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/internets"
+                        className={({ isActive }) =>
+                          `flex flex-col items-center ${
+                            isActive
+                              ? "text-yellow-400 underline hover:text-yellow-400"
+                              : "hover:text-gray-400"
+                          }`
+                        }
+                      >
+                        <FaWifi className="text-lg mb-1" /> {/* Icon */}
+                        <span className="text-md">Internets</span> {/* Text */}
+                      </NavLink>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="h-10 w-10 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-lg hover:scale-105"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <NavLink
                 to="/login"
-                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                className="text-2xl hover:text-white px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg"
               >
                 Login
               </NavLink>
-              <NavLink
-                to="/signup"
-                className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded"
-              >
-                Sign Up
-              </NavLink>
+              <SignUpButton /> {/* Use the new SignUpButton component */}
             </>
           )}
         </div>
