@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import { sampleUsers } from "../../data/sampleUsers"; // Import sample user data
+import AuthenticationService from "../../service/AuthenticationService"; // Import AuthenticationService
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login } = useAuth(); // Destructure `login` (not `LogIn`)
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Find the user in the sample data
-    const user = sampleUsers.find(
-      (user) => user.email === email && user.password === password
-    );
+    try {
+      // Call the login method from AuthenticationService
+      const response = await AuthenticationService.login({
+        username: email, // Use email as the username
+        password: password,
+      });
 
-    if (user) {
-      // Simulate successful login
-      const token = "fake-token";
-      const userData = { name: "Admin", email: user.email, role: "admin" }; // Add user data
-      login(token, userData); // Use `login` (not `LogIn`)
-      navigate("/"); // Redirect to home page
-    } else {
+      if (response.status === 200) {
+        // Redirect to home page after successful login
+        navigate("/");
+      }
+    } catch (error) {
       // Display error message for invalid credentials
       setError("Invalid email or password");
+      console.error("Login failed:", error);
     }
   };
 
