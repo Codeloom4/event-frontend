@@ -30,12 +30,12 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen mt-6">
           {/* Fixed Header */}
           <Header />
 
           {/* Main Content with Padding for Fixed Header */}
-          <main className="flex-grow pt-24 p-4">
+          <main className="flex-grow pt-16 p-4">
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
