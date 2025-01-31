@@ -1,31 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthenticationService from "../../service/AuthenticationService"; // Import AuthenticationService
+import { useAuth } from "../../context/AuthContext"; // Import useAuth
 
 const LogIn = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // Use the login function from AuthContext
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Call the login method from AuthenticationService
-      const response = await AuthenticationService.login({
-        username: username, // Use username as the username
-        password: password,
-      });
-
-      if (response.status === 200) {
-        // Redirect to the home page after a successful login
-        navigate("/");
+      const success = await login(username, password); // Call the login function
+      if (success) {
+        navigate("/"); // Redirect to home page after successful login
+      } else {
+        setError("Invalid username or password");
       }
     } catch (err) {
-      // Display error message for invalid credentials
-      setError("Invalid username or password");
-      console.error("Login failed:", err);
+      setError("Login failed. Please try again.");
+      console.error("Login error:", err);
     }
   };
 

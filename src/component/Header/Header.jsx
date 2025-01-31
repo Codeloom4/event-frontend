@@ -10,14 +10,14 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
+    logout(); // Call the logout function from AuthContext
+    navigate("/"); // Redirect to home page after logout
   };
 
   return (
     <header className="bg-gray-800 text-white p-4 fixed top-0 left-0 w-full z-50">
       <div className="container mx-auto flex justify-between items-center">
-        {/* logo section */}
+        {/* Logo Section */}
         <NavLink
           to="/"
           className="flex items-center space-x-2 text-2xl font-bold color"
@@ -27,6 +27,7 @@ const Header = () => {
             Eventify
           </span>
         </NavLink>
+
         {/* Navigation Links: Centered in the middle. */}
         <div>
           <nav>
@@ -79,11 +80,10 @@ const Header = () => {
                   Contact
                 </NavLink>
               </li>
-              {/* {isAuthenticated && (
-              )} */}
             </ul>
           </nav>
         </div>
+
         {/* Authentication Buttons: Aligned to the right */}
         <div className="flex space-x-4">
           {isAuthenticated ? (
@@ -142,7 +142,8 @@ const Header = () => {
                 onClick={handleLogout}
                 className="h-10 w-10 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-lg hover:scale-105"
               >
-                Logout
+                Log
+                Out
               </button>
             </>
           ) : (
