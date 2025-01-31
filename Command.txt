@@ -4,3 +4,6 @@ npx create-react-app event_plan_web
 /* Install Tailwind CSS */
 npm install -D tailwindcss
 npx tailwindcss init
+
+/* Install table */
+npm install react-table --legacy-peer-deps

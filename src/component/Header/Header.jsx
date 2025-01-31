@@ -79,6 +79,18 @@ const Header = () => {
                   Contact
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/inventory"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
+                  }
+                >
+                  Inventory
+                </NavLink>
+              </li>
               {/* {isAuthenticated && (
               )} */}
             </ul>
