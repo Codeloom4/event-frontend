@@ -14,6 +14,8 @@ const Header = () => {
     navigate("/"); // Redirect to home page after logout
   };
 
+  console.log("isAuthenticated", isAuthenticated);
+
   return (
     <header className="bg-gray-800 text-white p-4 fixed top-0 left-0 w-full z-50">
       <div className="container mx-auto flex justify-between items-center">
@@ -142,8 +144,7 @@ const Header = () => {
                 onClick={handleLogout}
                 className="h-10 w-10 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-lg hover:scale-105"
               >
-                Log
-                Out
+                Log Out
               </button>
             </>
           ) : (

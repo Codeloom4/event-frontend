@@ -9,55 +9,30 @@ export const AuthProvider = ({ children }) => {
   // Check for token and user data in sessionStorage on initial load
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const userData = sessionStorage.getItem("user");
+    const username = sessionStorage.getItem("username");
 
-    if (token && userData) {
+    if (token && username) {
       setIsAuthenticated(true);
-      setUser(JSON.parse(userData));
+      setUser({ username });
     }
   }, []);
 
-  // Login function
-  const login = async (username, password) => {
-    try {
-      const response = await fetch("http://localhost:9999/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+  // Login function (updates state and sessionStorage)
+  const login = (token, username) => {
+    // Save token and username in sessionStorage
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("username", username);
 
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-      const { accessToken } = data;
-
-      // Save token and user data in sessionStorage
-      sessionStorage.setItem("token", accessToken);
-      sessionStorage.setItem("user", JSON.stringify({ username }));
-
-      // Update state
-      setIsAuthenticated(true);
-      setUser({ username });
-
-      return true; // Indicate successful login
-    } catch (error) {
-      console.error("Login error:", error);
-      return false; // Indicate failed login
-    }
+    // Update state
+    setIsAuthenticated(true);
+    setUser({ username });
   };
 
-  // Logout function
+  // Logout function (clears state and sessionStorage)
   const logout = () => {
     // Clear token and user data from sessionStorage
     sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-
-    //Clear token and user data from localStorage
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("username");
 
     // Update state
     setIsAuthenticated(false);

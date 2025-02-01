@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; // Import useAuth
+import AuthenticationService from "../../service/AuthenticationService"; // Import AuthenticationService
 
 const LogIn = () => {
   const [username, setUserName] = useState("");
@@ -13,9 +14,17 @@ const LogIn = () => {
     e.preventDefault();
 
     try {
-      const success = await login(username, password); // Call the login function
-      if (success) {
-        navigate("/"); // Redirect to home page after successful login
+      // Call AuthenticationService to perform the login API call
+      const response = await AuthenticationService.login(username, password);
+
+      if (response.status === 200 && response.data?.accessToken) {
+        const { accessToken } = response.data;
+
+        // Update global state using the login function from AuthContext
+        login(accessToken, username);
+
+        // Redirect to home page after successful login
+        navigate("/");
       } else {
         setError("Invalid username or password");
       }
