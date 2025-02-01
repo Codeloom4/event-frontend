@@ -92,6 +92,12 @@ const LogIn = () => {
               Log In
             </button>
           </div>
+          <p className="mt-4 text-sm text-gray-600">
+            Don’t have an account?{" "}
+            <a href="/signup" className="text-blue-500 hover:text-blue-700">
+              Sign Up
+            </a>
+          </p>
         </form>
       </div>
     </div>

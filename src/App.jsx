@@ -10,7 +10,7 @@ import Footer from "./component/Footer/Footer";
 import Home from "./pages/Home/Home";
 import LogIn from "./pages/LogIn/LogIn";
 import Inventory from "./pages/Inventory/Inventory";
-// import SignUp from "./pages/SignUp/SignUp";
+import SignUp from "./pages/SignUp/SignUp";
 // import Events from "./pages/Events/Events";
 import Profile from "./pages/Profile/Profile";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -48,14 +48,14 @@ const App = () => {
                   </PublicRoute>
                 }
               />
-              {/* <Route
+              <Route
                 path="/signup"
                 element={
                   <PublicRoute>
                     <SignUp />
                   </PublicRoute>
                 }
-              /> */}
+              />
 
               {/* Protected Routes */}
               {/* <Route
@@ -75,14 +75,7 @@ const App = () => {
                 }
               />
 
-              <Route
-                path="/inventory"
-                element={
-                  
-                    <Inventory />
-                  
-                }
-              />
+              <Route path="/inventory" element={<Inventory />} />
 
               {/* 404 Route */}
               <Route

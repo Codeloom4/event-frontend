@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9999/api"; // Replace with your backend base URL
+const BASE_URL = "http://localhost:9999"; // Replace with your backend base URL
 
 const ApiManager = {
   // POST request (generic)
