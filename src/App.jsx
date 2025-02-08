@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Header from "./component/Header/Header";
 import Footer from "./component/Footer/Footer";
@@ -27,71 +28,84 @@ const PublicRoute = ({ children }) => {
   return isAuthenticated ? <Navigate to="/" /> : children;
 };
 
+// Layout component to conditionally render Header and Footer
+const Layout = ({ children }) => {
+  const location = useLocation();
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
+
+  return (
+    <div className="flex flex-col min-h-screen mt-6">
+      {/* Conditionally render Header */}
+      {!isAuthPage && <Header />}
+
+      {/* Main Content with Padding for Fixed Header */}
+      <main className={`flex-grow ${!isAuthPage ? "pt-16 py-4" : ""}`}>
+        {children}
+      </main>
+
+      {/* Conditionally render Footer */}
+      {!isAuthPage && <Footer />}
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <div className="flex flex-col min-h-screen mt-6">
-          {/* Fixed Header */}
-          <Header />
+        <Layout>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/LogIn"
+              element={
+                <PublicRoute>
+                  <LogIn />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <SignUp />
+                </PublicRoute>
+              }
+            />
 
-          {/* Main Content with Padding for Fixed Header */}
-          <main className="flex-grow pt-16 p-4">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/LogIn"
-                element={
-                  <PublicRoute>
-                    <LogIn />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="/signup"
-                element={
-                  <PublicRoute>
-                    <SignUp />
-                  </PublicRoute>
-                }
-              />
+            {/* Protected Routes */}
+            {/* <Route
+              path="/events"
+              element={
+                <PrivateRoute>
+                  <Events />
+                </PrivateRoute>
+              }
+            />*/}
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
 
-              {/* Protected Routes */}
-              {/* <Route
-                path="/events"
-                element={
-                  <PrivateRoute>
-                    <Events />
-                  </PrivateRoute>
-                }
-              />*/}
-              <Route
-                path="/profile"
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
+            <Route path="/inventory" element={<Inventory />} />
 
-              <Route path="/inventory" element={<Inventory />} />
-
-              {/* 404 Route */}
-              <Route
-                path="*"
-                element={
-                  <h1 className="text-center text-2xl mt-10">
-                    404 - Page Not Found
-                  </h1>
-                }
-              />
-            </Routes>
-          </main>
-
-          {/* Footer */}
-          <Footer />
-        </div>
+            {/* 404 Route */}
+            <Route
+              path="*"
+              element={
+                <h1 className="text-center text-2xl mt-10">
+                  404 - Page Not Found
+                </h1>
+              }
+            />
+          </Routes>
+        </Layout>
       </Router>
     </AuthProvider>
   );

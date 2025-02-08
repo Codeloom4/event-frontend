@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ImgSlider from "./ImgSlider";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+      <ImgSlider />
       <div className="text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           Welcome to Eventify
