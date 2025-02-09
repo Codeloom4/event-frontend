@@ -1,11 +1,209 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import TableComponent from "../../component/Tables/TableComponent"; // Adjust the import path
+import InventoryService from "../../service/InventoryService";
 
 const Inventory = () => {
+
+  const defaultPageLimit = 5; // Define the default page limit
+  
+  const tableInitialModal = {
+    pageIndex: 0,
+    pageSize: defaultPageLimit,
+    sortBy: [],
+  }
+
+  /**
+   * @state use to set data to table
+   */
+  const [state, setState] = useState({
+    count: 0,
+    pagecount: 0,
+    list: [],
+  })
+
+  /**
+   * @InventoryManagement state use to search params
+   */
+  const [inventoryManagement, setInventoryManagement] = useState({})
+
+  /**
+   * @showAddUpdateModal to open ADD - Update modal and send Data when update a record
+   */
+  const [showAddUpdateModal, setShowAddUpdateModal] = useState({
+    show: false,
+    data: {} ,
+  })
+
+  /**
+   * @isUpdate state use to identify update or not
+   */
+  const [isUpdate, setIsUpdate] = useState(false)
+
+  /**
+   * @viewInventoryManagement to open view modal
+   */
+  const [viewInventoryManagement, setViewInventoryManagement] = useState({
+    isView: false,
+    data: {} ,
+  })
+
+  /**
+   * @search state use to save search params
+   */
+  const [search, setSearch] = useState(tableInitialModal)
+
+  /**
+   * @isSearch is Search btn Clicked
+   */
+  const [isSearch, setIsSearch] = useState(true)
+
+  const [DropdownItemDetails, setDropdownItemDetails] =
+    useState(false)
+
+  /**
+   * @resetstate for grid reset
+   */
+  const resetState = useRef(false)
+
+  //initial step
+  useEffect(() => {
+    getDropdownItemDetails();
+    onReset();
+    // const result = await InventoryService.access();
+    // setDropdownItemDetails(result.data);
+  }, [])
+
+  useEffect(() => {
+    if (resetState.current === true) {
+      console.log('resetState.current', resetState.current)
+      // retriveData(tableInitialModal)
+    }
+  }, [resetState.current])
+
+
+  const getDropdownItemDetails = async () => {
+    // const result = await InventoryService.access();
+    // setDropdownItemDetails(result.data)
+  }
+
+  //reset
+  const onReset = () => {
+    setDropdownItemDetails({
+      id: '',
+      itemId: '',
+      itemName: '',
+      isRefundable: '',
+      purchasePrice: '',
+      salesPrice: '',
+      orderQuantity: '',
+      salesQuantity: '',
+      balanceQuantity: '',
+      startBarcode: '',
+      endBarcode: '',
+      createdAt: '',
+      updatedAt: '',
+      createdUser: '',
+    })
+  }
+
+  /**
+   * @retriveData for table
+   */
+  const retriveData = async (pageDetails) => {
+    // setLoading(true)
+    // set state api call set
+    setSearch(pageDetails)
+    const dataState = await onClickSearch(
+      pageDetails.pageIndex,
+      pageDetails.pageSize,
+      pageDetails.sortBy.length !== 0
+        ? pageDetails.sortBy[0].id
+          ? pageDetails.sortBy[0].id
+          : ''
+        : '',
+      pageDetails.sortBy.length !== 0 ? pageDetails.sortBy[0].desc : null
+    )
+    setState(dataState.data.content)
+    resetState.current = false
+    // setInitialPageList(dataState.data.content?.list)
+    // setLoading(false)
+  }
+
+//Search
+const onClickSearch = async (
+  page,
+  size,
+  sortCol,
+  sortType
+) => {
+  const result = await InventoryService.getList(
+    page,
+    size,
+    sortCol,
+    sortType,
+    isSearch,
+    inventoryManagement
+  )
+  // handleNotification(result, result.data.responseMsg)
+  // addToChips()
+  return result
+}
+
+  //view
+  const onClickView = (data) => {
+    setViewInventoryManagement({ isView: true, data: data })
+    onClickBackUpdate()
+  }
+  const onClickViewBack = () => {
+    setViewInventoryManagement({ isView: false, data: {}  })
+    retriveData(search)
+    // retriveDataDualAuth(tableInitialModal)
+  }
+
+  //Update
+  const onClickUpdate = (data) => {
+    setIsUpdate(true)
+    setShowAddUpdateModal({ show: true, data: data })
+    onClickViewBack()
+  }
+
+  const onClickBackUpdate = () => {
+    setIsUpdate(false)
+  }
+
+  //add record
+  const onClickAdd = () => {
+    setShowAddUpdateModal({ show: true, data: {} })
+    setIsUpdate(false)
+  }
+
+  //Delete Record
+  const onClickDelete = async (data) => {
+        const result = await inventoryManagement.delete(data.username)
+        // handleNotification(result, result.data.responseMsg)
+        await retriveData(search)
+  }
+
+  //Filter
+  const onChangeFilter = (arg) => {
+    // const filterdList: any[] = filterArray(initialPageList, arg)
+    // const newState = produce(state, (draft) => {
+    //   draft.list = filterdList
+    // })
+    // setState(newState)
+  }
+
+  const resetRef = () => {
+    resetState.current = true
+  }
+
+
+
+
   const [data, setData] = useState([
-    { id: 1, itemName: "Balloons", quantity: 100, price: 50 },
-    { id: 2, itemName: "Party Hats", quantity: 50, price: 100 },
-    { id: 3, itemName: "Streamers", quantity: 30, price: 250 },
+    { id: 1, code: "001", itemName: "Balloons", refundable: "Yes", unitPrice: 50, cityPurchase: "New York", salesPrice: 70 },
+    { id: 2, code: "002", itemName: "Party Hats", refundable: "No", unitPrice: 100, cityPurchase: "Los Angeles", salesPrice: 120 },
+    { id: 3, code: "003", itemName: "Streamers", refundable: "Yes", unitPrice: 250, cityPurchase: "Chicago", salesPrice: 300 },
   ]);
 
   const [editingItem, setEditingItem] = useState(null); // Track the item being edited
@@ -14,16 +212,29 @@ const Inventory = () => {
   const columns = useMemo(
     () => [
       {
+        Header: "Code",
+        accessor: "code",
+      },
+      {
         Header: "Item Name",
         accessor: "itemName",
       },
       {
-        Header: "Quantity",
-        accessor: "quantity",
+        Header: "Refundable",
+        accessor: "refundable",
       },
       {
-        Header: "Price ",
-        accessor: "price",
+        Header: "Unit Price",
+        accessor: "unitPrice",
+        Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
+      },
+      {
+        Header: "City Purchase",
+        accessor: "cityPurchase",
+      },
+      {
+        Header: "Sales Price",
+        accessor: "salesPrice",
         Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
       },
       {
@@ -115,14 +326,27 @@ const Inventory = () => {
                 const formData = new FormData(e.target);
                 const newItem = {
                   id: editingItem ? editingItem.id : data.length + 1,
+                  code: formData.get("code"),
                   itemName: formData.get("itemName"),
-                  quantity: parseInt(formData.get("quantity"), 10),
-                  price: parseFloat(formData.get("price")),
+                  refundable: formData.get("refundable"),
+                  unitPrice: parseFloat(formData.get("unitPrice")),
+                  cityPurchase: formData.get("cityPurchase"),
+                  salesPrice: parseFloat(formData.get("salesPrice")),
                 };
                 handleSave(newItem);
               }}
               className="space-y-4"
             >
+              <label className="block">
+                <span className="text-gray-700">Code:</span>
+                <input
+                  type="text"
+                  name="code"
+                  defaultValue={editingItem ? editingItem.code : ""}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </label>
               <label className="block">
                 <span className="text-gray-700">Item Name:</span>
                 <input
@@ -134,22 +358,45 @@ const Inventory = () => {
                 />
               </label>
               <label className="block">
-                <span className="text-gray-700">Quantity:</span>
+                <span className="text-gray-700">Refundable:</span>
+                <select
+                  name="refundable"
+                  defaultValue={editingItem ? editingItem.refundable : ""}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                >
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className="text-gray-700">Unit Price (USD):</span>
                 <input
                   type="number"
-                  name="quantity"
-                  defaultValue={editingItem ? editingItem.quantity : ""}
+                  name="unitPrice"
+                  step="0.01"
+                  defaultValue={editingItem ? editingItem.unitPrice : ""}
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
               </label>
               <label className="block">
-                <span className="text-gray-700">Price (USD):</span>
+                <span className="text-gray-700">City Purchase:</span>
+                <input
+                  type="text"
+                  name="cityPurchase"
+                  defaultValue={editingItem ? editingItem.cityPurchase : ""}
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </label>
+              <label className="block">
+                <span className="text-gray-700">Sales Price (USD):</span>
                 <input
                   type="number"
-                  name="price"
+                  name="salesPrice"
                   step="0.01"
-                  defaultValue={editingItem ? editingItem.price : ""}
+                  defaultValue={editingItem ? editingItem.salesPrice : ""}
                   required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />

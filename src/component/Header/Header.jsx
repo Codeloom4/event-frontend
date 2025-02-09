@@ -82,6 +82,7 @@ const Header = () => {
                   Contact
                 </NavLink>
               </li>
+              {isAuthenticated ? (
               <li>
                 <NavLink
                   to="/inventory"
@@ -93,7 +94,7 @@ const Header = () => {
                 >
                   Inventory
                 </NavLink>
-              </li>
+              </li>) : null}
               {/* {isAuthenticated && (
               )} */}
             </ul>

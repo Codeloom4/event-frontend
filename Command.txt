@@ -7,3 +7,9 @@ npx tailwindcss init
 
 /* Install table */
 npm install react-table --legacy-peer-deps
+
+/* Install tailwind/react */
+npm install @material-tailwind/react
+
+/* Install material-tailwind__react */
+npm install --save-dev @types/material-tailwind__react

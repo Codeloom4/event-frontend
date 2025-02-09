@@ -78,8 +78,9 @@ const App = () => {
               <Route
                 path="/inventory"
                 element={
-                  
+                  <PrivateRoute>
                     <Inventory />
+                    </PrivateRoute>
                   
                 }
               />
