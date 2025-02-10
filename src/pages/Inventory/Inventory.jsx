@@ -1,16 +1,23 @@
-import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+} from "react";
 import TableComponent from "../../component/Tables/TableComponent"; // Adjust the import path
 import InventoryService from "../../service/InventoryService";
+import InventoryAddUpdate from "../Inventory/InventoryAddUpdate";
+import CommonModal from "../../component/Modal/CommonModal";
 
 const Inventory = () => {
-
   const defaultPageLimit = 5; // Define the default page limit
-  
+
   const tableInitialModal = {
     pageIndex: 0,
     pageSize: defaultPageLimit,
     sortBy: [],
-  }
+  };
 
   /**
    * @state use to set data to table
@@ -19,51 +26,50 @@ const Inventory = () => {
     count: 0,
     pagecount: 0,
     list: [],
-  })
+  });
 
   /**
    * @InventoryManagement state use to search params
    */
-  const [inventoryManagement, setInventoryManagement] = useState({})
+  const [inventoryManagement, setInventoryManagement] = useState({});
 
   /**
    * @showAddUpdateModal to open ADD - Update modal and send Data when update a record
    */
   const [showAddUpdateModal, setShowAddUpdateModal] = useState({
     show: false,
-    data: {} ,
-  })
+    data: {},
+  });
 
   /**
    * @isUpdate state use to identify update or not
    */
-  const [isUpdate, setIsUpdate] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false);
 
   /**
    * @viewInventoryManagement to open view modal
    */
   const [viewInventoryManagement, setViewInventoryManagement] = useState({
     isView: false,
-    data: {} ,
-  })
+    data: {},
+  });
 
   /**
    * @search state use to save search params
    */
-  const [search, setSearch] = useState(tableInitialModal)
+  const [search, setSearch] = useState(tableInitialModal);
 
   /**
    * @isSearch is Search btn Clicked
    */
-  const [isSearch, setIsSearch] = useState(true)
+  const [isSearch, setIsSearch] = useState(true);
 
-  const [DropdownItemDetails, setDropdownItemDetails] =
-    useState(false)
+  const [DropdownItemDetails, setDropdownItemDetails] = useState(false);
 
   /**
    * @resetstate for grid reset
    */
-  const resetState = useRef(false)
+  const resetState = useRef(false);
 
   //initial step
   useEffect(() => {
@@ -71,40 +77,39 @@ const Inventory = () => {
     onReset();
     // const result = await InventoryService.access();
     // setDropdownItemDetails(result.data);
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (resetState.current === true) {
-      console.log('resetState.current', resetState.current)
+      console.log("resetState.current", resetState.current);
       // retriveData(tableInitialModal)
     }
-  }, [resetState.current])
-
+  }, [resetState.current]);
 
   const getDropdownItemDetails = async () => {
     // const result = await InventoryService.access();
     // setDropdownItemDetails(result.data)
-  }
+  };
 
   //reset
   const onReset = () => {
     setDropdownItemDetails({
-      id: '',
-      itemId: '',
-      itemName: '',
-      isRefundable: '',
-      purchasePrice: '',
-      salesPrice: '',
-      orderQuantity: '',
-      salesQuantity: '',
-      balanceQuantity: '',
-      startBarcode: '',
-      endBarcode: '',
-      createdAt: '',
-      updatedAt: '',
-      createdUser: '',
-    })
-  }
+      id: "",
+      itemId: "",
+      itemName: "",
+      isRefundable: "",
+      purchasePrice: "",
+      salesPrice: "",
+      orderQuantity: "",
+      salesQuantity: "",
+      balanceQuantity: "",
+      startBarcode: "",
+      endBarcode: "",
+      createdAt: "",
+      updatedAt: "",
+      createdUser: "",
+    });
+  };
 
   /**
    * @retriveData for table
@@ -112,77 +117,72 @@ const Inventory = () => {
   const retriveData = async (pageDetails) => {
     // setLoading(true)
     // set state api call set
-    setSearch(pageDetails)
+    setSearch(pageDetails);
     const dataState = await onClickSearch(
       pageDetails.pageIndex,
       pageDetails.pageSize,
       pageDetails.sortBy.length !== 0
         ? pageDetails.sortBy[0].id
           ? pageDetails.sortBy[0].id
-          : ''
-        : '',
+          : ""
+        : "",
       pageDetails.sortBy.length !== 0 ? pageDetails.sortBy[0].desc : null
-    )
-    setState(dataState.data.content)
-    resetState.current = false
+    );
+    setState(dataState.data.content);
+    resetState.current = false;
     // setInitialPageList(dataState.data.content?.list)
     // setLoading(false)
-  }
+  };
 
-//Search
-const onClickSearch = async (
-  page,
-  size,
-  sortCol,
-  sortType
-) => {
-  const result = await InventoryService.getList(
-    page,
-    size,
-    sortCol,
-    sortType,
-    isSearch,
-    inventoryManagement
-  )
-  // handleNotification(result, result.data.responseMsg)
-  // addToChips()
-  return result
-}
+  //Search
+  const onClickSearch = async (page, size, sortCol, sortType) => {
+    const result = await InventoryService.getList(
+      page,
+      size,
+      sortCol,
+      sortType,
+      isSearch,
+      inventoryManagement
+    );
+    // handleNotification(result, result.data.responseMsg)
+    // addToChips()
+    return result;
+  };
 
   //view
   const onClickView = (data) => {
-    setViewInventoryManagement({ isView: true, data: data })
-    onClickBackUpdate()
-  }
+    setViewInventoryManagement({ isView: true, data: data });
+    onClickBackUpdate();
+  };
   const onClickViewBack = () => {
-    setViewInventoryManagement({ isView: false, data: {}  })
-    retriveData(search)
+    setViewInventoryManagement({ isView: false, data: {} });
+    retriveData(search);
     // retriveDataDualAuth(tableInitialModal)
-  }
+  };
 
   //Update
   const onClickUpdate = (data) => {
-    setIsUpdate(true)
-    setShowAddUpdateModal({ show: true, data: data })
-    onClickViewBack()
-  }
+    setIsUpdate(true);
+    setShowAddUpdateModal({ show: true, data: data });
+    // onClickViewBack();
+  };
 
   const onClickBackUpdate = () => {
-    setIsUpdate(false)
-  }
+    setIsUpdate(false);
+  };
 
   //add record
   const onClickAdd = () => {
-    setShowAddUpdateModal({ show: true, data: {} })
-    setIsUpdate(false)
-  }
+    setShowAddUpdateModal({ show: true, data: {} });
+    setIsUpdate(false);
+  };
 
   //Delete Record
   const onClickDelete = async (data) => {
-        const result = await inventoryManagement.delete(data.username)
-        // handleNotification(result, result.data.responseMsg)
-        await retriveData(search)
-  }
+    const result = await inventoryManagement.delete(data.username);
+    // handleNotification(result, result.data.responseMsg)
+    await retriveData(search);
+  };
 
   //Filter
   const onChangeFilter = (arg) => {
@@ -191,19 +191,40 @@ const onClickSearch = async (
     //   draft.list = filterdList
     // })
     // setState(newState)
-  }
+  };
 
   const resetRef = () => {
-    resetState.current = true
-  }
-
-
-
+    resetState.current = true;
+  };
 
   const [data, setData] = useState([
-    { id: 1, code: "001", itemName: "Balloons", refundable: "Yes", unitPrice: 50, cityPurchase: "New York", salesPrice: 70 },
-    { id: 2, code: "002", itemName: "Party Hats", refundable: "No", unitPrice: 100, cityPurchase: "Los Angeles", salesPrice: 120 },
-    { id: 3, code: "003", itemName: "Streamers", refundable: "Yes", unitPrice: 250, cityPurchase: "Chicago", salesPrice: 300 },
+    {
+      id: 1,
+      code: "001",
+      itemName: "Balloons",
+      refundable: "Yes",
+      unitPrice: 50,
+      cityPurchase: "New York",
+      salesPrice: 70,
+    },
+    {
+      id: 2,
+      code: "002",
+      itemName: "Party Hats",
+      refundable: "No",
+      unitPrice: 100,
+      cityPurchase: "Los Angeles",
+      salesPrice: 120,
+    },
+    {
+      id: 3,
+      code: "003",
+      itemName: "Streamers",
+      refundable: "Yes",
+      unitPrice: 250,
+      cityPurchase: "Chicago",
+      salesPrice: 300,
+    },
   ]);
 
   const [editingItem, setEditingItem] = useState(null); // Track the item being edited
@@ -243,13 +264,13 @@ const onClickSearch = async (
         Cell: ({ row }) => (
           <div className="flex space-x-2">
             <button
-              onClick={() => handleEdit(row.original)}
+              onClick={() => onClickUpdate(row.original)}
               className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
             >
               Edit
             </button>
             <button
-              onClick={() => handleDelete(row.original.id)}
+              onClick={() => onClickDelete(row.original.id)}
               className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
             >
               Delete
@@ -303,123 +324,47 @@ const onClickSearch = async (
 
   return (
     <div className="App p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Inventory Management</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        Inventory Management
+      </h1>
 
       {/* Add New Item Button */}
       <button
-        onClick={handleAddNew}
+        // onClick={handleAddNew}
+        onClick={onClickAdd}
         className="mb-6 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200"
       >
         Add New Item
       </button>
 
-      {/* Add/Edit Form */}
-      {(isAdding || editingItem) && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              {editingItem ? "Edit Item" : "Add New Item"}
-            </h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const newItem = {
-                  id: editingItem ? editingItem.id : data.length + 1,
-                  code: formData.get("code"),
-                  itemName: formData.get("itemName"),
-                  refundable: formData.get("refundable"),
-                  unitPrice: parseFloat(formData.get("unitPrice")),
-                  cityPurchase: formData.get("cityPurchase"),
-                  salesPrice: parseFloat(formData.get("salesPrice")),
-                };
-                handleSave(newItem);
-              }}
-              className="space-y-4"
-            >
-              <label className="block">
-                <span className="text-gray-700">Code:</span>
-                <input
-                  type="text"
-                  name="code"
-                  defaultValue={editingItem ? editingItem.code : ""}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </label>
-              <label className="block">
-                <span className="text-gray-700">Item Name:</span>
-                <input
-                  type="text"
-                  name="itemName"
-                  defaultValue={editingItem ? editingItem.itemName : ""}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </label>
-              <label className="block">
-                <span className="text-gray-700">Refundable:</span>
-                <select
-                  name="refundable"
-                  defaultValue={editingItem ? editingItem.refundable : ""}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                >
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-              </label>
-              <label className="block">
-                <span className="text-gray-700">Unit Price (USD):</span>
-                <input
-                  type="number"
-                  name="unitPrice"
-                  step="0.01"
-                  defaultValue={editingItem ? editingItem.unitPrice : ""}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </label>
-              <label className="block">
-                <span className="text-gray-700">City Purchase:</span>
-                <input
-                  type="text"
-                  name="cityPurchase"
-                  defaultValue={editingItem ? editingItem.cityPurchase : ""}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </label>
-              <label className="block">
-                <span className="text-gray-700">Sales Price (USD):</span>
-                <input
-                  type="number"
-                  name="salesPrice"
-                  step="0.01"
-                  defaultValue={editingItem ? editingItem.salesPrice : ""}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </label>
-              <div className="flex justify-end space-x-4">
-                <button
-                  type="button"
-                  onClick={() => setIsAdding(false)}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* add update modal */}
+      <CommonModal
+        showModal={showAddUpdateModal.show}
+        size="xl"
+        handleClose={() => {
+          setShowAddUpdateModal({
+            show: false,
+            data: {},
+          });
+        }}
+        title={isUpdate ? "Update Inventory" : "Add Inventory"}
+      >
+        {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
+        <InventoryAddUpdate
+          isUpdate={isUpdate}
+          data={isUpdate ? showAddUpdateModal.data : ({})}
+          close={() => {
+            setShowAddUpdateModal({
+              show: false,
+              data: {},
+            })
+          }}
+          completed={() => {
+              retriveData(search)
+            }
+          }
+        />
+      </CommonModal>
 
       {/* Table Component */}
       <TableComponent
