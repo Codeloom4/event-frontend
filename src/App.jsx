@@ -10,6 +10,7 @@ import Footer from "./component/Footer/Footer";
 import Home from "./pages/Home/Home";
 import LogIn from "./pages/LogIn/LogIn";
 import Inventory from "./pages/Inventory/Inventory";
+import Events from "./pages/EventManagement/Events";
 // import SignUp from "./pages/SignUp/SignUp";
 // import Events from "./pages/Events/Events";
 import Profile from "./pages/Profile/Profile";
@@ -36,7 +37,7 @@ const App = () => {
           <Header />
 
           {/* Main Content with Padding for Fixed Header */}
-          <main className="flex-grow pt-16 p-4">
+          <main className="flex-grow p-4 pt-16">
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
@@ -75,20 +76,14 @@ const App = () => {
                 }
               />
 
-              <Route
-                path="/inventory"
-                element={
-                  
-                    <Inventory />
-                  
-                }
-              />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/events" element={<Events />} />
 
               {/* 404 Route */}
               <Route
                 path="*"
                 element={
-                  <h1 className="text-center text-2xl mt-10">
+                  <h1 className="mt-10 text-2xl text-center">
                     404 - Page Not Found
                   </h1>
                 }
