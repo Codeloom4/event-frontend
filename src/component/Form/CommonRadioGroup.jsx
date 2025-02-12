@@ -13,7 +13,7 @@ const CommonRadioGroup = ({
 }) => {
   return (
     <FormControl error={!!error} className={className}>
-      <FormLabel sx={{ fontWeight: "bold", color: "#374151" }}>{label}</FormLabel>
+      <FormLabel sx={{ fontWeight: "bold", color: "#9ca9af" }}>{label}</FormLabel>
       <RadioGroup 
         name={name} // Pass name prop here
         value={value} 

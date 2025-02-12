@@ -47,10 +47,13 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
   const [inventoryManagementErrors, setInventoryManagementErrors] = useState(
     {} // State to hold validation errors
   )
+  const [DropdownItemDetails, setDropdownItemDetails] = useState([]);
+
 
   //initial step
   useEffect(() => {
     onReset()
+    getDropdownItemDetails();
     // getBankName()
     // if (
     //   statusList.length === 0 ||
@@ -63,6 +66,11 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
     //   setUserManagement(data)
     // }
   }, [])
+
+  const getDropdownItemDetails = async () => {
+    // const result = await InventoryService.access();
+    // setDropdownItemDetails(result.data)
+  };
 
   const onReset = () => {
     setInventoryManagement({
@@ -139,6 +147,8 @@ const formOnChange = (e) => {
   }));
 };
 
+console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
+
   return (
     <div className="p-6">
       {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6">
@@ -146,7 +156,8 @@ const formOnChange = (e) => {
       </h2> */}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-4 p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
+      {/* <div className="space-y-4 p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg"> */}
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* ID Field */}
       <CommonTextField 
         id="id" 
@@ -160,8 +171,8 @@ const formOnChange = (e) => {
       {/* <CommonSelect 
         name="itemName" 
         label="Item Name" 
-        value={inventoryManagement?.itemName} 
-        // onChange={formOnChange}
+        value={inventoryManagement.itemName || ""}
+        onChange={formOnChange}
       >
         <MenuItem value="Tables">Tables</MenuItem>
         <MenuItem value="Chairs">Chairs</MenuItem>
@@ -176,8 +187,8 @@ const formOnChange = (e) => {
         // onChange={formOnChange}
         row
       >
-        <FormControlLabel value="true" control={<Radio />} label="Yes" />
-        <FormControlLabel value="false" control={<Radio />} label="No" />
+        <FormControlLabel value="true" control={<Radio />} label="Yes" className="text text-gray-500"/>
+        <FormControlLabel value="false" control={<Radio />} label="No" className="text text-gray-500"/>
       </CommonRadioGroup>
 
       {/* Description */}
@@ -260,9 +271,10 @@ const formOnChange = (e) => {
             type="submit"
             className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
           >
-            {isUpdate ? "Update" : "Save"}
+            {isUpdate ? "Update" : "Add"}
           </button>
-        </div>
+          </div>
+        {/* </div> */}
       </form>
     </div>
   );
