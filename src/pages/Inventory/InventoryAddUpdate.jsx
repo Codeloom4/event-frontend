@@ -1,6 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import produce from "immer";
+import { MenuItem } from "@mui/material";
+import { FormControlLabel, Radio } from "@mui/material";
+import CommonTextField from "../../component/Form/CommonTextField"; // Adjust the import path
+import CommonSelect from "../../component/Form/CommonSelect"; // Adjust the import path
+import CommonRadioGroup from "../../component/Form/CommonRadioGroup"; // Adjust the import path
+
 
 const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
+
+  const userRoleTypeList = [
+    { value: "admin", label: "Admin" },
+    { value: "editor", label: "Editor" },
+    { value: "viewer", label: "Viewer" },
+  ];
+  const [selectedRole, setSelectedRole] = useState("");
+
+
   const [formData, setFormData] = useState({
     code: data?.code || "",
     itemName: data?.itemName || "",
@@ -21,92 +37,218 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
     close();
   };
 
+
+
+
+
+
+  const [inventoryManagement, setInventoryManagement] = useState({});
+
+  const [inventoryManagementErrors, setInventoryManagementErrors] = useState(
+    {} // State to hold validation errors
+  )
+
+  //initial step
+  useEffect(() => {
+    onReset()
+    // getBankName()
+    // if (
+    //   statusList.length === 0 ||
+    //   userRoleTypeList.length === 0 ||
+    //   bankBranchList.length === 0
+    // ) {
+    //   dispatch(getUserManagementRequest())
+    // }
+    // if (isUpdate && data) {
+    //   setUserManagement(data)
+    // }
+  }, [])
+
+  const onReset = () => {
+    setInventoryManagement({
+    id: isUpdate ? data?.id : '',
+    itemName: isUpdate ? data?.itemName : '',
+    isRefundable: isUpdate ? data?.isRefundable : '',
+    description: isUpdate ? data?.description : '',
+    purchasePrice: isUpdate ? data?.purchasePrice : '',
+    salesPrice :isUpdate ? data?.salesPrice : '',
+    orderQuantity : isUpdate ? data?.orderQuantity : '',
+    salesQuantity : isUpdate ? data?.salesQuantity : '',
+    balanceQuantity : isUpdate ? data?.balanceQuantity : '',
+    createdUser : isUpdate ? data?.createdUser : '',
+    itemId:isUpdate ? data?.itemId : '',
+    } )
+    setInventoryManagementErrors({})
+  }
+
+  const onClickAddUpdate = (userManagementt) => {
+    // const foundErrors = findError()
+    // if (Object.keys(foundErrors).length > 0) {
+    //   showToast(
+    //     ALERT_WARNING,
+    //     validationError,
+    //     TOAST_POSITION_TOP_RIGHT,
+    //     5,
+    //     TOAST_TRANSITION_SLIDE
+    //   )
+    //   setUserManagementErrors(foundErrors)
+    // } else {
+    //   //ToDo: Api Call method and retrive data again method
+    //   if (!isUpdate) {
+    //     saveHandler(userManagement)
+    //   } else {
+    //     updateHandler(userManagement)
+    //   }
+    // }
+  }
+
+  const saveHandler = async (userManagement) => {
+    // const result = await UserManagementService.add(userManagement)
+    // handleNotification(result, result.data.responseMsg)
+    // if (result.data.responseCode !== '01') {
+    //   onReset()
+    //   close()
+    // }
+    // completed()
+  }
+  const updateHandler = async (userRoleMAnagement) => {
+    // const result = await UserManagementService.edit(userManagement)
+    // handleNotification(result, result.data.responseMsg)
+    // if (result.data.responseCode !== '01') {
+    //   onReset()
+    //   close()
+    // }
+    // completed()
+  }
+
+//   const formOnChange = (e) => {
+//     const { name, value } = e.target;
+
+//     setInventoryManagement((Item) =>
+//         produce(Item, (draft) => {
+//             draft[name ] = value;
+//         })
+//     );
+// };
+
+const formOnChange = (e) => {
+  const { name, value, type } = e.target;
+  setInventoryManagement((prev) => ({
+    ...prev,
+    [name]: type === "number" ? Number(value) : value,
+  }));
+};
+
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+      {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6">
         {isUpdate ? "Update Inventory" : "Add Inventory"}
-      </h2>
+      </h2> */}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <label className="block">
-            <span className="text-gray-700">Code:</span>
-            <input
-              type="text"
-              name="code"
-              value={formData.code}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </label>
+      <div className="space-y-4 p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
+      {/* ID Field */}
+      <CommonTextField 
+        id="id" 
+        name="id" 
+        label="ID" 
+        value={inventoryManagement?.id} 
+        onChange={formOnChange} 
+      />
 
-          <label className="block">
-            <span className="text-gray-700">Item Name:</span>
-            <input
-              type="text"
-              name="itemName"
-              value={formData.itemName}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </label>
+      {/* Item Name - Select Dropdown */}
+      {/* <CommonSelect 
+        name="itemName" 
+        label="Item Name" 
+        value={inventoryManagement?.itemName} 
+        // onChange={formOnChange}
+      >
+        <MenuItem value="Tables">Tables</MenuItem>
+        <MenuItem value="Chairs">Chairs</MenuItem>
+        <MenuItem value="Desks">Desks</MenuItem>
+      </CommonSelect> */}
 
-          <label className="block">
-            <span className="text-gray-700">Refundable:</span>
-            <select
-              name="refundable"
-              value={formData.refundable}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            >
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
+      {/* Is Refundable - Radio Group */}
+      <CommonRadioGroup
+        name="isRefundable"
+        label="Is Refundable?"
+        // value={inventoryManagement.isRefundable.toString()}
+        // onChange={formOnChange}
+        row
+      >
+        <FormControlLabel value="true" control={<Radio />} label="Yes" />
+        <FormControlLabel value="false" control={<Radio />} label="No" />
+      </CommonRadioGroup>
 
-          <label className="block">
-            <span className="text-gray-700">Unit Price (USD):</span>
-            <input
-              type="number"
-              name="unitPrice"
-              step="0.01"
-              value={formData.unitPrice}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </label>
+      {/* Description */}
+      <CommonTextField 
+        id="description" 
+        name="description" 
+        label="Description" 
+        value={inventoryManagement.description} 
+        onChange={formOnChange} 
+      />
 
-          <label className="block">
-            <span className="text-gray-700">City Purchase:</span>
-            <input
-              type="text"
-              name="cityPurchase"
-              value={formData.cityPurchase}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </label>
+      {/* Purchase Price */}
+      <CommonTextField 
+        id="purchasePrice" 
+        name="purchasePrice" 
+        label="Purchase Price" 
+        type="number" 
+        value={inventoryManagement.purchasePrice} 
+        onChange={formOnChange} 
+      />
 
-          <label className="block">
-            <span className="text-gray-700">Sales Price (USD):</span>
-            <input
-              type="number"
-              name="salesPrice"
-              step="0.01"
-              value={formData.salesPrice}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </label>
-        </div>
+      {/* Sales Price */}
+      <CommonTextField 
+        id="salesPrice" 
+        name="salesPrice" 
+        label="Sales Price" 
+        type="number" 
+        value={inventoryManagement.salesPrice} 
+        onChange={formOnChange} 
+      />
 
-        <div className="flex justify-end space-x-4">
+      {/* Order Quantity */}
+      <CommonTextField 
+        id="orderQuantity" 
+        name="orderQuantity" 
+        label="Order Quantity" 
+        type="number" 
+        value={inventoryManagement.orderQuantity} 
+        onChange={formOnChange} 
+      />
+
+      {/* Sales Quantity */}
+      <CommonTextField 
+        id="salesQuantity" 
+        name="salesQuantity" 
+        label="Sales Quantity" 
+        type="number" 
+        value={inventoryManagement.salesQuantity} 
+        onChange={formOnChange} 
+      />
+
+      {/* Balance Quantity */}
+      <CommonTextField 
+        id="balanceQuantity" 
+        name="balanceQuantity" 
+        label="Balance Quantity" 
+        type="number" 
+        value={inventoryManagement.balanceQuantity} 
+        onChange={formOnChange} 
+      />
+
+      {/* Created User */}
+      <CommonTextField 
+        id="createdUser" 
+        name="createdUser" 
+        label="Created User" 
+        value={inventoryManagement.createdUser} 
+        onChange={formOnChange} 
+      />
+    </div>
+    <div className="flex justify-end space-x-4">
           <button
             type="button"
             onClick={close}

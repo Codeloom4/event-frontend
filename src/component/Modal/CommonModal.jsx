@@ -1,39 +1,44 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
+import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-const sizeClasses = {
-  sm: "max-w-sm",
-  md: "max-w-md",
-  lg: "max-w-lg",
-  xl: "max-w-2xl", // Increased width for larger modals
+const sizeMap = {
+  sm: "xs",
+  md: "sm",
+  lg: "md",
+  xl: "lg",
 };
 
-const CommonModal = ({
-  children,
-  size = "md",
-  title,
-  showModal,
-  handleClose,
-}) => {
-  if (!showModal) return null;
-
+const CommonModal = ({ children, size = "md", title, showModal, handleClose }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className={`bg-white rounded-lg shadow-lg p-8 ${sizeClasses[size]} w-full`}>
-        {/* Header */}
-        <div className="flex justify-between items-center pb-4 border-b">
-          <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
-          <button
-            className="text-gray-500 hover:text-gray-700 text-2xl"
-            onClick={handleClose}
-          >
-            ✕
-          </button>
-        </div>
+    <Dialog
+      open={showModal}
+      onClose={handleClose}
+      maxWidth={sizeMap[size]}
+      fullWidth
+      sx={{
+        backdropFilter: "blur(2px)", // Apply blur effect
+        backgroundColor: "rgba(0, 0, 0, 0.1)", // Optional slight darkening
+      }}
+    >
+      {/* Header */}
+      <DialogTitle 
+        sx={{ 
+          display: "flex", 
+          justifyContent: "space-between", 
+          alignItems: "center", 
+          fontWeight: "bold" // Make title bold
+        }}
+      >
+        {title}
+        <IconButton onClick={handleClose} size="small">
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
 
-        {/* Body */}
-        <div className="py-6">{children}</div>
-      </div>
-    </div>
+      {/* Body */}
+      <DialogContent>{children}</DialogContent>
+    </Dialog>
   );
 };
 
