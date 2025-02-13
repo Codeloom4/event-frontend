@@ -55,28 +55,30 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Layout>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route
-              path="/LogIn"
-              element={
-                <PublicRoute>
-                  <LogIn />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                <PublicRoute>
-                  <SignUp />
-                </PublicRoute>
-              }
-            />
+          <div>
+            <main>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="/LogIn"
+                  element={
+                    <PublicRoute>
+                      <LogIn />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/signup"
+                  element={
+                    <PublicRoute>
+                      <SignUp />
+                    </PublicRoute>
+                  }
+                />
 
-            {/* Protected Routes */}
-            {/* <Route
+                {/* Protected Routes */}
+                {/* <Route
               path="/events"
               element={
                 <PrivateRoute>
@@ -84,27 +86,38 @@ const App = () => {
                 </PrivateRoute>
               }
             />*/}
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
 
-            <Route path="/inventory" element={<Inventory />} />
+                <Route path="/inventory" element={<Inventory />} />
 
-            {/* 404 Route */}
-            <Route
-              path="*"
-              element={
-                <h1 className="text-center text-2xl mt-10">
-                  404 - Page Not Found
-                </h1>
-              }
-            />
-          </Routes>
+                <Route
+                  path="/inventory"
+                  element={
+                    <PrivateRoute>
+                      <Inventory />
+                    </PrivateRoute>
+                  }
+                />
+
+                {/* 404 Route */}
+                <Route
+                  path="*"
+                  element={
+                    <h1 className="text-center text-2xl mt-10">
+                      404 - Page Not Found
+                    </h1>
+                  }
+                />
+              </Routes>
+            </main>
+          </div>
         </Layout>
       </Router>
     </AuthProvider>
