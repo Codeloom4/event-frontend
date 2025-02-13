@@ -1,11 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ImgSlider from "./ImgSlider";
+import EventCatalog from "../../component/Card/EventCatalog";
+import { sampleEvents } from "../../data/sampleEvents";
 
 const Home = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
       <ImgSlider />
+
+      {/* Upcoming Events Section */}
+      <section className="mt-12 w-full max-w-4xl">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Upcoming Events
+        </h1>
+        <div>
+          <EventCatalog events={sampleEvents} />
+        </div>
+      </section>
+
       <div className="text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           Welcome to Eventify

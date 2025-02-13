@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import Logo from "../../assest/logo/mainLogo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Import useAuth
-import UserManagement from "../../service/UserManagement"; // Import UserManagement
+import { useAuth } from "../../context/AuthContext";
+import UserManagement from "../../service/UserManagement";
+import RowRadioButtonsGroup from "../../component/InputFields/RowRadioButtonsGroup";
 
 const SignUp = () => {
   const [username, setUserName] = useState("");
@@ -10,34 +14,36 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [mobileNo, setMobileNumber] = useState("");
   const [position, setPosition] = useState("");
-  const [role, setRole] = useState("");
+  const [roles, setRoles] = useState([]);
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth(); // Use the login function from AuthContext
+  const { login } = useAuth();
+
+  const handleRoleChange = (role) => {
+    setRoles((prev) =>
+      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Call UserManagement to perform the sign-up API call
       const response = await UserManagement.signUp({
         username,
         email,
         password,
         position,
-        role,
+        roles,
         mobileNo,
         address,
+        enabled: "true",
       });
 
       if (response.status === 201 && response.data?.accessToken) {
         const { accessToken } = response.data;
-
-        // Update global state using the login function from AuthContext
         login(accessToken, email);
-
-        // Redirect to home page after successful sign-up
         navigate("/");
       } else {
         setError("Sign-up failed. Please try again.");
@@ -50,10 +56,8 @@ const SignUp = () => {
 
   return (
     <>
-      {/* Fixed Header */}
       <header className="bg-gray-800 text-white p-4 fixed top-0 left-0 w-full z-50">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo Section */}
           <NavLink
             to="/"
             className="flex items-center space-x-2 text-2xl font-bold color"
@@ -66,9 +70,7 @@ const SignUp = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <div className="min-h-screen flex items-stretch bg-gray-100 pt-12">
-        {/* Fixed Left Div (45% width) */}
         <div className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-[45%] flex flex-col justify-center bg-gray-800">
           <h4 className="text-center text-3xl font-bold text-white mb-8 px-4">
             Discover tailored events. Sign up for personalized recommendations
@@ -76,7 +78,6 @@ const SignUp = () => {
           </h4>
         </div>
 
-        {/* Fixed Right Div (55% width) */}
         <div className="ml-[45%] w-[55%] bg-white shadow-lg flex flex-col justify-center items-center px-8">
           <form className="w-full max-w-sm" onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -154,15 +155,17 @@ const SignUp = () => {
               >
                 Role
               </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="role"
-                type="text"
-                placeholder="Enter your role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                required
-              />
+              <FormGroup>
+                <RowRadioButtonsGroup
+                  options={[
+                    { value: "ADMIN", label: "Administration" },
+                    { value: "EMPLOYEE", label: "Employee" },
+                    { value: "CUSTOMER", label: "Customer" },
+                  ]}
+                  selectedValue={roles[0] || ""}
+                  onChange={(role) => setRoles([role])}
+                />
+              </FormGroup>
             </div>
             <div className="mb-4">
               <label
@@ -203,7 +206,7 @@ const SignUp = () => {
             )}
             <div className="flex items-center justify-between">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="border rounded w-full bg-[#2B293D] hover:bg-[#3A3752] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
               >
                 Create Account
