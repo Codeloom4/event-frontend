@@ -1,5 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Form, Button } from "react-bootstrap";
+import EventsService from "../../service/EventsService";
+// import { EventsService } from "../../service/EventsService"
 
 const dataSet = [
   { id: 1, name: "Item 1", description: "Description 1" },
@@ -9,7 +11,12 @@ const dataSet = [
 
 const Events = () => {
   const [eventsData, setEventsData] = useState([]);
-  const [formData, setFormData] = useState({ name: "", description: "" });
+  const [formData, setFormData] = useState({
+    id: "",
+    type: "",
+    name: "",
+    description: "",
+  });
   const [editingId, setEditingId] = useState(null);
 
   const columns = useMemo(
@@ -54,7 +61,7 @@ const Events = () => {
     retrieveData();
   }, []);
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (editingId !== null) {
       setEventsData((prevData) =>
@@ -68,8 +75,9 @@ const Events = () => {
         ...formData,
       };
       setEventsData((prevData) => [...prevData, newEvent]);
+      const response = await EventsService.createEvent(formData);
     }
-    setFormData({ name: "", description: "" });
+    setFormData({ id: "", type: "", name: "", description: "" });
     setEditingId(null);
   };
 
@@ -84,33 +92,62 @@ const Events = () => {
 
   return (
     <>
-      <Form onSubmit={handleSave}>
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-        </Form.Group>
+      <div className="flex justify-center items-center">
+        <Form
+          onSubmit={handleSave}
+          className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg"
+        >
+          <h2 className="text-xl font-semibold mb-4 text-center">
+            {editingId ? "Edit Event" : "Create Event"}
+          </h2>
+          <Form.Group className="mb-4" controlId="eventType">
+            <Form.Label className="font-medium">Type</Form.Label>
+            <Form.Select
+              value={formData.type}
+              onChange={(e) =>
+                setFormData({ ...formData, type: e.target.value })
+              }
+              className="p-2 border rounded w-full"
+            >
+              <option value="1">Type 1</option>
+              <option value="2">Type 2</option>
+              <option value="3">Type 3</option>
+            </Form.Select>
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="description">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter description"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-          />
-        </Form.Group>
+          <Form.Group className="mb-4" controlId="eventName">
+            <Form.Label className="font-medium">Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              className="p-2 border rounded w-full"
+            />
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-          {editingId ? "Update" : "Submit"}
-        </Button>
-      </Form>
+          <Form.Group className="mb-4" controlId="eventDescription">
+            <Form.Label className="font-medium">Description</Form.Label>
+            <Form.Control
+              type="textarea"
+              placeholder="Enter description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              className="p-2 border rounded w-full"
+            />
+          </Form.Group>
+
+          <div className="text-center">
+            <Button variant="primary" type="submit" className="px-6 py-2">
+              {editingId ? "Update" : "Submit"}
+            </Button>
+          </div>
+        </Form>
+      </div>
 
       <div className="mt-4">
         {eventsData.map((event) => (

@@ -37,7 +37,7 @@ const App = () => {
           <Header />
 
           {/* Main Content with Padding for Fixed Header */}
-          <main className="flex-grow p-4 pt-16">
+          <main className="flex-grow p-4 pt-16" style={{ marginTop: '86px' }}>
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
