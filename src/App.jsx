@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
       {!isAuthPage && <Header />}
 
       {/* Main Content with Padding for Fixed Header */}
-      <main className={`flex-grow ${!isAuthPage ? "pt-16 py-4" : ""}`}>
+      <main className={`flex-grow ${!isAuthPage ? "pt-16 py-4 mt-14" : ""}`}>
         {children}
       </main>
 
@@ -97,6 +97,7 @@ const App = () => {
                 />
 
                 <Route path="/inventory" element={<Inventory />} />
+                <Route path="/events" element={<Events />} />
 
                 <Route
                   path="/inventory"

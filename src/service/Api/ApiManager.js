@@ -6,10 +6,12 @@ const ApiManager = {
   // POST request (generic)
   apiPost: async (endpoint, data, headers = {}) => {
     try {
+      const token = sessionStorage.getItem("token");
       const response = await axios.post(`${BASE_URL}${endpoint}`, data, {
         headers: {
-          "Content-Type": "application/json",
           ...headers,
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
         },
       });
       return response;

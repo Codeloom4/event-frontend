@@ -104,7 +104,7 @@ const TableComponent = ({
       <>
         {startPage > 0 && (
           <button
-            className="px-2 py-1 rounded-md text-sm border border-gray-400"
+            className="px-2 py-1 text-sm border border-gray-400 rounded-md"
             onClick={(e) => {
               e.preventDefault()
               gotoPage(0)
@@ -129,7 +129,7 @@ const TableComponent = ({
         {endPage < pageCount - 2 && <span className="mx-2">...</span>}
         {endPage < pageCount - 1 && (
           <button
-            className="px-2 py-1 rounded-md text-sm border border-gray-400"
+            className="px-2 py-1 text-sm border border-gray-400 rounded-md"
             onClick={(e) => {
               e.preventDefault()
               gotoPage(pageCount - 1)
@@ -143,8 +143,8 @@ const TableComponent = ({
   }
 
   return (
-    <div className="overflow-hidden p-4" style={style}>
-      {title && <h6 className="font-semibold text-lg mb-4">{title}</h6>}
+    <div className="p-4 overflow-hidden" style={style}>
+      {title && <h6 className="mb-4 text-lg font-semibold">{title}</h6>}
       <div className="flex mb-2">
         <div className="w-full md:w-1/3">
           {/* <TextField
@@ -164,7 +164,7 @@ const TableComponent = ({
 
       <div className="overflow-x-auto">
         <table
-          className="min-w-full table-auto border-separate border-spacing-0 rounded-md"
+          className="min-w-full border-separate rounded-md table-auto border-spacing-0"
           {...getTableProps()}
         >
           <thead className="bg-gray-100">
@@ -180,7 +180,7 @@ const TableComponent = ({
                     )}
                     className={`px-4 py-2 text-sm text-gray-600 ${column.isSorted ? (column.isSortedDesc ? 'text-blue-600' : 'text-blue-800') : ''}`}
                   >
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center justify-between">
                       {column.render('Header')}
                       {column.isSorted && (
                         column.isSortedDesc ? (
@@ -200,10 +200,10 @@ const TableComponent = ({
               prepareRow(row)
               return (
                 <tr
-                  onClick={() => onClickRow(row.original)}
+                  onClick={() => onClickRow && onClickRow(row.original)}
                   key={`row-tr-${index}`}
                   {...row.getRowProps()}
-                  className="hover:bg-gray-100 cursor-pointer"
+                  className="cursor-pointer hover:bg-gray-100"
                 >
                   {row.cells.map((cell, index) => (
                     <td
@@ -221,11 +221,11 @@ const TableComponent = ({
         </table>
       </div>
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex items-center justify-between mt-4">
         <div className="flex items-center text-sm text-gray-600">
           <span>Show</span>
           <select
-            className="ml-2 p-1 border rounded-md text-sm"
+            className="p-1 ml-2 text-sm border rounded-md"
             onChange={(e) => {
               setPageSize(Number(e.target.value))
               PageSizeReset.current = e.target.value
@@ -251,7 +251,7 @@ const TableComponent = ({
           <button
             onClick={() => previousPage()}
             disabled={!canPreviousPage}
-            className="px-2 py-1 rounded-md border mr-2"
+            className="px-2 py-1 mr-2 border rounded-md"
           >
             {/* <img src={Left} alt="Previous" /> */}
             Previous
@@ -260,7 +260,7 @@ const TableComponent = ({
           <button
             onClick={() => nextPage()}
             disabled={!canNextPage}
-            className="px-2 py-1 rounded-md border ml-2"
+            className="px-2 py-1 ml-2 border rounded-md"
           >
             {/* <img src={Right} alt="Next" /> */}
             Next
