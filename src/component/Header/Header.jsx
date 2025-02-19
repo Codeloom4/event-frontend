@@ -6,7 +6,7 @@ import SignUpButton from "../Buttons/SignUpButton";
 import { FaTicketAlt, FaWifi } from "react-icons/fa";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, userrole, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,18 +14,16 @@ const Header = () => {
     navigate("/"); // Redirect to home page after logout
   };
 
-  console.log("isAuthenticated", isAuthenticated);
-
   return (
-    <header className="bg-gray-800 text-white p-4 fixed top-0 left-0 w-full z-50">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
+      <div className="container flex items-center justify-between mx-auto">
         {/* Logo Section */}
         <NavLink
           to="/"
           className="flex items-center space-x-2 text-2xl font-bold color"
         >
           <img src={Logo} alt="Eventify" className="h-10" />
-          <span className="h-10 flex items-center text-yellow-400 text-4xl font-extrabold">
+          <span className="flex items-center h-10 text-4xl font-extrabold text-yellow-400">
             Eventify
           </span>
         </NavLink>
@@ -44,6 +42,18 @@ const Header = () => {
                   }
                 >
                   Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
+                  }
+                >
+                  Services
                 </NavLink>
               </li>
               <li>
@@ -133,7 +143,7 @@ const Header = () => {
                           }`
                         }
                       >
-                        <FaTicketAlt className="text-lg mb-1" /> {/* Icon */}
+                        <FaTicketAlt className="mb-1 text-lg" /> {/* Icon */}
                         <span className="text-md">Tickets</span> {/* Text */}
                       </NavLink>
                     </li>
@@ -148,7 +158,7 @@ const Header = () => {
                           }`
                         }
                       >
-                        <FaWifi className="text-lg mb-1" /> {/* Icon */}
+                        <FaWifi className="mb-1 text-lg" /> {/* Icon */}
                         <span className="text-md">Internets</span> {/* Text */}
                       </NavLink>
                     </li>
@@ -157,7 +167,7 @@ const Header = () => {
               </div>
               <button
                 onClick={handleLogout}
-                className="h-10 w-10 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-lg hover:scale-105"
+                className="w-10 h-10 px-4 py-2 text-white transition-all duration-300 bg-red-500 rounded-full hover:bg-red-700 hover:shadow-lg hover:scale-105"
               >
                 Log Out
               </button>
@@ -166,7 +176,7 @@ const Header = () => {
             <>
               <NavLink
                 to="/login"
-                className="text-2xl hover:text-white px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg"
+                className="px-6 py-2 text-2xl transition-all duration-300 rounded-lg hover:text-white hover:shadow-lg"
               >
                 Login
               </NavLink>

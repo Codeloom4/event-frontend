@@ -1,35 +1,9 @@
-import React, { FC, useCallback } from 'react'
+import React from 'react'
 import { usePagination, useSortBy, useTable } from 'react-table'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-// import { defaultPageLimit } from '../../utils/constants'
-// import Search from '../../assets/icons/Search.svg'
-// import Left from '../../assets/icons/Left.svg'
-// import Right from '../../assets/icons/Right.svg'
-// import { InputAdornment, TextField } from '@mui/material'
-// import EyeSlash from '../util/EyeSlash'
-// import EyeOpen from '../util/Eye'
-
-// export interface ITableComponentProps {
-//   toggleMasking?: any
-//   show?: boolean
-//   offSort?: boolean
-//   columns: any
-//   data: any
-//   title?: string
-//   onClickRow?: any
-//   fetchData?: any
-//   loading: boolean
-//   pageCount?: number
-//   totalCount?: number
-//   onFilter: (arg: string) => void
-//   style?: React.CSSProperties 
-// }
 
 const TableComponent = ({
-  toggleMasking,
-  show,
-  offSort = false,
   columns,
   data,
   title,
@@ -38,9 +12,6 @@ const TableComponent = ({
   loading,
   pageCount: controlledPageCount,
   totalCount,
-  onFilter,
-  selectableRows,
-  onSelectedRowsChange,
   style = {},
 }) => {
   const {

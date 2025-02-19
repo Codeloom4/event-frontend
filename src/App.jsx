@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,14 +13,23 @@ import LogIn from "./pages/LogIn/LogIn";
 import Inventory from "./pages/Inventory/Inventory";
 import Events from "./pages/EventManagement/Events";
 import SignUp from "./pages/SignUp/SignUp";
-// import Events from "./pages/Events/Events";
 import Profile from "./pages/Profile/Profile";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { USER_ROLES } from "./utils/constants";
 
 // PrivateRoute component to protect authenticated routes
-const PrivateRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/LogIn" />;
+const PrivateRoute = ({ children, allowedRoles }) => {
+  const { isAuthenticated, userrole } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/LogIn" />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userrole.userrole)) {
+    return <Navigate to="/Unauthorized" />;
+  }
+
+  return children;
 };
 
 // PublicRoute component to redirect authenticated users away from LogIn/signup
@@ -77,16 +86,16 @@ const App = () => {
                     </PublicRoute>
                   }
                 />
+                <Route
+                  path="/services/:serviceId"
+                  element={
+                    <PublicRoute>
+                      {/* <Service /> */}
+                    </PublicRoute>
+                  }
+                />
 
                 {/* Protected Routes */}
-                {/* <Route
-              path="/events"
-              element={
-                <PrivateRoute>
-                  <Events />
-                </PrivateRoute>
-              }
-            />*/}
                 <Route
                   path="/profile"
                   element={
@@ -95,14 +104,22 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-
-                <Route path="/inventory" element={<Inventory />} />
-                <Route path="/events" element={<Events />} />
-
                 <Route
-                  path="/inventory"
+                  path="/event-management"
                   element={
-                    <PrivateRoute>
+                    <PrivateRoute
+                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                    >
+                      <Events />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/inventory-management"
+                  element={
+                    <PrivateRoute
+                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                    >
                       <Inventory />
                     </PrivateRoute>
                   }
