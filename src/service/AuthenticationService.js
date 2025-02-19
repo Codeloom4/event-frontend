@@ -24,6 +24,17 @@ const AuthenticationService = {
       throw error;
     }
   },
+
+  signUp: async (data) => {
+    try {
+      const response = await ApiManager.apiPost(authEndpoint, data);
+
+      return response;
+    } catch (error) {
+      console.error("Sign-up failed:", error);
+      throw error;
+    }
+  },
 };
 
 export default AuthenticationService;

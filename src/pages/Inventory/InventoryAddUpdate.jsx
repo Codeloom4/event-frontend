@@ -151,13 +151,13 @@ console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
 
   return (
     <div className="p-6">
-      {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+      {/* <h2 className="mb-6 text-2xl font-semibold text-gray-800">
         {isUpdate ? "Update Inventory" : "Add Inventory"}
       </h2> */}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-      {/* <div className="space-y-4 p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg"> */}
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* <div className="max-w-lg p-4 mx-auto space-y-4 bg-white rounded-lg shadow-md"> */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       {/* ID Field */}
       <CommonTextField 
         id="id" 
@@ -187,8 +187,8 @@ console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
         // onChange={formOnChange}
         row
       >
-        <FormControlLabel value="true" control={<Radio />} label="Yes" className="text text-gray-500"/>
-        <FormControlLabel value="false" control={<Radio />} label="No" className="text text-gray-500"/>
+        <FormControlLabel value="true" control={<Radio />} label="Yes" className="text-gray-500 text"/>
+        <FormControlLabel value="false" control={<Radio />} label="No" className="text-gray-500 text"/>
       </CommonRadioGroup>
 
       {/* Description */}
@@ -263,13 +263,13 @@ console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
           <button
             type="button"
             onClick={close}
-            className="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-200"
+            className="px-6 py-2 text-white transition duration-200 bg-gray-500 rounded-md hover:bg-gray-600"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+            className="px-6 py-2 text-white transition duration-200 bg-blue-500 rounded-md hover:bg-blue-600"
           >
             {isUpdate ? "Update" : "Add"}
           </button>

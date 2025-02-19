@@ -6,6 +6,7 @@ const CommonTextField = ({
   name, // Added name prop
   label, 
   type = "text", 
+  disabled = false,
   value, 
   defaultValue, 
   onChange, 
@@ -18,6 +19,7 @@ const CommonTextField = ({
       name={name} // Passing name prop
       label={label}
       type={type}
+      disabled={disabled}
       value={value}
       defaultValue={defaultValue}
       onChange={onChange}

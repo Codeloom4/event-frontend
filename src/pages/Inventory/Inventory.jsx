@@ -274,13 +274,13 @@ const Inventory = () => {
           <div className="flex space-x-2">
             <button
               onClick={() => onClickUpdate(row.original)}
-              className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+              className="px-3 py-1 text-white transition duration-200 bg-blue-500 rounded-md hover:bg-blue-600"
             >
               Edit
             </button>
             <button
               onClick={() => onClickDelete(row.original.id)}
-              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
+              className="px-3 py-1 text-white transition duration-200 bg-red-500 rounded-md hover:bg-red-600"
             >
               Delete
             </button>
@@ -342,8 +342,8 @@ const Inventory = () => {
   console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
 
   return (
-    <div className="App p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">
+    <div className="min-h-screen p-6 App bg-gray-50">
+      <h1 className="mb-6 text-3xl font-bold text-gray-800">
         Inventory Management
       </h1>
 
@@ -394,7 +394,7 @@ const Inventory = () => {
         <CommonButton type="add" label="Disabled Add" disabled />
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* ID Field */}
         <CommonTextField
           id="id"
