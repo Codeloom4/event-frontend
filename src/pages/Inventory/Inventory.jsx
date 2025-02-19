@@ -16,6 +16,7 @@ import CommonButton from "../../component/Form/CommonButton"; // Adjust the impo
 import { MenuItem } from "@mui/material";
 import { FormControlLabel, Radio } from "@mui/material";
 
+
 const Inventory = () => {
   const defaultPageLimit = 5; // Define the default page limit
 
@@ -70,7 +71,7 @@ const Inventory = () => {
    */
   const [isSearch, setIsSearch] = useState(true);
 
-  const [DropdownItemDetails, setDropdownItemDetails] = useState(false);
+  const [DropdownItemDetails, setDropdownItemDetails] = useState([]);
 
   /**
    * @resetstate for grid reset
@@ -81,20 +82,22 @@ const Inventory = () => {
   useEffect(() => {
     getDropdownItemDetails();
     onReset();
-    // const result = await InventoryService.access();
-    // setDropdownItemDetails(result.data);
   }, []);
 
   useEffect(() => {
     if (resetState.current === true) {
       console.log("resetState.current", resetState.current);
-      // retriveData(tableInitialModal)
+      retriveData(tableInitialModal)
     }
   }, [resetState.current]);
 
   const getDropdownItemDetails = async () => {
-    // const result = await InventoryService.access();
-    // setDropdownItemDetails(result.data)
+    try {
+      const result = await InventoryService.access();
+      setDropdownItemDetails(result?.data || []);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   //reset
@@ -143,12 +146,12 @@ const Inventory = () => {
   //Search
   const onClickSearch = async (page, size, sortCol, sortType) => {
     const result = await InventoryService.getList(
-      page,
-      size,
-      sortCol,
-      sortType,
-      isSearch,
-      inventoryManagement
+      // page,
+      // size,
+      // sortCol,
+      // sortType,
+      // isSearch,
+      // inventoryManagement
     );
     // handleNotification(result, result.data.responseMsg)
     // addToChips()
@@ -338,7 +341,6 @@ const Inventory = () => {
 
   console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
 
-
   return (
     <div className="App p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
@@ -347,140 +349,173 @@ const Inventory = () => {
 
       {/* Add New Item Button */}
       <div className="flex flex-row-reverse">
-      <button
-        // onClick={handleAddNew}
-        onClick={onClickAdd}
-        className="mb-6 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200"
-      >
-        Add New Inventory
-      </button>
+        <button
+          // onClick={handleAddNew}
+          onClick={onClickAdd}
+          className="mb-6 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200"
+        >
+          Add New Inventory
+        </button>
       </div>
 
-
-
-
       <div className="p-6 flex gap-4">
-      <CommonButton type="search" label="Search" onClick={() => alert("Search Clicked")} />
-      <CommonButton type="add" label="Add" onClick={() => alert("Add Clicked")} />
-      <CommonButton type="update" label="Update" onClick={() => alert("Update Clicked")} />
-      <CommonButton type="delete" label="Delete" onClick={() => alert("Delete Clicked")} />
-      <CommonButton type="confirm" label="Confirm" onClick={() => alert("Confirm Clicked")} />
-      <CommonButton type="reject" label="Reject" onClick={() => alert("Reject Clicked")} />
-      
-      {/* Disabled Button Example */}
-      <CommonButton type="add" label="Disabled Add" disabled />
-    </div>
+        <CommonButton
+          type="search"
+          label="Search"
+          onClick={() => alert("Search Clicked")}
+        />
+        <CommonButton
+          type="add"
+          label="Add"
+          onClick={() => alert("Add Clicked")}
+        />
+        <CommonButton
+          type="update"
+          label="Update"
+          onClick={() => alert("Update Clicked")}
+        />
+        <CommonButton
+          type="delete"
+          label="Delete"
+          onClick={() => alert("Delete Clicked")}
+        />
+        <CommonButton
+          type="confirm"
+          label="Confirm"
+          onClick={() => alert("Confirm Clicked")}
+        />
+        <CommonButton
+          type="reject"
+          label="Reject"
+          onClick={() => alert("Reject Clicked")}
+        />
 
-
-
-
-      
+        {/* Disabled Button Example */}
+        <CommonButton type="add" label="Disabled Add" disabled />
+      </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* ID Field */}
-      <CommonTextField 
-        id="id" 
-        name="id" 
-        label="ID" 
-        value={inventoryManagement?.id} 
-        onChange={formOnChange} 
-      />
+        {/* ID Field */}
+        <CommonTextField
+          id="id"
+          name="id"
+          label="ID"
+          value={inventoryManagement?.id}
+          onChange={formOnChange}
+        />
 
-      {/* Item Name - Select Dropdown */}
-      <CommonSelect 
-        name="itemName" 
-        label="Item Name" 
-        value={inventoryManagement.itemName || ""}
-        onChange={formOnChange}
-      >
-        <MenuItem value="Tables">Tables</MenuItem>
-        <MenuItem value="Chairs">Chairs</MenuItem>
-        <MenuItem value="Desks">Desks</MenuItem>
-      </CommonSelect>
+        {/* Item Name - Select Dropdown */}
+        <CommonSelect
+          name="itemName"
+          label="Item Name"
+          value={inventoryManagement.itemName || ""}
+          onChange={formOnChange}
+        >
+          {DropdownItemDetails?.length > 0 &&
+            DropdownItemDetails.map((item) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.itemName}
+              </MenuItem>
+            ))}
+        </CommonSelect>
 
-      {/* Is Refundable - Radio Group */}
-      <CommonRadioGroup
-        name="isRefundable"
-        label="Is Refundable?"
-        // value={inventoryManagement.isRefundable.toString()}
-        // onChange={formOnChange}
-        row
-      >
-        <FormControlLabel value="true" control={<Radio />} label="Yes" className="text text-gray-500"/>
-        <FormControlLabel value="false" control={<Radio />} label="No" className="text text-gray-500"/>
-      </CommonRadioGroup>
+        {/* Is Refundable - Radio Group */}
+        <CommonRadioGroup
+          name="isRefundable"
+          label="Is Refundable?"
+          // value={inventoryManagement.isRefundable.toString()}
+          // onChange={formOnChange}
+          row
+        >
+          <FormControlLabel
+            value="true"
+            control={<Radio />}
+            label="Yes"
+            className="text text-gray-500"
+          />
+          <FormControlLabel
+            value="false"
+            control={<Radio />}
+            label="No"
+            className="text text-gray-500"
+          />
+        </CommonRadioGroup>
 
-      {/* Description */}
-      <CommonTextField 
-        id="description" 
-        name="description" 
-        label="Description" 
-        value={inventoryManagement.description} 
-        onChange={formOnChange} 
-      />
+        {/* Description */}
+        <CommonTextField
+          id="description"
+          name="description"
+          label="Description"
+          value={inventoryManagement.description}
+          onChange={formOnChange}
+        />
 
-      {/* Purchase Price */}
-      <CommonTextField 
-        id="purchasePrice" 
-        name="purchasePrice" 
-        label="Purchase Price" 
-        type="number" 
-        value={inventoryManagement.purchasePrice} 
-        onChange={formOnChange} 
-      />
+        {/* Purchase Price */}
+        <CommonTextField
+          id="purchasePrice"
+          name="purchasePrice"
+          label="Purchase Price"
+          type="number"
+          value={inventoryManagement.purchasePrice}
+          onChange={formOnChange}
+        />
 
-      {/* Sales Price */}
-      <CommonTextField 
-        id="salesPrice" 
-        name="salesPrice" 
-        label="Sales Price" 
-        type="number" 
-        value={inventoryManagement.salesPrice} 
-        onChange={formOnChange} 
-      />
+        {/* Sales Price */}
+        <CommonTextField
+          id="salesPrice"
+          name="salesPrice"
+          label="Sales Price"
+          type="number"
+          value={inventoryManagement.salesPrice}
+          onChange={formOnChange}
+        />
 
-      {/* Order Quantity */}
-      <CommonTextField 
-        id="orderQuantity" 
-        name="orderQuantity" 
-        label="Order Quantity" 
-        type="number" 
-        value={inventoryManagement.orderQuantity} 
-        onChange={formOnChange} 
-      />
+        {/* Order Quantity */}
+        <CommonTextField
+          id="orderQuantity"
+          name="orderQuantity"
+          label="Order Quantity"
+          type="number"
+          value={inventoryManagement.orderQuantity}
+          onChange={formOnChange}
+        />
 
-      {/* Sales Quantity */}
-      <CommonTextField 
-        id="salesQuantity" 
-        name="salesQuantity" 
-        label="Sales Quantity" 
-        type="number" 
-        value={inventoryManagement.salesQuantity} 
-        onChange={formOnChange} 
-      />
+        {/* Sales Quantity */}
+        <CommonTextField
+          id="salesQuantity"
+          name="salesQuantity"
+          label="Sales Quantity"
+          type="number"
+          value={inventoryManagement.salesQuantity}
+          onChange={formOnChange}
+        />
 
-      {/* Balance Quantity */}
-      <CommonTextField 
-        id="balanceQuantity" 
-        name="balanceQuantity" 
-        label="Balance Quantity" 
-        type="number" 
-        value={inventoryManagement.balanceQuantity} 
-        onChange={formOnChange} 
-      />
+        {/* Balance Quantity */}
+        <CommonTextField
+          id="balanceQuantity"
+          name="balanceQuantity"
+          label="Balance Quantity"
+          type="number"
+          value={inventoryManagement.balanceQuantity}
+          onChange={formOnChange}
+        />
 
-      {/* Created User */}
-      <CommonTextField 
-        id="createdUser" 
-        name="createdUser" 
-        label="Created User" 
-        value={inventoryManagement.createdUser} 
-        onChange={formOnChange} 
-      />
-    </div>
-    <div className="mt-4">
-    <CommonButton type="search" label="Search" onClick={() => alert("Search Clicked")}/>
-    </div>
+        {/* Created User */}
+        <CommonTextField
+          id="createdUser"
+          name="createdUser"
+          label="Created User"
+          value={inventoryManagement.createdUser}
+          onChange={formOnChange}
+        />
+      </div>
+      <div className="mt-4">
+        <CommonButton
+          type="search"
+          label="Search"
+          onClick={() => alert("Search Clicked")}
+        />
+      </div>
 
       {/* add update modal */}
       <CommonModal
@@ -497,17 +532,16 @@ const Inventory = () => {
         {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
         <InventoryAddUpdate
           isUpdate={isUpdate}
-          data={isUpdate ? showAddUpdateModal.data : ({})}
+          data={isUpdate ? showAddUpdateModal.data : {}}
           close={() => {
             setShowAddUpdateModal({
               show: false,
               data: {},
-            })
+            });
           }}
           completed={() => {
-              retriveData(search)
-            }
-          }
+            retriveData(search);
+          }}
         />
       </CommonModal>
 
@@ -516,6 +550,7 @@ const Inventory = () => {
         columns={columns}
         data={data}
         loading={false}
+        fetchData={retriveData}
         onFilter={handleFilter}
         onClickRow={handleRowClick}
         totalCount={data.length}

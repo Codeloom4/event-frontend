@@ -11,14 +11,14 @@ class UserManagementService {
   delete = async (roleCode) => {
     return ApiManager.apiPost(`${inventoryManagementReq}/delete/${roleCode}`, {})
   }
-  access = async (auditOnly) => {
-    var request_string = ``
-    if (auditOnly == undefined) {
-      request_string = request_string + `&auditOnly=${false}`
-    } else {
-      request_string = request_string + `&auditOnly=${true}`
-    }
-    return ApiManager.apiPost(`${inventoryManagementReq}/access?${request_string}`, {})
+  access = async () => {
+    // var request_string = ``
+    // if (auditOnly == undefined) {
+    //   request_string = request_string + `&auditOnly=${false}`
+    // } else {
+    //   request_string = request_string + `&auditOnly=${true}`
+    // }
+    return ApiManager.apiGet(`/ems/item`, {})
   }
 
   confirm = async (code) => {
@@ -58,46 +58,44 @@ class UserManagementService {
   }
 
   getList = async (
-    page,
-    size,
-    sortCol,
-    sortType,
-    search,
-    searchParams
+    // page,
+    // size,
+    // sortCol,
+    // sortType,
+    // search,
+    // searchParams
   ) => {
-    var request_string = ``
-    if (page !== null || page !== undefined) {
-      request_string = request_string + `page=${page}`
-    } else {
-      request_string = request_string + `page=0`
-    }
-    if (size !== null) {
-      request_string = request_string + `&size=${size}`
-    } else {
-      request_string = request_string + `&size=5`
-    }
-    if (sortCol !== '' && sortType !== undefined && sortType !== null) {
-      if (sortCol === 'userleveldesc') {
-        request_string =
-          request_string + `&sort=userlevel,${sortType ? 'desc' : 'asc'}`
-      } else if (sortCol === 'statusdesc') {
-        request_string =
-          request_string + `&sort=status,${sortType ? 'desc' : 'asc'}`
-      } else {
-        request_string =
-          request_string + `&sort=${sortCol},${sortType ? 'desc' : 'asc'}`
-      }
-    }
-    if (search !== null) {
-      request_string = request_string + `&search=${search}`
-    } else {
-      request_string = request_string + `&search=false`
-    }
+    // var request_string = ``
+    // if (page !== null || page !== undefined) {
+    //   request_string = request_string + `page=${page}`
+    // } else {
+    //   request_string = request_string + `page=0`
+    // }
+    // if (size !== null) {
+    //   request_string = request_string + `&size=${size}`
+    // } else {
+    //   request_string = request_string + `&size=5`
+    // }
+    // if (sortCol !== '' && sortType !== undefined && sortType !== null) {
+    //   if (sortCol === 'userleveldesc') {
+    //     request_string =
+    //       request_string + `&sort=userlevel,${sortType ? 'desc' : 'asc'}`
+    //   } else if (sortCol === 'statusdesc') {
+    //     request_string =
+    //       request_string + `&sort=status,${sortType ? 'desc' : 'asc'}`
+    //   } else {
+    //     request_string =
+    //       request_string + `&sort=${sortCol},${sortType ? 'desc' : 'asc'}`
+    //   }
+    // }
+    // if (search !== null) {
+    //   request_string = request_string + `&search=${search}`
+    // } else {
+    //   request_string = request_string + `&search=false`
+    // }
 
-    return ApiManager.apiPost(
-      `${inventoryManagementReq}/list?${request_string}`,
-      searchParams
-    )
+    return ApiManager.apiGet(
+      `${inventoryManagementReq}`)
   }
   getDualAuthList = async (
     page,

@@ -30,25 +30,25 @@ const PublicRoute = ({ children }) => {
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen mt-6">
-          {/* Fixed Header */}
-          <Header />
+        <Router>
+          <div className="flex flex-col min-h-screen mt-6">
+            {/* Fixed Header */}
+            <Header />
 
-          {/* Main Content with Padding for Fixed Header */}
-          <main className="flex-grow pt-16 p-4">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/LogIn"
-                element={
-                  <PublicRoute>
-                    <LogIn />
-                  </PublicRoute>
-                }
-              />
-              {/* <Route
+            {/* Main Content with Padding for Fixed Header */}
+            <main className="flex-grow pt-16 p-4">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="/LogIn"
+                  element={
+                    <PublicRoute>
+                      <LogIn />
+                    </PublicRoute>
+                  }
+                />
+                {/* <Route
                 path="/signup"
                 element={
                   <PublicRoute>
@@ -57,8 +57,8 @@ const App = () => {
                 }
               /> */}
 
-              {/* Protected Routes */}
-              {/* <Route
+                {/* Protected Routes */}
+                {/* <Route
                 path="/events"
                 element={
                   <PrivateRoute>
@@ -66,41 +66,40 @@ const App = () => {
                   </PrivateRoute>
                 }
               />*/}
-              <Route
-                path="/profile"
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
-
-              <Route
-                path="/inventory"
-                element={
-                  <PrivateRoute>
-                    <Inventory />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Profile />
                     </PrivateRoute>
-                  
-                }
-              />
+                  }
+                />
 
-              {/* 404 Route */}
-              <Route
-                path="*"
-                element={
-                  <h1 className="text-center text-2xl mt-10">
-                    404 - Page Not Found
-                  </h1>
-                }
-              />
-            </Routes>
-          </main>
+                <Route
+                  path="/inventory"
+                  element={
+                    <PrivateRoute>
+                      <Inventory />
+                    </PrivateRoute>
+                  }
+                />
 
-          {/* Footer */}
-          <Footer />
-        </div>
-      </Router>
+                {/* 404 Route */}
+                <Route
+                  path="*"
+                  element={
+                    <h1 className="text-center text-2xl mt-10">
+                      404 - Page Not Found
+                    </h1>
+                  }
+                />
+              </Routes>
+            </main>
+
+            {/* Footer */}
+            <Footer />
+          </div>
+        </Router>
     </AuthProvider>
   );
 };

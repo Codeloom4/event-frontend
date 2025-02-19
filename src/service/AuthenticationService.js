@@ -1,6 +1,6 @@
 import ApiManager from "./Api/ApiManager";
 
-const authEndpoint = "/auth";
+const authEndpoint = "/api/auth";
 
 const AuthenticationService = {
   login: async (username, password) => {
