@@ -271,13 +271,13 @@ const Inventory = () => {
           <div className="flex space-x-2">
             <button
               onClick={() => onClickUpdate(row.original)}
-              className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+              className="px-3 py-1 text-white transition duration-200 bg-blue-500 rounded-md hover:bg-blue-600"
             >
               Edit
             </button>
             <button
               onClick={() => onClickDelete(row.original.id)}
-              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
+              className="px-3 py-1 text-white transition duration-200 bg-red-500 rounded-md hover:bg-red-600"
             >
               Delete
             </button>
@@ -338,149 +338,178 @@ const Inventory = () => {
 
   console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
 
-
   return (
-    <div className="App p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">
+    <div className="min-h-screen p-6 App bg-gray-50">
+      <h1 className="mb-6 text-3xl font-bold text-gray-800">
         Inventory Management
       </h1>
 
       {/* Add New Item Button */}
       <div className="flex flex-row-reverse">
-      <button
-        // onClick={handleAddNew}
-        onClick={onClickAdd}
-        className="mb-6 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-200"
-      >
-        Add New Inventory
-      </button>
+        <button
+          // onClick={handleAddNew}
+          onClick={onClickAdd}
+          className="px-4 py-2 mb-6 text-white transition duration-200 bg-green-500 rounded-md hover:bg-green-600"
+        >
+          Add New Inventory
+        </button>
       </div>
 
+      <div className="flex gap-4 p-6">
+        <CommonButton
+          type="search"
+          label="Search"
+          onClick={() => alert("Search Clicked")}
+        />
+        <CommonButton
+          type="add"
+          label="Add"
+          onClick={() => alert("Add Clicked")}
+        />
+        <CommonButton
+          type="update"
+          label="Update"
+          onClick={() => alert("Update Clicked")}
+        />
+        <CommonButton
+          type="delete"
+          label="Delete"
+          onClick={() => alert("Delete Clicked")}
+        />
+        <CommonButton
+          type="confirm"
+          label="Confirm"
+          onClick={() => alert("Confirm Clicked")}
+        />
+        <CommonButton
+          type="reject"
+          label="Reject"
+          onClick={() => alert("Reject Clicked")}
+        />
 
+        {/* Disabled Button Example */}
+        <CommonButton type="add" label="Disabled Add" disabled />
+      </div>
 
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* ID Field */}
+        <CommonTextField
+          id="id"
+          name="id"
+          label="ID"
+          value={inventoryManagement?.id}
+          onChange={formOnChange}
+        />
 
-      <div className="p-6 flex gap-4">
-      <CommonButton type="search" label="Search" onClick={() => alert("Search Clicked")} />
-      <CommonButton type="add" label="Add" onClick={() => alert("Add Clicked")} />
-      <CommonButton type="update" label="Update" onClick={() => alert("Update Clicked")} />
-      <CommonButton type="delete" label="Delete" onClick={() => alert("Delete Clicked")} />
-      <CommonButton type="confirm" label="Confirm" onClick={() => alert("Confirm Clicked")} />
-      <CommonButton type="reject" label="Reject" onClick={() => alert("Reject Clicked")} />
-      
-      {/* Disabled Button Example */}
-      <CommonButton type="add" label="Disabled Add" disabled />
-    </div>
+        {/* Item Name - Select Dropdown */}
+        <CommonSelect
+          name="itemName"
+          label="Item Name"
+          value={inventoryManagement.itemName || ""}
+          onChange={formOnChange}
+        >
+          <MenuItem value="Tables">Tables</MenuItem>
+          <MenuItem value="Chairs">Chairs</MenuItem>
+          <MenuItem value="Desks">Desks</MenuItem>
+        </CommonSelect>
 
+        {/* Is Refundable - Radio Group */}
+        <CommonRadioGroup
+          name="isRefundable"
+          label="Is Refundable?"
+          // value={inventoryManagement.isRefundable.toString()}
+          // onChange={formOnChange}
+          row
+        >
+          <FormControlLabel
+            value="true"
+            control={<Radio />}
+            label="Yes"
+            className="text-gray-500 text"
+          />
+          <FormControlLabel
+            value="false"
+            control={<Radio />}
+            label="No"
+            className="text-gray-500 text"
+          />
+        </CommonRadioGroup>
 
+        {/* Description */}
+        <CommonTextField
+          id="description"
+          name="description"
+          label="Description"
+          value={inventoryManagement.description}
+          onChange={formOnChange}
+        />
 
+        {/* Purchase Price */}
+        <CommonTextField
+          id="purchasePrice"
+          name="purchasePrice"
+          label="Purchase Price"
+          type="number"
+          value={inventoryManagement.purchasePrice}
+          onChange={formOnChange}
+        />
 
-      
+        {/* Sales Price */}
+        <CommonTextField
+          id="salesPrice"
+          name="salesPrice"
+          label="Sales Price"
+          type="number"
+          value={inventoryManagement.salesPrice}
+          onChange={formOnChange}
+        />
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* ID Field */}
-      <CommonTextField 
-        id="id" 
-        name="id" 
-        label="ID" 
-        value={inventoryManagement?.id} 
-        onChange={formOnChange} 
-      />
+        {/* Order Quantity */}
+        <CommonTextField
+          id="orderQuantity"
+          name="orderQuantity"
+          label="Order Quantity"
+          type="number"
+          value={inventoryManagement.orderQuantity}
+          onChange={formOnChange}
+        />
 
-      {/* Item Name - Select Dropdown */}
-      <CommonSelect 
-        name="itemName" 
-        label="Item Name" 
-        value={inventoryManagement.itemName || ""}
-        onChange={formOnChange}
-      >
-        <MenuItem value="Tables">Tables</MenuItem>
-        <MenuItem value="Chairs">Chairs</MenuItem>
-        <MenuItem value="Desks">Desks</MenuItem>
-      </CommonSelect>
+        {/* Sales Quantity */}
+        <CommonTextField
+          id="salesQuantity"
+          name="salesQuantity"
+          label="Sales Quantity"
+          type="number"
+          value={inventoryManagement.salesQuantity}
+          onChange={formOnChange}
+        />
 
-      {/* Is Refundable - Radio Group */}
-      <CommonRadioGroup
-        name="isRefundable"
-        label="Is Refundable?"
-        // value={inventoryManagement.isRefundable.toString()}
-        // onChange={formOnChange}
-        row
-      >
-        <FormControlLabel value="true" control={<Radio />} label="Yes" className="text text-gray-500"/>
-        <FormControlLabel value="false" control={<Radio />} label="No" className="text text-gray-500"/>
-      </CommonRadioGroup>
+        {/* Balance Quantity */}
+        <CommonTextField
+          id="balanceQuantity"
+          name="balanceQuantity"
+          label="Balance Quantity"
+          type="number"
+          value={inventoryManagement.balanceQuantity}
+          onChange={formOnChange}
+        />
 
-      {/* Description */}
-      <CommonTextField 
-        id="description" 
-        name="description" 
-        label="Description" 
-        value={inventoryManagement.description} 
-        onChange={formOnChange} 
-      />
-
-      {/* Purchase Price */}
-      <CommonTextField 
-        id="purchasePrice" 
-        name="purchasePrice" 
-        label="Purchase Price" 
-        type="number" 
-        value={inventoryManagement.purchasePrice} 
-        onChange={formOnChange} 
-      />
-
-      {/* Sales Price */}
-      <CommonTextField 
-        id="salesPrice" 
-        name="salesPrice" 
-        label="Sales Price" 
-        type="number" 
-        value={inventoryManagement.salesPrice} 
-        onChange={formOnChange} 
-      />
-
-      {/* Order Quantity */}
-      <CommonTextField 
-        id="orderQuantity" 
-        name="orderQuantity" 
-        label="Order Quantity" 
-        type="number" 
-        value={inventoryManagement.orderQuantity} 
-        onChange={formOnChange} 
-      />
-
-      {/* Sales Quantity */}
-      <CommonTextField 
-        id="salesQuantity" 
-        name="salesQuantity" 
-        label="Sales Quantity" 
-        type="number" 
-        value={inventoryManagement.salesQuantity} 
-        onChange={formOnChange} 
-      />
-
-      {/* Balance Quantity */}
-      <CommonTextField 
-        id="balanceQuantity" 
-        name="balanceQuantity" 
-        label="Balance Quantity" 
-        type="number" 
-        value={inventoryManagement.balanceQuantity} 
-        onChange={formOnChange} 
-      />
-
-      {/* Created User */}
-      <CommonTextField 
-        id="createdUser" 
-        name="createdUser" 
-        label="Created User" 
-        value={inventoryManagement.createdUser} 
-        onChange={formOnChange} 
-      />
-    </div>
-    <div className="mt-4">
-    <CommonButton type="search" label="Search" onClick={() => alert("Search Clicked")}/>
-    </div>
+        {/* Created User */}
+        <CommonTextField
+          id="createdUser"
+          name="createdUser"
+          label="Created User"
+          value={inventoryManagement.createdUser}
+          onChange={formOnChange}
+        />
+      </div>
+      <div className="mt-4">
+        <CommonButton
+          type="search"
+          label="Search"
+          onClick={() => alert("Search Clicked")}
+        />
+      </div>
 
       {/* add update modal */}
       <CommonModal
@@ -497,17 +526,16 @@ const Inventory = () => {
         {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
         <InventoryAddUpdate
           isUpdate={isUpdate}
-          data={isUpdate ? showAddUpdateModal.data : ({})}
+          data={isUpdate ? showAddUpdateModal.data : {}}
           close={() => {
             setShowAddUpdateModal({
               show: false,
               data: {},
-            })
+            });
           }}
           completed={() => {
-              retriveData(search)
-            }
-          }
+            retriveData(search);
+          }}
         />
       </CommonModal>
 

@@ -11,7 +11,8 @@
     "plugin:jsx-a11y/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "react-app"
   ],
   "parserOptions": {
     "ecmaVersion": 2021,
@@ -31,11 +32,13 @@
   "rules": {
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "warn",
     "import/no-unresolved": "error",
     "import/named": "error",
     "import/default": "error",
     "import/namespace": "error",
     "import/no-unused-modules": "warn",
-    "tailwindcss/no-custom-classname": "off"
+    "tailwindcss/no-custom-classname": "off",
+    "no-unused-vars": "warn"
   }
 }
