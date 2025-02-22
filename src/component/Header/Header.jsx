@@ -1,13 +1,15 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import Logo from "../../assest/logo/mainLogo.svg";
+import Logo from "../../assets/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
 import { FaTicketAlt, FaWifi } from "react-icons/fa";
 
 const Header = () => {
-  const { isAuthenticated, userrole, logout } = useAuth();
+  const { authContextData, logout } = useAuth(); // Access the full authContextData
   const navigate = useNavigate();
+
+  const { isAuthenticated, userRole } = authContextData; // Destructure from authContextData
 
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
@@ -46,18 +48,6 @@ const Header = () => {
               </li>
               <li>
                 <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
-                >
-                  Services
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to="/events"
                   className={({ isActive }) =>
                     isActive
@@ -92,34 +82,9 @@ const Header = () => {
                   Contact
                 </NavLink>
               </li>
-              {isAuthenticated ? (
+
               <li>
                 <NavLink
-                  to="/inventory-management"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
-                >
-                  Inventory
-                </NavLink>
-              </li>) : null}
-              {/* {isAuthenticated && (
-              )} */}
-            </ul>
-          </nav>
-        </div>
-
-        {/* Authentication Buttons: Aligned to the right */}
-        <div className="flex space-x-4">
-          {isAuthenticated ? (
-            <>
-              <div>
-                <nav>
-                  <ul className="flex space-x-4">
-                    <li>
-                      <NavLink
                         to="/create-event"
                         className={({ isActive }) =>
                           `flex justify-center items-center ${
@@ -131,38 +96,103 @@ const Header = () => {
                       >
                         Create Event
                       </NavLink>
-                    </li>
+               </li>
+
+
+
+              {isAuthenticated ? (
+                <li>
+                  <NavLink
+                    to="/inventory"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                        : "hover:text-gray-400 text-2xl"
+                    }
+                  >
+                    Inventory
+                  </NavLink>
+                </li>
+              ) : null}
+              {/* {isAuthenticated && (
+              )} */}
+
+
+
+
+                {/* Add Reports Dropdown for ADMIN and EMPLOYEE */}
+                {(userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                <li className="relative group">
+                  <div className="flex items-center space-x-1 cursor-pointer">
+                    <span className="text-2xl">Reports</span>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                  <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block">
                     <li>
                       <NavLink
-                        to="/tickets"
-                        className={({ isActive }) =>
-                          `flex flex-col items-center ${
-                            isActive
-                              ? "text-yellow-400 underline hover:text-yellow-400"
-                              : "hover:text-gray-400"
-                          }`
-                        }
+                        to="/system-user-status"
+                        className="block px-4 py-2 hover:bg-gray-600"
                       >
-                        <FaTicketAlt className="mb-1 text-lg" /> {/* Icon */}
-                        <span className="text-md">Tickets</span> {/* Text */}
+                        System User Status
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink
-                        to="/internets"
-                        className={({ isActive }) =>
-                          `flex flex-col items-center ${
-                            isActive
-                              ? "text-yellow-400 underline hover:text-yellow-400"
-                              : "hover:text-gray-400"
-                          }`
-                        }
-                      >
-                        <FaWifi className="mb-1 text-lg" /> {/* Icon */}
-                        <span className="text-md">Internets</span> {/* Text */}
-                      </NavLink>
-                    </li>
+                  <NavLink
+                    to="/inventory-stock-report"
+                    className="block px-4 py-2 hover:bg-gray-600"
+                  >
+                    Inventory Stock Report
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/low-stock-report"
+                    className="block px-4 py-2 hover:bg-gray-600"
+                  >
+                    Low Stock Report
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/sales-revenue-report"
+                    className="block px-4 py-2 hover:bg-gray-600"
+                  >
+                    Sales Revenue Report
+                  </NavLink>
+                </li>
                   </ul>
+                </li>
+              )}
+
+
+
+
+
+            </ul>
+          </nav>
+        </div>
+
+        {/* Authentication Buttons: Aligned to the right */}
+        <div className="flex space-x-4">
+          {isAuthenticated ? (
+            <>
+              <div>
+                <nav>
+                  
                 </nav>
               </div>
               <button

@@ -2,28 +2,54 @@ import React, { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import Logo from "../../assest/logo/mainLogo.svg";
+import Logo from "../../assets/logo/mainLogo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import UserManagement from "../../service/UserManagement";
 import RowRadioButtonsGroup from "../../component/InputFields/RowRadioButtonsGroup";
+import CommonTextField from "../../component/Form/CommonTextField";
+import CommonRadioGroup from "../../component/Form/CommonRadioGroup";
+import { Radio } from "@mui/material";
+import CommonButton from "../../component/Form/CommonButton";
 
 const SignUp = () => {
-  const [username, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [mobileNo, setMobileNumber] = useState("");
-  const [position, setPosition] = useState("");
-  const [roles, setRoles] = useState([]);
-  const [address, setAddress] = useState("");
+  const [userSignUp, setUserSignUp] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleRoleChange = (role) => {
-    setRoles((prev) =>
-      prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
-    );
+  const formOnChange = (e) => {
+    const { name, value, type } = e.target;
+    setUserSignUp((prev) => ({
+      ...prev,
+      [name]: type === "number" ? Number(value) : value,
+    }));
+  };
+
+  // const handleRoleChange = (role) => {
+  //   setRoles((prev) =>
+  //     prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
+  //   );
+  // };
+
+  const onClickAdd = async () => {
+    try {
+      const response = await UserManagement.signUp({
+        userSignUp,
+        enabled: true,
+      });
+
+      if (response.status === 201 && response.data?.accessToken) {
+        const { accessToken } = response.data;
+        // login(accessToken, email);
+        navigate("/");
+      } else {
+        setError("Sign-up failed. Please try again.");
+      }
+    } catch (err) {
+      setError("Sign-up failed. Please try again.");
+      console.error("Sign-up error:", err);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -31,19 +57,19 @@ const SignUp = () => {
 
     try {
       const response = await UserManagement.signUp({
-        username,
-        email,
-        password,
-        position,
-        roles,
-        mobileNo,
-        address,
-        enabled: "true",
+        // username,
+        // email,
+        // password,
+        // position,
+        // roles,
+        // mobileNo,
+        // address,
+        // enabled: "true",
       });
 
       if (response.status === 201 && response.data?.accessToken) {
         const { accessToken } = response.data;
-        login(accessToken, email);
+        // login(accessToken, email);
         navigate("/");
       } else {
         setError("Sign-up failed. Please try again.");
@@ -79,9 +105,80 @@ const SignUp = () => {
         </div>
 
         <div className="ml-[45%] w-[55%] bg-white shadow-lg flex flex-col justify-center items-center px-8">
-          <form className="w-full max-w-sm" onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
+          <form className="w-full max-w-sm">
+            <div className="mb-4 flex flex-col gap-4">
+              <CommonTextField
+                id="username"
+                name="username"
+                label="Username"
+                value={userSignUp.username || ""}
+                onChange={formOnChange}
+              />
+
+              <CommonTextField
+                id="email"
+                name="email"
+                label="Email Address"
+                type="email"
+                value={userSignUp.email || ""}
+                onChange={formOnChange}
+              />
+
+              <CommonTextField
+                id="password"
+                name="password"
+                label="Password"
+                type="password"
+                value={userSignUp.password || ""}
+                onChange={formOnChange}
+              />
+
+              <CommonTextField
+                id="position"
+                name="position"
+                label="Position"
+                value={userSignUp.position || ""}
+                onChange={formOnChange}
+              />
+
+              <CommonRadioGroup name="role" label="Role" row>
+                <FormControlLabel
+                  value="ADMIN"
+                  control={<Radio />}
+                  label="Administration"
+                  className="text-gray-500 text"
+                />
+                <FormControlLabel
+                  value="EMPLOYEE"
+                  control={<Radio />}
+                  label="Employee"
+                  className="text-gray-500 text"
+                />
+                <FormControlLabel
+                  value="CUSTOMER"
+                  control={<Radio />}
+                  label="Customer"
+                  className="text-gray-500 text"
+                />
+              </CommonRadioGroup>
+
+              <CommonTextField
+                id="mobileNo"
+                name="mobileNo"
+                label="Mobile Number"
+                value={userSignUp.mobileNo || ""}
+                onChange={formOnChange}
+              />
+
+              <CommonTextField
+                id="address"
+                name="address"
+                label="Address"
+                value={userSignUp.address || ""}
+                onChange={formOnChange}
+              />
+
+              {/* <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="username"
               >
@@ -200,18 +297,16 @@ const SignUp = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 required
               />
+            </div> */}
             </div>
             {error && (
               <p className="text-red-500 text-sm text-center mb-4">{error}</p>
             )}
+
             <div className="flex items-center justify-between">
-              <button
-                className="border rounded w-full bg-[#2B293D] hover:bg-[#3A3752] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-              >
-                Create Account
-              </button>
+              <CommonButton type="button" label="Login" onClick={onClickAdd} />
             </div>
+
             <p className="mt-4 text-sm text-gray-600">
               Already have an account?{" "}
               <a href="/login" className="text-blue-500 hover:text-blue-700">

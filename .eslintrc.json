@@ -1,8 +1,43 @@
 {
-  "extends": ["react-app", "eslint:recommended", "plugin:react/recommended"],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:tailwindcss/recommended",
+    "react-app"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "import", "tailwindcss"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "rules": {
-    "no-unused-vars": "warn",
     "react/prop-types": "off",
-    "react/no-unescaped-entities": "warn"
+    "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "warn",
+    "import/no-unresolved": "error",
+    "import/named": "error",
+    "import/default": "error",
+    "import/namespace": "error",
+    "import/no-unused-modules": "warn",
+    "tailwindcss/no-custom-classname": "off",
+    "no-unused-vars": "warn"
   }
 }
