@@ -14,6 +14,12 @@ import Inventory from "./pages/Inventory/Inventory";
 import Events from "./pages/EventManagement/Events";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
+import SystemUserStatus from "./pages/Reports/SystemUserStatus";
+import InventoryStockReport from "./pages/Reports/InventoryStockReport";
+import LowStockReport from "./pages/Reports/LowStockReport";
+import SalesRevenueReport from "./pages/Reports/SalesRevenueReport";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { USER_ROLES } from "./utils/constants";
 
@@ -124,7 +130,42 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
 
+                <Route
+                  path="/system-user-status"
+                  element={
+                    <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                      <SystemUserStatus />
+                    </PrivateRoute>
+                  }
+                />
+
+                <Route
+                  path="/inventory-stock-report"
+                  element={
+                    <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                      <InventoryStockReport />
+                    </PrivateRoute>
+                  }
+                />
+              <Route
+                path="/low-stock-report"
+                element={
+                  <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                    <LowStockReport />
+                  </PrivateRoute>
+                }
+              />
+            <Route
+              path="/sales-revenue-report"
+              element={
+                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                  <SalesRevenueReport />
+                </PrivateRoute>
+              }
+            />
                 {/* 404 Route */}
                 <Route
                   path="*"
