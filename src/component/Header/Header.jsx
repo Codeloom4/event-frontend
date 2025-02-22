@@ -6,8 +6,10 @@ import SignUpButton from "../Buttons/SignUpButton";
 import { FaTicketAlt, FaWifi } from "react-icons/fa";
 
 const Header = () => {
-  const { isAuthenticated, userrole, logout } = useAuth();
+  const { authContextData, logout } = useAuth(); // Access the full authContextData
   const navigate = useNavigate();
+
+  const { isAuthenticated, userRole } = authContextData; // Destructure from authContextData
 
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
