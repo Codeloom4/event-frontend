@@ -118,20 +118,22 @@ const Header = () => {
                 </NavLink>
               </li>
 
-              <li>
-                <NavLink
-                  to="/create-event"
-                  className={({ isActive }) =>
-                    `text-2xl ${
-                      isActive
-                        ? "text-yellow-400 hover:text-yellow-400"
-                        : "hover:text-gray-400"
-                    }`
-                  }
-                >
-                  Create Event
-                </NavLink>
-              </li>
+              {isAuthenticated && (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+  <li>
+    <NavLink
+      to="/create-event"
+      className={({ isActive }) =>
+        `text-2xl ${
+          isActive
+            ? "text-yellow-400 hover:text-yellow-400"
+            : "hover:text-gray-400"
+        }`
+      }
+    >
+      Create Event
+    </NavLink>
+  </li>
+)}
 
               {isAuthenticated && (
                 <li>

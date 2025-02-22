@@ -11,7 +11,7 @@ import Footer from "./component/Footer/Footer";
 import Home from "./pages/Home/Home";
 import LogIn from "./pages/LogIn/LogIn";
 import Inventory from "./pages/Inventory/Inventory";
-import Events from "./pages/EventManagement/Events";
+import CreateEvent from "./pages/EventManagement/CreateEvent";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
 import About from "./pages/About/About";
@@ -110,16 +110,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route
-                  path="/event-management"
-                  element={
-                    <PrivateRoute
-                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
-                    >
-                      <Events />
-                    </PrivateRoute>
-                  }
-                />
+               
                 <Route
                   path="/inventory-management"
                   element={
@@ -166,6 +157,15 @@ const App = () => {
                 </PrivateRoute>
               }
             />
+
+          <Route
+            path="/create-event"
+            element={
+              <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <CreateEvent />
+              </PrivateRoute>
+            }
+          />
                 {/* 404 Route */}
                 <Route
                   path="*"
