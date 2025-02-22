@@ -9,15 +9,6 @@ const AuthenticationService = {
         username,
         password,
       });
-
-      if (response.status === 200 && response.data?.accessToken) {
-        const { accessToken } = response.data;
-        console.log("Login successful:", accessToken);
-        // Save token to sessionStorage
-        sessionStorage.setItem("token", accessToken);
-        sessionStorage.setItem("username", username);
-      }
-
       return response;
     } catch (error) {
       console.error("Login failed:", error);

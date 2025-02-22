@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,13 +19,15 @@ import { USER_ROLES } from "./utils/constants";
 
 // PrivateRoute component to protect authenticated routes
 const PrivateRoute = ({ children, allowedRoles }) => {
-  const { isAuthenticated, userrole } = useAuth();
+  const { authContextData } = useAuth(); // Access the full authContextData
+
+  const { isAuthenticated, userRole } = authContextData;
 
   if (!isAuthenticated) {
     return <Navigate to="/LogIn" />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(userrole.userrole)) {
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
     return <Navigate to="/Unauthorized" />;
   }
 
@@ -34,7 +36,9 @@ const PrivateRoute = ({ children, allowedRoles }) => {
 
 // PublicRoute component to redirect authenticated users away from LogIn/signup
 const PublicRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { authContextData } = useAuth(); // Access the full authContextData
+  const { isAuthenticated } = authContextData;
+
   return isAuthenticated ? <Navigate to="/" /> : children;
 };
 
@@ -88,11 +92,7 @@ const App = () => {
                 />
                 <Route
                   path="/services/:serviceId"
-                  element={
-                    <PublicRoute>
-                      {/* <Service /> */}
-                    </PublicRoute>
-                  }
+                  element={<PublicRoute>{/* <Service /> */}</PublicRoute>}
                 />
 
                 {/* Protected Routes */}
