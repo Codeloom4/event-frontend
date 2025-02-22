@@ -95,7 +95,7 @@ const Header = () => {
               {isAuthenticated ? (
               <li>
                 <NavLink
-                  to="/inventory"
+                  to="/inventory-management"
                   className={({ isActive }) =>
                     isActive
                       ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
