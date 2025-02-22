@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import Logo from "../../assest/logo/mainLogo.svg";
+import Logo from "../../assets/logo/mainLogo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import UserManagement from "../../service/UserManagement";

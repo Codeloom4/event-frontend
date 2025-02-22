@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import Logo from "../../assest/logo/mainLogo.svg";
+import Logo from "../../assets/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
 import { FaTicketAlt, FaWifi } from "react-icons/fa";
 
@@ -93,18 +93,19 @@ const Header = () => {
                 </NavLink>
               </li>
               {isAuthenticated ? (
-              <li>
-                <NavLink
-                  to="/inventory"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
-                >
-                  Inventory
-                </NavLink>
-              </li>) : null}
+                <li>
+                  <NavLink
+                    to="/inventory"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                        : "hover:text-gray-400 text-2xl"
+                    }
+                  >
+                    Inventory
+                  </NavLink>
+                </li>
+              ) : null}
               {/* {isAuthenticated && (
               )} */}
             </ul>

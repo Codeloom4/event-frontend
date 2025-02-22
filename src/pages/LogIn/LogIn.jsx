@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; // Import useAuth
 import AuthenticationService from "../../service/AuthenticationService"; // Import AuthenticationService
-import Logo from "../../assest/logo/mainLogo.svg";
+import Logo from "../../assets/logo/mainLogo.svg";
 
 const LogIn = () => {
   const [username, setUserName] = useState("");
@@ -54,7 +54,7 @@ const LogIn = () => {
       </header>
 
       {/* Main Content */}
-      <div className="flex items-stretch min-h-screen pt-16 bg-gray-100">
+      <div className="flex items-stretch h-screen bg-gray-100">
         {/* Fixed Left Div (45% width) */}
         <div className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-[45%] flex flex-col justify-center bg-gray-800">
           <h4 className="px-4 mb-8 text-3xl font-bold text-center text-white">
