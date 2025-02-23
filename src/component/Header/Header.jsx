@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; // Import useAuth
 import Logo from "../../assets/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
 import { FaTicketAlt, FaWifi } from "react-icons/fa";
+import { RESPONSE_CODES, USER_ROLES } from "../../utils/constants";
+import EventsService from "../../service/EventsService";
 
 const Header = () => {
   const { authContextData, logout, services } = useAuth(); // Access services from AuthContext
@@ -15,6 +17,23 @@ const Header = () => {
     logout(); // Call the logout function from AuthContext
     navigate("/"); // Redirect to home page after logout
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [serviceList, setServiceList] = useState([]);
+
+  const retrieveServices = async () => {
+    const serviceResponse = await EventsService.getEventsList();
+    // console.log(serviceResponse);
+    // if (serviceResponse.data.responseCode === RESPONSE_CODES.SUCCESS) {
+    setServiceList(serviceResponse.data);
+    // } else {
+    //   navigate("/");
+    // }
+  };
+
+  useEffect(() => {
+    retrieveServices();
+  }, []);
 
   // Handle click on a service dropdown item
   const handleServiceClick = (eventType) => {
@@ -54,6 +73,48 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
+              {/* <li className="relative">
+                <button
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="text-2xl hover:text-gray-400 focus:outline-none"
+                >
+                  Services ▼
+                </button>
+                {isOpen && (
+                  <ul className="absolute left-0 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+                    {serviceList.map((service, index) => (
+                      <li key={index}>
+                        <NavLink
+                          to={`/services/${service.id}`}
+                          className={({ isActive }) =>
+                            `block px-4 py-2 text-lg ${
+                              isActive ? "text-yellow-400" : "text-gray-700"
+                            } hover:bg-gray-100`
+                          }
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {service.eventType}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li> */}
+              {isAuthenticated &&
+                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole) && (
+                  <li>
+                    <NavLink
+                      to="/event-management"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                          : "hover:text-gray-400 text-2xl"
+                      }
+                    >
+                      Event Managemnt
+                    </NavLink>
+                  </li>
+                )}
 
 
               {/* Other navigation links */}
@@ -106,18 +167,99 @@ const Header = () => {
                 <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block">
                   {services.map((service, index) => (
                     <li key={index}>
-                      <button
-                        onClick={() => handleServiceClick(service.eventType)}
-                        className="block w-full px-4 py-2 text-left hover:bg-gray-600"
-                      >
-                        {service.description}
-                      </button>
+                      <NavLink to={`/services/${service.eventType}`}>
+                        <button
+                          onClick={() => handleServiceClick(service.eventType)}
+                          className="block w-full px-4 py-2 text-left hover:bg-gray-600"
+                        >
+                          {service.description}
+                        </button>
+                      </NavLink>
                     </li>
                   ))}
                 </ul>
               </li>
 
+              {/* Other navigation links */}
+              <li>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) =>
+                    `text-2xl ${
+                      isActive
+                        ? "text-yellow-400 hover:text-yellow-400"
+                        : "hover:text-gray-400"
+                    }`
+                  }
+                >
+                  About
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) =>
+                    `text-2xl ${
+                      isActive
+                        ? "text-yellow-400 hover:text-yellow-400"
+                        : "hover:text-gray-400"
+                    }`
+                  }
+                >
+                  Contact
+                </NavLink>
+              </li>
+              {isAuthenticated &&
+                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole) && (
+                  <li>
+                    <NavLink
+                      to="/inventory-management"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                          : "hover:text-gray-400 text-2xl"
+                      }
+                    >
+                      Inventory Management
+                    </NavLink>
+                  </li>
+                )}
 
+              {isAuthenticated &&
+                (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                  <li>
+                    <NavLink
+                      to="/create-event"
+                      className={({ isActive }) =>
+                        `text-2xl ${
+                          isActive
+                            ? "text-yellow-400 hover:text-yellow-400"
+                            : "hover:text-gray-400"
+                        }`
+                      }
+                    >
+                      Create Event
+                    </NavLink>
+                  </li>
+                )}
+
+              {isAuthenticated &&
+                (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                  <li>
+                    <NavLink
+                      to="/transport-management"
+                      className={({ isActive }) =>
+                        `text-2xl ${
+                          isActive
+                            ? "text-yellow-400 hover:text-yellow-400"
+                            : "hover:text-gray-400"
+                        }`
+                      }
+                    >
+                      Transport Management
+                    </NavLink>
+                  </li>
+                )}
 
             </ul>
           </nav>

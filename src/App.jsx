@@ -16,6 +16,7 @@ import Inventory from "./pages/Inventory/Inventory";
 import CreateEvent from "./pages/EventManagement/CreateEvent";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
+import Service from "./pages/Services/Services";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 import TransportCostManagement from "./pages/TransportCostManagement/TransportCostManagement";
@@ -103,6 +104,7 @@ const App = () => {
             <Route path="/" element={<HomePageWrapper />} />
             <Route path="/LogIn" element={<PublicRoute><LogIn /></PublicRoute>} />
             <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
+            <Route path="/services/:serviceId" element={<Service />} />
 
             {/* Protected Routes */}
             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
