@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext"; // Import useAuth
 import Logo from "../../assets/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
 import { FaTicketAlt, FaWifi } from "react-icons/fa";
 
 const Header = () => {
-  const { authContextData, logout } = useAuth(); // Access the full authContextData
+  const { authContextData, logout, services } = useAuth(); // Access services from AuthContext
   const navigate = useNavigate();
 
   const { isAuthenticated, userRole } = authContextData; // Destructure from authContextData
@@ -14,6 +14,13 @@ const Header = () => {
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
     navigate("/"); // Redirect to home page after logout
+  };
+
+  // Handle click on a service dropdown item
+  const handleServiceClick = (eventType) => {
+    // You can add further functionality here, e.g., routing or filtering
+    console.log("Selected Event Type:", eventType);
+    // Example: navigate(`/services/${eventType}`);
   };
 
   return (
@@ -25,7 +32,7 @@ const Header = () => {
           className="flex items-center space-x-2 text-2xl font-bold color"
         >
           <img src={Logo} alt="Eventify" className="h-10" />
-          <span className="flex items-center h-10 text-4xl font-extrabold text-yellow-400">
+          <span className="flex items-center h-10 text-4xl font-extrabold text-yellow-400 no-underline">
             Eventify
           </span>
         </NavLink>
@@ -38,45 +45,27 @@ const Header = () => {
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
+                    `text-2xl ${
+                      isActive
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
+                    }`
                   }
                 >
                   Home
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
-                >
-                  Services
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/events"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
-                >
-                  Events
-                </NavLink>
-              </li>
+
+              {/* Other navigation links */}
               <li>
                 <NavLink
                   to="/about"
                   className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
+                    `text-2xl ${
+                      isActive
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
+                    }`
                   }
                 >
                   About
@@ -86,30 +75,48 @@ const Header = () => {
                 <NavLink
                   to="/contact"
                   className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
+                    `text-2xl ${
+                      isActive
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
+                    }`
                   }
                 >
                   Contact
                 </NavLink>
               </li>
-              {isAuthenticated ? (
-                <li>
-                  <NavLink
-                    to="/inventory"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                        : "hover:text-gray-400 text-2xl"
-                    }
+
+              {/* Services Dropdown */}
+              <li className="relative group">
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <span className="text-2xl">Services</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    Inventory
-                  </NavLink>
-                </li>
-              ) : null}
-              {/* {isAuthenticated && (
-              )} */}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+                <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block">
+                  {services.map((service, index) => (
+                    <li key={index}>
+                      <button
+                        onClick={() => handleServiceClick(service.eventType)}
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-600"
+                      >
+                        {service.description}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </li>
             </ul>
           </nav>
         </div>
@@ -118,56 +125,6 @@ const Header = () => {
         <div className="flex space-x-4">
           {isAuthenticated ? (
             <>
-              <div>
-                <nav>
-                  <ul className="flex space-x-4">
-                    <li>
-                      <NavLink
-                        to="/create-event"
-                        className={({ isActive }) =>
-                          `flex justify-center items-center ${
-                            isActive
-                              ? "text-yellow-400 text-2xl underline hover:text-yellow-400"
-                              : "hover:text-gray-400 text-2xl"
-                          }`
-                        }
-                      >
-                        Create Event
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/tickets"
-                        className={({ isActive }) =>
-                          `flex flex-col items-center ${
-                            isActive
-                              ? "text-yellow-400 underline hover:text-yellow-400"
-                              : "hover:text-gray-400"
-                          }`
-                        }
-                      >
-                        <FaTicketAlt className="mb-1 text-lg" /> {/* Icon */}
-                        <span className="text-md">Tickets</span> {/* Text */}
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/internets"
-                        className={({ isActive }) =>
-                          `flex flex-col items-center ${
-                            isActive
-                              ? "text-yellow-400 underline hover:text-yellow-400"
-                              : "hover:text-gray-400"
-                          }`
-                        }
-                      >
-                        <FaWifi className="mb-1 text-lg" /> {/* Icon */}
-                        <span className="text-md">Internets</span> {/* Text */}
-                      </NavLink>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
               <button
                 onClick={handleLogout}
                 className="w-10 h-10 px-4 py-2 text-white transition-all duration-300 bg-red-500 rounded-full hover:bg-red-700 hover:shadow-lg hover:scale-105"
