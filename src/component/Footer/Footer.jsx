@@ -10,32 +10,32 @@ const Footer = () => {
             <h3 className="font-bold mb-4">Company Info</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/about-us" className="hover:text-gray-400">
+                <a href="/about-us" className="hover:text-gray-400 no-underline">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="/contact-us" className="hover:text-gray-400">
+                <a href="/contact-us" className="hover:text-gray-400 no-underline">
                   Contact Us
                 </a>
               </li>
               <li>
-                <a href="/careers" className="hover:text-gray-400">
+                <a href="/careers" className="hover:text-gray-400 no-underline">
                   Careers
                 </a>
               </li>
               <li>
-                <a href="/faqs" className="hover:text-gray-400">
+                <a href="/faqs" className="hover:text-gray-400 no-underline">
                   FAQs
                 </a>
               </li>
               <li>
-                <a href="/terms-of-service" className="hover:text-gray-400">
+                <a href="/terms-of-service" className="hover:text-gray-400 no-underline">
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="/privacy-policy" className="hover:text-gray-400">
+                <a href="/privacy-policy" className="hover:text-gray-400 no-underline">
                   Privacy Policy
                 </a>
               </li>
@@ -47,24 +47,24 @@ const Footer = () => {
             <h3 className="font-bold mb-4">Help</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/account-support" className="hover:text-gray-400">
+                <a href="/account-support" className="hover:text-gray-400 no-underline">
                   Account Support
                 </a>
               </li>
               <li>
-                <a href="/listing-events" className="hover:text-gray-400">
+                <a href="/listing-events" className="hover:text-gray-400 no-underline">
                   Listing Events
                 </a>
               </li>
               <li>
-                <a href="/event-ticketing" className="hover:text-gray-400">
+                <a href="/event-ticketing" className="hover:text-gray-400 no-underline">
                   Event Ticketing
                 </a>
               </li>
               <li>
                 <a
                   href="/ticket-purchase-terms"
-                  className="hover:text-gray-400"
+                  className="hover:text-gray-400 no-underline"
                 >
                   Ticket Purchase Terms & Conditions
                 </a>
@@ -77,44 +77,44 @@ const Footer = () => {
             <h3 className="font-bold mb-4">Categories</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/concerts-gigs" className="hover:text-gray-400">
+                <a href="/concerts-gigs" className="hover:text-gray-400 no-underline">
                   Concerts & Gigs
                 </a>
               </li>
               <li>
-                <a href="/festivals-lifestyle" className="hover:text-gray-400">
+                <a href="/festivals-lifestyle" className="hover:text-gray-400 no-underline">
                   Festivals & Lifestyle
                 </a>
               </li>
               <li>
-                <a href="/business-networking" className="hover:text-gray-400">
+                <a href="/business-networking" className="hover:text-gray-400 no-underline ">
                   Business & Networking
                 </a>
               </li>
               <li>
-                <a href="/food-drinks" className="hover:text-gray-400">
+                <a href="/food-drinks" className="hover:text-gray-400 no-underline">
                   Food & Drinks
                 </a>
               </li>
               <li>
-                <a href="/performing-arts" className="hover:text-gray-400">
+                <a href="/performing-arts" className="hover:text-gray-400 no-underline">
                   Performing Arts
                 </a>
               </li>
               <li>
-                <a href="/sports-outdoors" className="hover:text-gray-400">
+                <a href="/sports-outdoors" className="hover:text-gray-400 no-underline">
                   Sports & Outdoors
                 </a>
               </li>
               <li>
-                <a href="/exhibitions" className="hover:text-gray-400">
+                <a href="/exhibitions" className="hover:text-gray-400 no-underline">
                   Exhibitions
                 </a>
               </li>
               <li>
                 <a
                   href="/workshops-conferences"
-                  className="hover:text-gray-400"
+                  className="hover:text-gray-400 no-underline"
                 >
                   Workshops, Conferences & Classes
                 </a>
