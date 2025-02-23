@@ -5,6 +5,7 @@ import AuthenticationService from "../../service/AuthenticationService";
 import Logo from "../../assets/logo/mainLogo.svg";
 import CommonTextField from "../../component/Form/CommonTextField";
 import CommonButton from "../../component/Form/CommonButton";
+import { displayApiMessage } from "../../context/ToastContext";
 
 const LogIn = () => {
   const [userLogIn, setUserLogIn] = useState({});
@@ -21,36 +22,52 @@ const LogIn = () => {
   };
 
   const onClickAdd = async () => {
-  try {
-    // Call AuthenticationService to log in the user
-    const response = await AuthenticationService.login(
-      userLogIn.username,
-      userLogIn.password
-    );
+    try {
+      // Call AuthenticationService to log in the user
+      const response = await AuthenticationService.login(
+        userLogIn.username,
+        userLogIn.password
+      );
 
-    if (response.status === 200 && response.data?.accessToken) {
-      const { accessToken, userRole, accessMsg, accessCode } = response.data;
-      const authData = {
-        isAuthenticated: true,
-        token: accessToken,
-        userRole,
-        accessCode,
-        username: userLogIn.username, // Include username here
-      };
+      if (response.status === 200 && response.data?.accessToken) {
+        const { accessToken, userRole, accessMsg, accessCode } = response.data;
+        const authData = {
+          isAuthenticated: true,
+          token: accessToken,
+          userRole,
+          accessCode, // Keep as string if API sends it as a string
+          username: userLogIn.username,
+        };
 
-      // Pass the entire auth data to login function in AuthContext
-      login(authData);
-      navigate("/");
-    } else {
-      setError("Invalid username or password");
-      return;
+        login(authData);
+
+        // Debugging: Check the value of accessCode
+        console.log("Access Code:", accessCode);
+
+        // Navigate based on accessCode
+        if (accessCode === "0") {
+          console.log("Navigating to Home");
+          displayApiMessage(accessMsg);
+          navigate("/");
+        } else if (accessCode === "1") {
+          console.log("Navigating to Reset Password");
+          navigate("/reset-password");
+          displayApiMessage("You Need to Reset Your Password", "warning");
+        } else if (accessCode === "2") {
+          console.log("Displaying message for accessCode 2");
+          displayApiMessage(
+            "Your account requires attention. Please contact support."
+          );
+        }
+      } else {
+        setError("Invalid username or password");
+        return;
+      }
+    } catch (err) {
+      setError("Login failed. Please try again.");
+      console.error("Error in login:", err);
     }
-  } catch (err) {
-    setError("Login failed. Please try again.");
-    console.error("Error in login or adding user:", err);
-  }
-};
-
+  };
 
   return (
     <>
@@ -80,8 +97,8 @@ const LogIn = () => {
         </div>
 
         {/* Right Section */}
-        <div className="ml-[45%] w-[55%] bg-white shadow-lg flex flex-col justify-center items-center px-8">
-          <form className="w-full max-w-sm">
+        <div className="ml-[45%] w-[55%] bg-white shadow-lg flex flex-col justify-center items-center px-8 h-screen">
+          <form className="w-full max-w-md min-w-sm">
             <div className="mb-4 flex flex-col gap-4">
               <CommonTextField
                 id="username"
@@ -105,8 +122,14 @@ const LogIn = () => {
               <p className="mb-4 text-sm text-center text-red-500">{error}</p>
             )}
 
-            <div className="flex items-center justify-between">
-              <CommonButton type="button" label="Login" onClick={onClickAdd} />
+            {/* Ensure button width matches input fields */}
+            <div className="w-full">
+              <CommonButton
+                type="button"
+                label="Login"
+                onClick={onClickAdd}
+                className="w-full"
+              />
             </div>
 
             <p className="mt-4 text-sm text-gray-600">

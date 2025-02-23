@@ -18,7 +18,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
-      <div className="container flex items-center justify-between mx-auto">
+      <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
         <NavLink
           to="/"

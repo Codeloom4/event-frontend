@@ -1,6 +1,9 @@
-// data.js
 import productLunch from "../assets/image/catalog/productLunch.jpg";
-import wedding from "../assets/image/catalog/wedding.jpg";
+import birthday from "../assets/image/catalog/birthday.jpg";
+import meeting from "../assets/image/catalog/meeting.jpeg";
+import officeParty from "../assets/image/catalog/officeParty.jpg";
+import outdoorWedding1 from "../assets/image/catalog/outdoorWedding1.jpg";
+import outdoorWedding2 from "../assets/image/catalog/outdoorWedding2.jpg";
 import conferences from "../assets/image/catalog/conferences.jpg";
 import christmas from "../assets/image/catalog/christmas.jpg";
 
@@ -8,49 +11,97 @@ export const sampleEvents = [
   {
     image: productLunch,
     eventType: "Technology & Innovation",
-    date: "22", // Day of the month
-    month: "Nov", // Month
-    title: "Event title that can go up to two lines",
-    venue: "Venue 1",
-    time: "00:00AM-00:00PM",
-    price: "INR499",
+    date: "22",
+    month: "Nov",
+    title: "Product Launch Event",
+    venue: "Tech Park Auditorium",
+    time: "06:00PM-09:00PM",
+    price: "LKR499",
     interestCount: 10,
     interested: false,
   },
   {
-    image: wedding,
-    eventType: "Art & Culture",
-    date: "15", // Day of the month
-    month: "Dec", // Month
-    title: "Art Exhibition Opening Night",
-    venue: "Gallery XYZ",
-    time: "06:00PM-09:00PM",
-    price: "INR799",
-    interestCount: 5,
+    image: birthday,
+    eventType: "Celebration",
+    date: "05",
+    month: "Feb",
+    title: "Grand Birthday Bash",
+    venue: "Banquet Hall B",
+    time: "04:00PM-08:00PM",
+    price: "LKR299",
+    interestCount: 30,
     interested: true,
+  },
+  {
+    image: meeting,
+    eventType: "Corporate",
+    date: "15",
+    month: "Mar",
+    title: "Annual Board Meeting",
+    venue: "Meeting Room 3",
+    time: "10:00AM-12:00PM",
+    price: "Free",
+    interestCount: 5,
+    interested: false,
+  },
+  {
+    image: officeParty,
+    eventType: "Social",
+    date: "28",
+    month: "Apr",
+    title: "Corporate Office Party",
+    venue: "Rooftop Lounge",
+    time: "07:00PM-11:00PM",
+    price: "LKR799",
+    interestCount: 25,
+    interested: true,
+  },
+  {
+    image: outdoorWedding1,
+    eventType: "Wedding",
+    date: "10",
+    month: "May",
+    title: "HillSide Wedding Ceremony",
+    venue: "Seaside Resort",
+    time: "05:00PM-10:00PM",
+    price: "By Invitation",
+    interestCount: 50,
+    interested: true,
+  },
+  {
+    image: outdoorWedding2,
+    eventType: "Wedding",
+    date: "20",
+    month: "Jun",
+    title: "Elegant Garden Wedding",
+    venue: "Rosewood Garden",
+    time: "04:00PM-09:00PM",
+    price: "By Invitation",
+    interestCount: 40,
+    interested: false,
   },
   {
     image: conferences,
     eventType: "Business & Networking",
-    date: "10", // Day of the month
-    month: "Jan", // Month
+    date: "10",
+    month: "Jan",
     title: "Startup Pitch Night",
     venue: "Conference Hall A",
     time: "07:00PM-10:00PM",
-    price: "INR999",
+    price: "LKR999",
     interestCount: 20,
     interested: false,
   },
   {
     image: christmas,
-    eventType: "Business & Networking",
-    date: "10", // Day of the month
-    month: "Jan", // Month
-    title: "Startup Pitch Night",
-    venue: "Conference Hall A",
-    time: "07:00PM-10:00PM",
-    price: "INR999",
-    interestCount: 20,
+    eventType: "Festive",
+    date: "25",
+    month: "Dec",
+    title: "Christmas Gala Night",
+    venue: "Grand Ballroom",
+    time: "06:00PM-11:00PM",
+    price: "LKR599",
+    interestCount: 35,
     interested: true,
   },
 ];

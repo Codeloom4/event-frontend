@@ -2,7 +2,7 @@ import ApiManager from "./Api/ApiManager";
 
 const userEndpoint = "/ems/user";
 
-const UserManagement = {
+const UserManagementService = {
   signUp: async (data) => {
     try {
       const response = await ApiManager.apiPost(
@@ -27,4 +27,4 @@ const UserManagement = {
   },
 };
 
-export default UserManagement;
+export default UserManagementService;

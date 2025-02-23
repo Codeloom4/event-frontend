@@ -16,6 +16,8 @@ import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { USER_ROLES } from "./utils/constants";
+import { ToastProvider } from "./context/ToastContext";
+import ResetPassword from "./pages/LogIn/ResetPassword";
 
 // PrivateRoute component to protect authenticated routes
 const PrivateRoute = ({ children, allowedRoles }) => {
@@ -46,7 +48,9 @@ const PublicRoute = ({ children }) => {
 const Layout = ({ children }) => {
   const location = useLocation();
   const isAuthPage =
-    location.pathname === "/login" || location.pathname === "/signup";
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/reset-password";
 
   return (
     <div className="flex flex-col min-h-screen mt-6">
@@ -68,76 +72,87 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <Layout>
-          <div>
-            <main>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Home />} />
-                <Route
-                  path="/LogIn"
-                  element={
-                    <PublicRoute>
-                      <LogIn />
-                    </PublicRoute>
-                  }
-                />
-                <Route
-                  path="/signup"
-                  element={
-                    <PublicRoute>
-                      <SignUp />
-                    </PublicRoute>
-                  }
-                />
-                <Route
-                  path="/services/:serviceId"
-                  element={<PublicRoute>{/* <Service /> */}</PublicRoute>}
-                />
+        <ToastProvider>
+          <Layout>
+            <div>
+              <main>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<Home />} />
+                  <Route
+                    path="/LogIn"
+                    element={
+                      <PublicRoute>
+                        <LogIn />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/signup"
+                    element={
+                      <PublicRoute>
+                        <SignUp />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/reset-password"
+                    element={
+                      <PublicRoute>
+                        <ResetPassword />
+                      </PublicRoute>
+                    }
+                  />
 
-                {/* Protected Routes */}
-                <Route
-                  path="/profile"
-                  element={
-                    <PrivateRoute>
-                      <Profile />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/event-management"
-                  element={
-                    <PrivateRoute
-                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
-                    >
-                      <Events />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/inventory-management"
-                  element={
-                    <PrivateRoute
-                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
-                    >
-                      <Inventory />
-                    </PrivateRoute>
-                  }
-                />
+                  <Route
+                    path="/services/:serviceId"
+                    element={<PublicRoute>{/* <Service /> */}</PublicRoute>}
+                  />
 
-                {/* 404 Route */}
-                <Route
-                  path="*"
-                  element={
-                    <h1 className="mt-10 text-2xl text-center">
-                      404 - Page Not Found
-                    </h1>
-                  }
-                />
-              </Routes>
-            </main>
-          </div>
-        </Layout>
+                  {/* Protected Routes */}
+                  <Route
+                    path="/profile"
+                    element={
+                      <PrivateRoute>
+                        <Profile />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/event-management"
+                    element={
+                      <PrivateRoute
+                        allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                      >
+                        <Events />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/inventory-management"
+                    element={
+                      <PrivateRoute
+                        allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                      >
+                        <Inventory />
+                      </PrivateRoute>
+                    }
+                  />
+
+                  {/* 404 Route */}
+                  <Route
+                    path="*"
+                    element={
+                      <h1 className="mt-10 text-2xl text-center">
+                        404 - Page Not Found
+                      </h1>
+                    }
+                  />
+                </Routes>
+              </main>
+            </div>
+          </Layout>
+        </ToastProvider>
       </Router>
     </AuthProvider>
   );

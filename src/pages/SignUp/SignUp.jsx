@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import Logo from "../../assets/logo/mainLogo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import UserManagement from "../../service/UserManagement";
-import RowRadioButtonsGroup from "../../component/InputFields/RowRadioButtonsGroup";
+import UserManagementService from "../../service/UserManagementService";
 import CommonTextField from "../../component/Form/CommonTextField";
 import CommonRadioGroup from "../../component/Form/CommonRadioGroup";
 import { Radio } from "@mui/material";
 import CommonButton from "../../component/Form/CommonButton";
+import { displayApiMessage } from "../../context/ToastContext";
 
 const SignUp = () => {
   const [userSignUp, setUserSignUp] = useState({});
@@ -26,15 +24,9 @@ const SignUp = () => {
     }));
   };
 
-  // const handleRoleChange = (role) => {
-  //   setRoles((prev) =>
-  //     prev.includes(role) ? prev.filter((r) => r !== role) : [...prev, role]
-  //   );
-  // };
-
   const onClickAdd = async () => {
     try {
-      const response = await UserManagement.signUp({
+      const response = await UserManagementService.signUp({
         userSignUp,
         enabled: true,
       });
@@ -42,7 +34,8 @@ const SignUp = () => {
       if (response.status === 201 && response.data?.accessToken) {
         const { accessToken } = response.data;
         // login(accessToken, email);
-        navigate("/");
+        displayApiMessage("Sign-up successful. Please log in to continue.");
+        navigate("/login");
       } else {
         setError("Sign-up failed. Please try again.");
       }
@@ -56,7 +49,7 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      const response = await UserManagement.signUp({
+      const response = await UserManagementService.signUp({
         // username,
         // email,
         // password,
@@ -104,8 +97,8 @@ const SignUp = () => {
           </h4>
         </div>
 
-        <div className="ml-[45%] w-[55%] bg-white shadow-lg flex flex-col justify-center items-center px-8">
-          <form className="w-full max-w-sm">
+        <div className="ml-[45%] w-[55%] bg-white shadow-lg flex flex-col justify-center items-center px-8 my-2 h-screen">
+          <form className="w-full max-md min-sm">
             <div className="mb-4 flex flex-col gap-4">
               <CommonTextField
                 id="username"
@@ -177,134 +170,18 @@ const SignUp = () => {
                 value={userSignUp.address || ""}
                 onChange={formOnChange}
               />
-
-              {/* <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="username"
-              >
-                User Name
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="username"
-                type="text"
-                placeholder="Enter your user name"
-                value={username}
-                onChange={(e) => setUserName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
-                type="email"
-                placeholder="Enter your e-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="position"
-              >
-                Position
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="position"
-                type="text"
-                placeholder="Enter your position"
-                value={position}
-                onChange={(e) => setPosition(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="role"
-              >
-                Role
-              </label>
-              <FormGroup>
-                <RowRadioButtonsGroup
-                  options={[
-                    { value: "ADMIN", label: "Administration" },
-                    { value: "EMPLOYEE", label: "Employee" },
-                    { value: "CUSTOMER", label: "Customer" },
-                  ]}
-                  selectedValue={roles[0] || ""}
-                  onChange={(role) => setRoles([role])}
-                />
-              </FormGroup>
-            </div>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="mobileNo"
-              >
-                Mobile Number
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="mobileNo"
-                type="text"
-                placeholder="Enter your mobile number"
-                value={mobileNo}
-                onChange={(e) => setMobileNumber(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="address"
-              >
-                Address
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="address"
-                type="text"
-                placeholder="Enter your address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-              />
-            </div> */}
             </div>
             {error && (
               <p className="text-red-500 text-sm text-center mb-4">{error}</p>
             )}
 
-            <div className="flex items-center justify-between">
-              <CommonButton type="button" label="Login" onClick={onClickAdd} />
+            <div className="w-full">
+              <CommonButton
+                type="button"
+                label="Sign Up"
+                onClick={onClickAdd}
+                className="w-full"
+              />
             </div>
 
             <p className="mt-4 text-sm text-gray-600">
