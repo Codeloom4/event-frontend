@@ -6,6 +6,7 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import Dashboard from "./pages/Dashboard/Dashboard"; 
 import Header from "./component/Header/Header";
 import SubHeader from "./component/Header/SubHeader";
 import Footer from "./component/Footer/Footer";
@@ -75,6 +76,23 @@ const Layout = ({ children }) => {
   );
 };
 
+
+// HomePageWrapper component (to handle redirection after login)
+const HomePageWrapper = () => {
+  const { authContextData } = useAuth();
+  const { isAuthenticated, userRole } = authContextData;
+
+  // If the user is authenticated and is an ADMIN or EMPLOYEE, redirect to the Dashboard
+  if (isAuthenticated && [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole)) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  // Otherwise, render the Home page
+  return <Home />;
+};
+
+
+
 const App = () => {
   return (
     <AuthProvider>
@@ -82,7 +100,7 @@ const App = () => {
         <Layout>
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<HomePageWrapper />} />
             <Route path="/LogIn" element={<PublicRoute><LogIn /></PublicRoute>} />
             <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
 
@@ -90,6 +108,15 @@ const App = () => {
             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+
 
             <Route
               path="/inventory-management"
