@@ -74,7 +74,7 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
-              <li className="relative">
+              {/* <li className="relative">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
                   className="text-2xl hover:text-gray-400 focus:outline-none"
@@ -100,11 +100,9 @@ const Header = () => {
                     ))}
                   </ul>
                 )}
-              </li>
+              </li> */}
               {isAuthenticated &&
-                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(
-                  userrole.userrole
-                ) && (
+                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole) && (
                   <li>
                     <NavLink
                       to="/event-management"
@@ -140,12 +138,14 @@ const Header = () => {
                 <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block">
                   {services.map((service, index) => (
                     <li key={index}>
-                      <button
-                        onClick={() => handleServiceClick(service.eventType)}
-                        className="block w-full px-4 py-2 text-left hover:bg-gray-600"
-                      >
-                        {service.description}
-                      </button>
+                      <NavLink to={`/services/${service.eventType}`}>
+                        <button
+                          onClick={() => handleServiceClick(service.eventType)}
+                          className="block w-full px-4 py-2 text-left hover:bg-gray-600"
+                        >
+                          {service.description}
+                        </button>
+                      </NavLink>
                     </li>
                   ))}
                 </ul>
@@ -181,9 +181,7 @@ const Header = () => {
                 </NavLink>
               </li>
               {isAuthenticated &&
-                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(
-                  userrole.userrole
-                ) && (
+                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole) && (
                   <li>
                     <NavLink
                       to="/inventory-management"
@@ -198,40 +196,41 @@ const Header = () => {
                   </li>
                 )}
 
-              {isAuthenticated && (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
-  <li>
-    <NavLink
-      to="/create-event"
-      className={({ isActive }) =>
-        `text-2xl ${
-          isActive
-            ? "text-yellow-400 hover:text-yellow-400"
-            : "hover:text-gray-400"
-        }`
-      }
-    >
-      Create Event
-    </NavLink>
-  </li>
-)}
+              {isAuthenticated &&
+                (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                  <li>
+                    <NavLink
+                      to="/create-event"
+                      className={({ isActive }) =>
+                        `text-2xl ${
+                          isActive
+                            ? "text-yellow-400 hover:text-yellow-400"
+                            : "hover:text-gray-400"
+                        }`
+                      }
+                    >
+                      Create Event
+                    </NavLink>
+                  </li>
+                )}
 
-{isAuthenticated && (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
-  <li>
-    <NavLink
-      to="/transport-management"
-      className={({ isActive }) =>
-        `text-2xl ${
-          isActive
-            ? "text-yellow-400 hover:text-yellow-400"
-            : "hover:text-gray-400"
-        }`
-      }
-    >
-      Transport Management
-    </NavLink>
-  </li>
-)}
-
+              {isAuthenticated &&
+                (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                  <li>
+                    <NavLink
+                      to="/transport-management"
+                      className={({ isActive }) =>
+                        `text-2xl ${
+                          isActive
+                            ? "text-yellow-400 hover:text-yellow-400"
+                            : "hover:text-gray-400"
+                        }`
+                      }
+                    >
+                      Transport Management
+                    </NavLink>
+                  </li>
+                )}
 
               {isAuthenticated && (
                 <li>
