@@ -16,6 +16,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
+import TransportCostManagement from "./pages/TransportCostManagement/TransportCostManagement";
 import SystemUserStatus from "./pages/Reports/SystemUserStatus";
 import InventoryStockReport from "./pages/Reports/InventoryStockReport";
 import LowStockReport from "./pages/Reports/LowStockReport";
@@ -163,6 +164,14 @@ const App = () => {
             element={
               <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
                 <CreateEvent />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/transport-management"
+            element={
+              <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <TransportCostManagement />
               </PrivateRoute>
             }
           />

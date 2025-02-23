@@ -135,6 +135,24 @@ const Header = () => {
   </li>
 )}
 
+{isAuthenticated && (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+  <li>
+    <NavLink
+      to="/transport-management"
+      className={({ isActive }) =>
+        `text-2xl ${
+          isActive
+            ? "text-yellow-400 hover:text-yellow-400"
+            : "hover:text-gray-400"
+        }`
+      }
+    >
+      Transport Management
+    </NavLink>
+  </li>
+)}
+
+
               {isAuthenticated && (
                 <li>
                   <NavLink
