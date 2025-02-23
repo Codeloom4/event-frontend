@@ -1,8 +1,8 @@
 // data.js
-import productLunch from "../assest/image/catalog/productLunch.jpg";
-import wedding from "../assest/image/catalog/wedding.jpg";
-import conferences from "../assest/image/catalog/conferences.jpg";
-import christmas from "../assest/image/catalog/christmas.jpg";
+import productLunch from "../assets/image/catalog/productLunch.jpg";
+import wedding from "../assets/image/catalog/wedding.jpg";
+import conferences from "../assets/image/catalog/conferences.jpg";
+import christmas from "../assets/image/catalog/christmas.jpg";
 
 export const sampleEvents = [
   {

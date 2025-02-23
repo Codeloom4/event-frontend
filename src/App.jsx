@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,22 +11,31 @@ import Footer from "./component/Footer/Footer";
 import Home from "./pages/Home/Home";
 import LogIn from "./pages/LogIn/LogIn";
 import Inventory from "./pages/Inventory/Inventory";
-import Events from "./pages/EventManagement/Events";
+import CreateEvent from "./pages/EventManagement/CreateEvent";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
 import Service from "./pages/Services/Services";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
+import TransportCostManagement from "./pages/TransportCostManagement/TransportCostManagement";
+import SystemUserStatus from "./pages/Reports/SystemUserStatus";
+import InventoryStockReport from "./pages/Reports/InventoryStockReport";
+import LowStockReport from "./pages/Reports/LowStockReport";
+import SalesRevenueReport from "./pages/Reports/SalesRevenueReport";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { USER_ROLES } from "./utils/constants";
 
 // PrivateRoute component to protect authenticated routes
 const PrivateRoute = ({ children, allowedRoles }) => {
-  const { isAuthenticated, userrole } = useAuth();
+  const { authContextData } = useAuth(); // Access the full authContextData
+
+  const { isAuthenticated, userRole } = authContextData;
 
   if (!isAuthenticated) {
     return <Navigate to="/LogIn" />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(userrole.userrole)) {
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
     return <Navigate to="/Unauthorized" />;
   }
 
@@ -35,7 +44,9 @@ const PrivateRoute = ({ children, allowedRoles }) => {
 
 // PublicRoute component to redirect authenticated users away from LogIn/signup
 const PublicRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { authContextData } = useAuth(); // Access the full authContextData
+  const { isAuthenticated } = authContextData;
+
   return isAuthenticated ? <Navigate to="/" /> : children;
 };
 
@@ -100,16 +111,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route
-                  path="/event-management"
-                  element={
-                    <PrivateRoute
-                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
-                    >
-                      <Events />
-                    </PrivateRoute>
-                  }
-                />
+               
                 <Route
                   path="/inventory-management"
                   element={
@@ -120,7 +122,59 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
 
+                <Route
+                  path="/system-user-status"
+                  element={
+                    <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                      <SystemUserStatus />
+                    </PrivateRoute>
+                  }
+                />
+
+                <Route
+                  path="/inventory-stock-report"
+                  element={
+                    <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                      <InventoryStockReport />
+                    </PrivateRoute>
+                  }
+                />
+              <Route
+                path="/low-stock-report"
+                element={
+                  <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                    <LowStockReport />
+                  </PrivateRoute>
+                }
+              />
+            <Route
+              path="/sales-revenue-report"
+              element={
+                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                  <SalesRevenueReport />
+                </PrivateRoute>
+              }
+            />
+
+          <Route
+            path="/create-event"
+            element={
+              <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <CreateEvent />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/transport-management"
+            element={
+              <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <TransportCostManagement />
+              </PrivateRoute>
+            }
+          />
                 {/* 404 Route */}
                 <Route
                   path="*"

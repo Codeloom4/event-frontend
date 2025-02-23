@@ -1,53 +1,78 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import PublicService from "../service/PublicService"; // Import PublicService
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
-  const [userrole, setUserrole] = useState(null);
+  const [authContextData, setAuthContextData] = useState({
+    isAuthenticated: false,
+    token: null,
+    userRole: null,
+    accessCode: null,
+    username: null,
+  });
+
+  const [services, setServices] = useState([]); // Add services state
 
   // Check for token and user data in sessionStorage on initial load
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    const userrole = sessionStorage.getItem("userrole");
-    const username = sessionStorage.getItem("username");
+    const savedAuthData = sessionStorage.getItem("authContextData");
 
-    if (token && username && userrole) {
-      setIsAuthenticated(true);
-      setUser({ username });
-      setUserrole({ userrole });
+    if (savedAuthData) {
+      const parsedData = JSON.parse(savedAuthData);
+      setAuthContextData(parsedData);
     }
+
+    // Fetch services data when the app initializes
+    fetchServices();
   }, []);
 
+  // Fetch services data using PublicService
+  const fetchServices = async () => {
+    try {
+      const response = await PublicService.getServices();
+      if (response.data.responseCode === "00") {
+        setServices(response.data.content); // Store the services data
+        console.log(response.data.content)
+      }
+    } catch (error) {
+      console.error("Failed to fetch services:", error);
+    }
+  };
+
   // Login function (updates state and sessionStorage)
-  const login = (token, username, userrole) => {
-    // Save token and username in sessionStorage
-    sessionStorage.setItem("token", token);
-    sessionStorage.setItem("username", username);
-    sessionStorage.setItem("userrole", userrole);
+  const login = (authData) => {
+    // Save the full auth context data in sessionStorage
+    sessionStorage.setItem("authContextData", JSON.stringify(authData));
 
     // Update state
-    setIsAuthenticated(true);
-    setUser({ username });
-    setUserrole({ userrole });
+    setAuthContextData(authData);
   };
 
   // Logout function (clears state and sessionStorage)
   const logout = () => {
-    // Clear token and user data from sessionStorage
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("userrole");
+    // Clear all auth context data from sessionStorage
+    sessionStorage.removeItem("authContextData");
 
     // Update state
-    setIsAuthenticated(false);
-    setUser(null);
-    setUserrole(null);
+    setAuthContextData({
+      isAuthenticated: false,
+      token: null,
+      userRole: null,
+      accessCode: null,
+      username: null,
+    });
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, userrole, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        authContextData,
+        login,
+        logout,
+        services, // Add services to the context value
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
