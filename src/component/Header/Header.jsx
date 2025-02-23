@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assest/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
 import { FaTicketAlt, FaWifi } from "react-icons/fa";
+import { RESPONSE_CODES, USER_ROLES } from "../../utils/constants";
+import EventsService from "../../service/EventsService";
 
 const Header = () => {
   const { isAuthenticated, userrole, logout } = useAuth();
@@ -13,6 +15,23 @@ const Header = () => {
     logout(); // Call the logout function from AuthContext
     navigate("/"); // Redirect to home page after logout
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [serviceList, setServiceList] = useState([]);
+
+  const retrieveServices = async () => {
+    const serviceResponse = await EventsService.getEventsList();
+    // console.log(serviceResponse);
+    // if (serviceResponse.data.responseCode === RESPONSE_CODES.SUCCESS) {
+    setServiceList(serviceResponse.data);
+    // } else {
+    //   navigate("/");
+    // }
+  };
+
+  useEffect(() => {
+    retrieveServices();
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
@@ -44,30 +63,50 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
+              <li className="relative">
+                <button
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="text-2xl hover:text-gray-400 focus:outline-none"
                 >
-                  Services
-                </NavLink>
+                  Services ▼
+                </button>
+                {isOpen && (
+                  <ul className="absolute left-0 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+                    {serviceList.map((service, index) => (
+                      <li key={index}>
+                        <NavLink
+                          to={`/services/${service.id}`}
+                          className={({ isActive }) =>
+                            `block px-4 py-2 text-lg ${
+                              isActive ? "text-yellow-400" : "text-gray-700"
+                            } hover:bg-gray-100`
+                          }
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {service.eventType}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
-              <li>
-                <NavLink
-                  to="/events"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
-                >
-                  Events
-                </NavLink>
-              </li>
+              {isAuthenticated &&
+                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(
+                  userrole.userrole
+                ) && (
+                  <li>
+                    <NavLink
+                      to="/event-management"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                          : "hover:text-gray-400 text-2xl"
+                      }
+                    >
+                      Event Managemnt
+                    </NavLink>
+                  </li>
+                )}
               <li>
                 <NavLink
                   to="/about"
@@ -92,21 +131,23 @@ const Header = () => {
                   Contact
                 </NavLink>
               </li>
-              {isAuthenticated ? (
-              <li>
-                <NavLink
-                  to="/inventory"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
-                      : "hover:text-gray-400 text-2xl"
-                  }
-                >
-                  Inventory
-                </NavLink>
-              </li>) : null}
-              {/* {isAuthenticated && (
-              )} */}
+              {isAuthenticated &&
+                [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(
+                  userrole.userrole
+                ) && (
+                  <li>
+                    <NavLink
+                      to="/inventory-management"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                          : "hover:text-gray-400 text-2xl"
+                      }
+                    >
+                      Inventory Management
+                    </NavLink>
+                  </li>
+                )}
             </ul>
           </nav>
         </div>

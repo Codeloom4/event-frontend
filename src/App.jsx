@@ -14,6 +14,7 @@ import Inventory from "./pages/Inventory/Inventory";
 import Events from "./pages/EventManagement/Events";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
+import Service from "./pages/Services/Services";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { USER_ROLES } from "./utils/constants";
 
@@ -86,14 +87,9 @@ const App = () => {
                     </PublicRoute>
                   }
                 />
-                <Route
-                  path="/services/:serviceId"
-                  element={
-                    <PublicRoute>
-                      {/* <Service /> */}
-                    </PublicRoute>
-                  }
-                />
+                <Route path="/services/:serviceId" element={<Service />} />
+                <Route path="/about" element={<div>ABOUT</div>} />
+                <Route path="/contact" element={<div>CONTACT</div>} />
 
                 {/* Protected Routes */}
                 <Route
