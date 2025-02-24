@@ -11,6 +11,7 @@ import Footer from "./component/Footer/Footer";
 import Home from "./pages/Home/Home";
 import LogIn from "./pages/LogIn/LogIn";
 import Inventory from "./pages/Inventory/Inventory";
+import Item from "./pages/Item/Item";
 import Events from "./pages/EventManagement/Events";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
@@ -127,6 +128,16 @@ const App = () => {
                       allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
                     >
                       <Inventory />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/item-management"
+                  element={ 
+                    <PrivateRoute
+                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                    >
+                      <Item />
                     </PrivateRoute>
                   }
                 />

@@ -101,9 +101,10 @@ const Header = () => {
 
 
               {isAuthenticated ? (
+                <>
                 <li>
                   <NavLink
-                    to="/inventory"
+                    to="/inventory-management"
                     className={({ isActive }) =>
                       isActive
                         ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
@@ -113,12 +114,22 @@ const Header = () => {
                     Inventory
                   </NavLink>
                 </li>
+                <li>
+                <NavLink
+                  to="/item-management"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
+                  }
+                >
+                  Item
+                </NavLink>
+              </li>
+              </>
               ) : null}
               {/* {isAuthenticated && (
               )} */}
-
-
-
 
                 {/* Add Reports Dropdown for ADMIN and EMPLOYEE */}
                 {(userRole === "ADMIN" || userRole === "EMPLOYEE") && (
@@ -177,11 +188,6 @@ const Header = () => {
                   </ul>
                 </li>
               )}
-
-
-
-
-
             </ul>
           </nav>
         </div>
