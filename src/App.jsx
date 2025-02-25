@@ -9,12 +9,15 @@ import {
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { USER_ROLES } from "./utils/constants";
 
+import Dashboard from "./pages/Dashboard/Dashboard"; 
 import Header from "./component/Header/Header";
 import SubHeader from "./component/Header/SubHeader";
 import Footer from "./component/Footer/Footer";
 import Home from "./pages/Home/Home";
 import LogIn from "./pages/LogIn/LogIn";
 import Inventory from "./pages/Inventory/Inventory";
+import Item from "./pages/Item/Item";
+import Events from "./pages/EventManagement/CreateEvent";
 import CreateEvent from "./pages/EventManagement/CreateEvent";
 import SignUp from "./pages/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
@@ -81,6 +84,23 @@ const Layout = ({ children }) => {
   );
 };
 
+
+// HomePageWrapper component (to handle redirection after login)
+const HomePageWrapper = () => {
+  const { authContextData } = useAuth();
+  const { isAuthenticated, userRole } = authContextData;
+
+  // If the user is authenticated and is an ADMIN or EMPLOYEE, redirect to the Dashboard
+  if (isAuthenticated && [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole)) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  // Otherwise, render the Home page
+  return <Home />;
+};
+
+
+
 const App = () => {
   return (
     <AuthProvider>
@@ -88,36 +108,65 @@ const App = () => {
         <Layout>
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route
-              path="/LogIn"
-              element={
-                <PublicRoute>
-                  <LogIn />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                <PublicRoute>
-                  <SignUp />
-                </PublicRoute>
-              }
-            />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/" element={<HomePageWrapper />} />
+            <Route path="/LogIn" element={<PublicRoute><LogIn /></PublicRoute>} />
+            <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
             <Route path="/services/:serviceId" element={<Service />} />
 
-            {/* Protected Routes */}
+                {/* Protected Routes */}
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/event-management"
+                  element={
+                    <PrivateRoute
+                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                    >
+                      <Events />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/inventory-management"
+                  element={
+                    <PrivateRoute
+                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                    >
+                      <Inventory />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/item-management"
+                  element={ 
+                    <PrivateRoute
+                      allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                    >
+                      <Item />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                            {/* Protected Routes */}
+            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
+            path="/dashboard"
+            element={
+              <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+
 
             <Route
               path="/inventory-management"

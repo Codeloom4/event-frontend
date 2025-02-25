@@ -1,15 +1,15 @@
 import ApiManager from './Api/ApiManager'
 
-const inventoryManagementReq = '/ems/inventory'
-class InventoryService {
+const itemManagementReq = '/ems/item'
+class ItemService {
   add = async (inventoryDto) => {
-    return ApiManager.apiPost(`${inventoryManagementReq}/create`, inventoryDto)
+    return ApiManager.apiPost(`${itemManagementReq}/create`, inventoryDto)
   }
   edit = async (inventoryId) => {
-    return ApiManager.apiPost(`${inventoryManagementReq}/${inventoryId.id}`, inventoryId)
+    return ApiManager.apiPost(`${itemManagementReq}/${inventoryId.id}`, inventoryId)
   }
   delete = async (inventoryId) => {
-    return ApiManager.apiDelete(`${inventoryManagementReq}/${inventoryId}`, {})
+    return ApiManager.apiDelete(`${itemManagementReq}/${inventoryId}`, {})
   }
   access = async () => {
     // var request_string = ``
@@ -22,15 +22,15 @@ class InventoryService {
   }
 
   confirm = async (code) => {
-    return ApiManager.apiPost(`${inventoryManagementReq}/confirm/${code}`, {})
+    return ApiManager.apiPost(`${itemManagementReq}/confirm/${code}`, {})
   }
 
   reject = async (code) => {
-    return ApiManager.apiPost(`${inventoryManagementReq}/reject/${code}`, {})
+    return ApiManager.apiPost(`${itemManagementReq}/reject/${code}`, {})
   }
 
   getData = async (username) => {
-    return ApiManager.apiPost(`${inventoryManagementReq}/viewdualauth/${username}`, {})
+    return ApiManager.apiPost(`${itemManagementReq}/viewdualauth/${username}`, {})
   }
 
   getHistory = async (
@@ -54,7 +54,7 @@ class InventoryService {
       request_string =
         request_string + `&sort=${sortCol},${sortType ? 'desc' : 'asc'}`
     }
-    return ApiManager.apiPost(`${inventoryManagementReq}/history?${request_string}`, {})
+    return ApiManager.apiPost(`${itemManagementReq}/history?${request_string}`, {})
   }
 
   getList = async (
@@ -95,7 +95,7 @@ class InventoryService {
     // }
 
     return ApiManager.apiGet(
-      `${inventoryManagementReq}/getall`)
+      `${itemManagementReq}/getall`)
   }
   getDualAuthList = async (
     page,
@@ -136,10 +136,10 @@ class InventoryService {
     }
 
     return ApiManager.apiPost(
-      `${inventoryManagementReq}/dualauthlist?${request_string}`,
+      `${itemManagementReq}/dualauthlist?${request_string}`,
       searchParam
     )
   }
 }
 
-export default new InventoryService()
+export default new ItemService()

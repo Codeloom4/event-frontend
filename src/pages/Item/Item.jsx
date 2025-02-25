@@ -6,8 +6,8 @@ import React, {
   useEffect,
 } from "react";
 import TableComponent from "../../component/Tables/TableComponent"; // Adjust the import path
-import InventoryService from "../../service/InventoryService";
-import InventoryAddUpdate from "../Inventory/InventoryAddUpdate";
+import ItemService from "../../service/ItemService"; // Adjust the import path
+import ItemAddUpdate from "../Item/ItemAddUpdate";
 import CommonModal from "../../component/Modal/CommonModal";
 import CommonTextField from "../../component/Form/CommonTextField"; // Adjust the import path
 import CommonSelect from "../../component/Form/CommonSelect"; // Adjust the import path
@@ -16,7 +16,7 @@ import CommonButton from "../../component/Form/CommonButton"; // Adjust the impo
 import { MenuItem } from "@mui/material";
 import { FormControlLabel, Radio } from "@mui/material";
 
-const Inventory = () => {
+const Item = () => {
   const defaultPageLimit = 5; // Define the default page limit
 
   const tableInitialModal = {
@@ -34,10 +34,15 @@ const Inventory = () => {
     list: [],
   });
 
+  // /**
+  //  * @InventoryManagement state use to search params
+  //  */
+  // const [inventoryManagement, setInventoryManagement] = useState({});
+
   /**
-   * @InventoryManagement state use to search params
+   * @ItemManagement state use to search params
    */
-  const [inventoryManagement, setInventoryManagement] = useState({});
+  const [itemManagement, setItemManagement] = useState({});
 
   /**
    * @showAddUpdateModal to open ADD - Update modal and send Data when update a record
@@ -61,6 +66,14 @@ const Inventory = () => {
   });
 
   /**
+   * @viewItemManagement to open view modal
+   */
+  const [viewItemManagement, setViewItemManagement] = useState({
+    isView: false,
+    data: {},
+  });
+
+  /**
    * @search state use to save search params
    */
   const [search, setSearch] = useState(tableInitialModal);
@@ -79,7 +92,7 @@ const Inventory = () => {
 
   //initial step
   useEffect(() => {
-    getDropdownItemDetails();
+    // getDropdownItemDetails();
     onReset();
   }, []);
 
@@ -91,30 +104,23 @@ const Inventory = () => {
   }, [resetState.current]);
 
   //Get Dropdown Item Details
-  const getDropdownItemDetails = async () => {
-    try {
-      const result = await InventoryService.access();
-      setDropdownItemDetails(result?.data?.content || []);
-    } catch (e) {
-      console.log("setDropdownItemDetails Error : ", e);
-    }
-  };
+  // const getDropdownItemDetails = async () => {
+  //   try {
+  //     const result = await ItemService.access();
+  //     setDropdownItemDetails(result?.data?.content || []);
+  //   } catch (e) {
+  //     console.log("setDropdownItemDetails Error : ", e);
+  //   }
+  // };
 
   //reset
   const onReset = () => {
-    setInventoryManagement({
+    setItemManagement({
       id: "",
-      itemId: "",
       itemName: "",
       isRefundable: "",
-      purchasePrice: "",
-      salesPrice: "",
-      orderQuantity: "",
-      salesQuantity: "",
-      balanceQuantity: "",
-      startBarcode: "",
-      endBarcode: "",
-      createdAt: "",
+      avgPrice: "",
+      quantity: "",
       updatedAt: "",
       createdUser: "",
     });
@@ -145,14 +151,14 @@ const Inventory = () => {
 
   //Search
   const onClickSearch = async (page, size, sortCol, sortType) => {
-    const result = await InventoryService
+    const result = await ItemService
       .getList
       // page,
       // size,
       // sortCol,
       // sortType,
       // isSearch,
-      // inventoryManagement
+      // itemManagement
       ();
     // handleNotification(result, result.data.responseMsg)
     // addToChips()
@@ -189,7 +195,7 @@ const Inventory = () => {
 
   //Delete Record
   const onClickDelete = async (data) => {
-    const result = await InventoryService.delete(data);
+    const result = await ItemService.delete(data);
     // handleNotification(result, result.data.responseMsg)
     await retriveData(search);
   };
@@ -217,10 +223,6 @@ const Inventory = () => {
         accessor: "id",
       },
       {
-        Header: "item Id",
-        accessor: "itemId",
-      },
-      {
         Header: "Item Name",
         accessor: "itemName",
       },
@@ -230,22 +232,17 @@ const Inventory = () => {
         Cell: ({ value }) => (value ? "Yes" : "No"), // Convert boolean to Yes/No
       },
       {
-        Header: "purchase Price",
-        accessor: "purchasePrice",
+        Header: "Avg Price",
+        accessor: "avgPrice",
         // Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
       },
       {
-        Header: "sales Price",
-        accessor: "salesPrice",
+        Header: "Quantity",
+        accessor: "quantity",
       },
       {
-        Header: "order Quantity",
-        accessor: "orderQuantity",
-        // Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
-      },
-      {
-        Header: "created Date-Time",
-        accessor: "createdAt",
+        Header: "update Date-Time",
+        accessor: "updatedAt",
         // Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
       },
       {
@@ -313,34 +310,25 @@ const Inventory = () => {
 
   const formOnChange = (e) => {
     const { name, value, type } = e.target;
-    setInventoryManagement((prev) => ({
+    setItemManagement((prev) => ({
       ...prev,
       [name]: type === "number" ? Number(value) : value,
     }));
   };
 
-  console.log(
-    "inventoryManagement  111111111------->>>>> ",
-    inventoryManagement
-  );
-  console.log("inventoryManagement  state 222222------>>>>> ", state);
-  console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
-
-
-
-
+  console.log("itemManagement  111111111------->>>>> ", itemManagement);
+  console.log("itemManagement  state 222222------>>>>> ", state);
+  console.log("itemManagement  ------->>>>> ", itemManagement);
 
   return (
     <div className="min-h-screen p-6 App bg-gray-50">
-      <h1 className="mb-6 text-3xl font-bold text-gray-800">
-        Inventory Management
-      </h1>
+      <h1 className="mb-6 text-3xl font-bold text-gray-800">Item Management</h1>
 
       {/* Add New Item Button */}
       <div className="flex flex-row-reverse mb-4">
         <CommonButton
           type="add"
-          label="Add New Inventory"
+          label="Add New Item"
           onClick={() => onClickAdd()}
         />
       </div>
@@ -377,8 +365,8 @@ const Inventory = () => {
           onClick={() => alert("Reject Clicked")}
         /> */}
 
-        {/* Disabled Button Example */}
-        {/* <CommonButton type="add" label="Disabled Add" disabled />
+      {/* Disabled Button Example */}
+      {/* <CommonButton type="add" label="Disabled Add" disabled />
       </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -387,30 +375,21 @@ const Inventory = () => {
           id="id"
           name="id"
           label="ID"
-          value={inventoryManagement?.id}
+          value={itemManagement?.id}
           onChange={formOnChange}
         />
-
-        {/* Item Name - Select Dropdown */}
-        <CommonSelect
+        <CommonTextField
+          id="itemName"
           name="itemName"
           label="Item Name"
-          value={inventoryManagement?.itemName || ""}
+          value={itemManagement?.itemName}
           onChange={formOnChange}
-        >
-          {DropdownItemDetails?.length > 0 &&
-            DropdownItemDetails.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.itemName}
-              </MenuItem>
-            ))}
-        </CommonSelect>
-
+        />
         {/* Is Refundable - Radio Group */}
         <CommonRadioGroup
           name="isRefundable"
           label="Is Refundable?"
-          // value={inventoryManagement.isRefundable.toString()}
+          // value={itemManagement.isRefundable.toString()}
           // onChange={formOnChange}
           row
         >
@@ -427,72 +406,34 @@ const Inventory = () => {
             className="text text-gray-500"
           />
         </CommonRadioGroup>
-
-        {/* Description */}
         <CommonTextField
-          id="description"
-          name="description"
-          label="Description"
-          value={inventoryManagement.description}
-          onChange={formOnChange}
-        />
-
-        {/* Purchase Price */}
-        <CommonTextField
-          id="purchasePrice"
-          name="purchasePrice"
-          label="Purchase Price"
+          id="avgPrice"
+          name="avgPrice"
+          label="Avg Price"
           type="number"
-          value={inventoryManagement.purchasePrice}
+          value={itemManagement.avgPrice}
           onChange={formOnChange}
         />
-
-        {/* Sales Price */}
         <CommonTextField
-          id="salesPrice"
-          name="salesPrice"
-          label="Sales Price"
+          id="quantity"
+          name="quantity"
+          label="Quantity"
           type="number"
-          value={inventoryManagement.salesPrice}
+          value={itemManagement.quantity}
           onChange={formOnChange}
         />
-
-        {/* Order Quantity */}
         <CommonTextField
-          id="orderQuantity"
-          name="orderQuantity"
-          label="Order Quantity"
-          type="number"
-          value={inventoryManagement.orderQuantity}
+          id="updatedAt"
+          name="updatedAt"
+          label="Updated Date-Time"
+          value={itemManagement?.updatedAt}
           onChange={formOnChange}
         />
-
-        {/* Sales Quantity */}
-        <CommonTextField
-          id="salesQuantity"
-          name="salesQuantity"
-          label="Sales Quantity"
-          type="number"
-          value={inventoryManagement.salesQuantity}
-          onChange={formOnChange}
-        />
-
-        {/* Balance Quantity */}
-        <CommonTextField
-          id="balanceQuantity"
-          name="balanceQuantity"
-          label="Balance Quantity"
-          type="number"
-          value={inventoryManagement.balanceQuantity}
-          onChange={formOnChange}
-        />
-
-        {/* Created User */}
         <CommonTextField
           id="createdUser"
           name="createdUser"
           label="Created User"
-          value={inventoryManagement.createdUser}
+          value={itemManagement?.createdUser}
           onChange={formOnChange}
         />
       </div>
@@ -514,10 +455,10 @@ const Inventory = () => {
             data: {},
           });
         }}
-        title={isUpdate ? "Update Inventory" : "Add Inventory"}
+        title={isUpdate ? "Update Item" : "Add Item"}
       >
         {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
-        <InventoryAddUpdate
+        <ItemAddUpdate
           isUpdate={isUpdate}
           data={isUpdate ? showAddUpdateModal.data : {}}
           close={() => {
@@ -535,7 +476,7 @@ const Inventory = () => {
       {/* Table Component */}
       <TableComponent
         columns={columns}
-        data={state?.list || []}
+        data={state.length > 0 ? state : []}
         loading={false}
         fetchData={retriveData}
         onFilter={handleFilter}
@@ -547,4 +488,4 @@ const Inventory = () => {
   );
 };
 
-export default Inventory;
+export default Item;

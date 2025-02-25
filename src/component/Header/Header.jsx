@@ -102,6 +102,96 @@ const Header = () => {
               </li>
 
 
+
+
+              {isAuthenticated ? (
+                <>
+                <li>
+                  <NavLink
+                    to="/inventory-management"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                        : "hover:text-gray-400 text-2xl"
+                    }
+                  >
+                    Inventory
+                  </NavLink>
+                </li>
+                <li>
+                <NavLink
+                  to="/item-management"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-yellow-400 text-2xl underline hover:text-yellow-400 text-2xl"
+                      : "hover:text-gray-400 text-2xl"
+                  }
+                >
+                  Item
+                </NavLink>
+              </li>
+              </>
+              ) : null}
+              {/* {isAuthenticated && (
+              )} */}
+
+                {/* Add Reports Dropdown for ADMIN and EMPLOYEE */}
+                {(userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                <li className="relative group">
+                  <div className="flex items-center space-x-1 cursor-pointer">
+                    <span className="text-2xl">Reports</span>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                  <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block">
+                    <li>
+                      <NavLink
+                        to="/system-user-status"
+                        className="block px-4 py-2 hover:bg-gray-600"
+                      >
+                        System User Status
+                      </NavLink>
+                    </li>
+                    <li>
+                  <NavLink
+                    to="/inventory-stock-report"
+                    className="block px-4 py-2 hover:bg-gray-600"
+                  >
+                    Inventory Stock Report
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/low-stock-report"
+                    className="block px-4 py-2 hover:bg-gray-600"
+                  >
+                    Low Stock Report
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/sales-revenue-report"
+                    className="block px-4 py-2 hover:bg-gray-600"
+                  >
+                    Sales Revenue Report
+                  </NavLink>
+                </li>
+                  </ul>
+                </li>
+              )}
               {/* Services Dropdown */}
               <li className="relative group">
                 <div className="flex items-center space-x-1 cursor-pointer">
@@ -135,11 +225,6 @@ const Header = () => {
                   ))}
                 </ul>
               </li>
-
-           
-
-           
-
             </ul>
           </nav>
         </div>
