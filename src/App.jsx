@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,6 +6,9 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { USER_ROLES } from "./utils/constants";
+
 import Header from "./component/Header/Header";
 import SubHeader from "./component/Header/SubHeader";
 import Footer from "./component/Footer/Footer";
@@ -23,8 +26,7 @@ import SystemUserStatus from "./pages/Reports/SystemUserStatus";
 import InventoryStockReport from "./pages/Reports/InventoryStockReport";
 import LowStockReport from "./pages/Reports/LowStockReport";
 import SalesRevenueReport from "./pages/Reports/SalesRevenueReport";
-import { AuthProvider, useAuth } from "./context/AuthContext";
-import { USER_ROLES } from "./utils/constants";
+import Package from "./pages/Package/Package";
 
 // PrivateRoute component to protect authenticated routes
 const PrivateRoute = ({ children, allowedRoles }) => {
@@ -56,8 +58,11 @@ const Layout = ({ children }) => {
   const { authContextData } = useAuth();
   const { isAuthenticated, userRole } = authContextData;
 
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
-  const showSubHeader = isAuthenticated && (userRole === USER_ROLES.ADMIN || userRole === USER_ROLES.EMPLOYEE);
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
+  const showSubHeader =
+    isAuthenticated &&
+    (userRole === USER_ROLES.ADMIN || userRole === USER_ROLES.EMPLOYEE);
 
   return (
     <div className="flex flex-col min-h-screen mt-6">
@@ -84,19 +89,42 @@ const App = () => {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
-            <Route path="/LogIn" element={<PublicRoute><LogIn /></PublicRoute>} />
-            <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
+            <Route
+              path="/LogIn"
+              element={
+                <PublicRoute>
+                  <LogIn />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <SignUp />
+                </PublicRoute>
+              }
+            />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/services/:serviceId" element={<Service />} />
 
             {/* Protected Routes */}
-            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
 
             <Route
               path="/inventory-management"
               element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <PrivateRoute
+                  allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                >
                   <Inventory />
                 </PrivateRoute>
               }
@@ -104,7 +132,9 @@ const App = () => {
             <Route
               path="/system-user-status"
               element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <PrivateRoute
+                  allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                >
                   <SystemUserStatus />
                 </PrivateRoute>
               }
@@ -112,7 +142,9 @@ const App = () => {
             <Route
               path="/inventory-stock-report"
               element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <PrivateRoute
+                  allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                >
                   <InventoryStockReport />
                 </PrivateRoute>
               }
@@ -120,7 +152,9 @@ const App = () => {
             <Route
               path="/low-stock-report"
               element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <PrivateRoute
+                  allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                >
                   <LowStockReport />
                 </PrivateRoute>
               }
@@ -128,7 +162,9 @@ const App = () => {
             <Route
               path="/sales-revenue-report"
               element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <PrivateRoute
+                  allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                >
                   <SalesRevenueReport />
                 </PrivateRoute>
               }
@@ -136,7 +172,9 @@ const App = () => {
             <Route
               path="/create-event"
               element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <PrivateRoute
+                  allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                >
                   <CreateEvent />
                 </PrivateRoute>
               }
@@ -144,14 +182,31 @@ const App = () => {
             <Route
               path="/transport-management"
               element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
+                <PrivateRoute
+                  allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                >
                   <TransportCostManagement />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/package/:packageId"
+              element={
+                <PrivateRoute>
+                  <Package />
                 </PrivateRoute>
               }
             />
 
             {/* 404 Route */}
-            <Route path="*" element={<h1 className="mt-10 text-2xl text-center">404 - Page Not Found</h1>} />
+            <Route
+              path="*"
+              element={
+                <h1 className="mt-10 text-2xl text-center">
+                  404 - Page Not Found
+                </h1>
+              }
+            />
           </Routes>
         </Layout>
       </Router>
