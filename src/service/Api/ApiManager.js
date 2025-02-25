@@ -87,6 +87,23 @@ apiGet: async (endpoint, params = {}, config = {}) => {
   }
 },
 
+  // New method for public API calls (no token required)
+  apiGetPublic: async (endpoint, params = {}, config = {}) => {
+    try {
+      const response = await axios.get(`${BASE_URL}${endpoint}`, {
+        headers: {
+          "Content-Type": "application/json", // Optional: Add any required headers
+        },
+        params, // Query parameters
+        ...config, // Pass additional config (e.g., responseType: "blob")
+      });
+      return response;
+    } catch (error) {
+      console.error("Public GET request failed:", error);
+      throw error;
+    }
+  },
+
   // PUT request
   apiPut: async (endpoint, data) => {
     try {

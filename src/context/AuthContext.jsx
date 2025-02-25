@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import PublicService from "../service/PublicService"; // Import PublicService
 
 const AuthContext = createContext();
 
@@ -8,8 +9,10 @@ export const AuthProvider = ({ children }) => {
     token: null,
     userRole: null,
     accessCode: null,
-    username: null, // You can add more fields as required
+    username: null,
   });
+
+  const [services, setServices] = useState([]); // Add services state
 
   // Check for token and user data in sessionStorage on initial load
   useEffect(() => {
@@ -19,7 +22,23 @@ export const AuthProvider = ({ children }) => {
       const parsedData = JSON.parse(savedAuthData);
       setAuthContextData(parsedData);
     }
+
+    // Fetch services data when the app initializes
+    fetchServices();
   }, []);
+
+  // Fetch services data using PublicService
+  const fetchServices = async () => {
+    try {
+      const response = await PublicService.getServices();
+      if (response.data.responseCode === "00") {
+        setServices(response.data.content); // Store the services data
+        console.log(response.data.content)
+      }
+    } catch (error) {
+      console.error("Failed to fetch services:", error);
+    }
+  };
 
   // Login function (updates state and sessionStorage)
   const login = (authData) => {
@@ -46,7 +65,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ authContextData, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        authContextData,
+        login,
+        logout,
+        services, // Add services to the context value
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
