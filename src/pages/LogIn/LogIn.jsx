@@ -51,8 +51,8 @@ const LogIn = () => {
           navigate("/");
         } else if (accessCode === "1") {
           console.log("Navigating to Reset Password");
-          navigate("/reset-password");
-          displayApiMessage("You Need to Reset Your Password", "warning");
+          // navigate("/reset-password");
+          displayApiMessage(accessMsg);
         } else if (accessCode === "2") {
           console.log("Displaying message for accessCode 2");
           displayApiMessage(

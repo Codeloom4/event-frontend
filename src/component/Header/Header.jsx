@@ -1,15 +1,22 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; // Import useAuth
 import Logo from "../../assets/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
-import { FaTicketAlt, FaWifi } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
+import { MdArrowDropDown } from "react-icons/md";
+import CommonModal from "../../component/Modal/CommonModal";
+import SignUpForm from "../../pages/SignUp/SignUpForm";
 
 const Header = () => {
   const { authContextData, logout, services } = useAuth(); // Access services from AuthContext
   const navigate = useNavigate();
 
-  const { isAuthenticated, userRole } = authContextData; // Destructure from authContextData
+  const { isAuthenticated, username } = authContextData; // Destructure from authContextData
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
@@ -21,6 +28,13 @@ const Header = () => {
     // You can add further functionality here, e.g., routing or filtering
     console.log("Selected Event Type:", eventType);
     // Example: navigate(`/services/${eventType}`);
+  };
+
+  // Open modal for adding or updating an event
+  const openModal = (event = null) => {
+    setSelectedEvent(event);
+    setIsUpdate(!!event);
+    setShowModal(true);
   };
 
   return (
@@ -124,14 +138,35 @@ const Header = () => {
         {/* Authentication Buttons: Aligned to the right */}
         <div className="flex space-x-4">
           {isAuthenticated ? (
-            <>
+            <div className="relative">
+              {/* Profile Button */}
               <button
-                onClick={handleLogout}
-                className="w-10 h-10 px-4 py-2 text-white transition-all duration-300 bg-red-500 rounded-full hover:bg-red-700 hover:shadow-lg hover:scale-105"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center px-4 py-2 space-x-2 text-white transition-all duration-300 bg-gray-700 rounded-full hover:bg-gray-600"
               >
-                Log Out
+                <FaUserCircle className="w-8 h-8 text-gray-300" />
+                <span className="text-lg font-medium">{username}</span>
+                <MdArrowDropDown className="w-6 h-6" />
               </button>
-            </>
+
+              {/* Dropdown Menu */}
+              {dropdownOpen && (
+                <div className="absolute right-0 w-40 mt-2 bg-gray-700 rounded-md shadow-lg">
+                  <button
+                    onClick={() => openModal()}
+                    className="block w-full px-4 py-2 text-left text-white hover:bg-gray-600"
+                  >
+                    Create User
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-left text-white hover:bg-gray-600"
+                  >
+                    Log Out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <NavLink
@@ -145,6 +180,16 @@ const Header = () => {
           )}
         </div>
       </div>
+
+      {/* Add/Update Event Modal */}
+      <CommonModal
+        showModal={showModal}
+        size='lg'
+        handleClose={() => setShowModal(false)}
+        title={isUpdate ? "Update User" : "Add User"}
+      >
+        <SignUpForm />
+      </CommonModal>
     </header>
   );
 };

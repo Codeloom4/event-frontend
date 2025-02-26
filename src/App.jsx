@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -56,13 +56,15 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const { authContextData } = useAuth();
   const { isAuthenticated, userRole } = authContextData;
-  
+
   const isAuthPage =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
     location.pathname === "/reset-password";
 
-  const showSubHeader = isAuthenticated && (userRole === USER_ROLES.ADMIN || userRole === USER_ROLES.EMPLOYEE);
+  const showSubHeader =
+    isAuthenticated &&
+    (userRole === USER_ROLES.ADMIN || userRole === USER_ROLES.EMPLOYEE);
 
   return (
     <div className="flex flex-col min-h-screen mt-6">
@@ -86,77 +88,129 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Layout>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/LogIn" element={<PublicRoute><LogIn /></PublicRoute>} />
-            <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
+          <ToastProvider>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/LogIn"
+                element={
+                  <PublicRoute>
+                    <LogIn />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <PublicRoute>
+                    <SignUp />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/reset-password"
+                element={
+                  <PublicRoute>
+                    <ResetPassword />
+                  </PublicRoute>
+                }
+              />
 
-            {/* Protected Routes */}
-            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+              {/* Protected Routes */}
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
 
-            <Route
-              path="/inventory-management"
-              element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
-                  <Inventory />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/system-user-status"
-              element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
-                  <SystemUserStatus />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/inventory-stock-report"
-              element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
-                  <InventoryStockReport />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/low-stock-report"
-              element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
-                  <LowStockReport />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/sales-revenue-report"
-              element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
-                  <SalesRevenueReport />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/create-event"
-              element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
-                  <CreateEvent />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/transport-management"
-              element={
-                <PrivateRoute allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}>
-                  <TransportCostManagement />
-                </PrivateRoute>
-              }
-            />
+              <Route
+                path="/inventory-management"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <Inventory />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/system-user-status"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <SystemUserStatus />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/inventory-stock-report"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <InventoryStockReport />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/low-stock-report"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <LowStockReport />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/sales-revenue-report"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <SalesRevenueReport />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/create-event"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <CreateEvent />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/transport-management"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <TransportCostManagement />
+                  </PrivateRoute>
+                }
+              />
 
-            {/* 404 Route */}
-            <Route path="*" element={<h1 className="mt-10 text-2xl text-center">404 - Page Not Found</h1>} />
-          </Routes>
+              {/* 404 Route */}
+              <Route
+                path="*"
+                element={
+                  <h1 className="mt-10 text-2xl text-center">
+                    404 - Page Not Found
+                  </h1>
+                }
+              />
+            </Routes>
+          </ToastProvider>
         </Layout>
       </Router>
     </AuthProvider>

@@ -17,6 +17,7 @@ export const ToastProvider = ({ children }) => {
   const isToastActive = useRef(false); // Track if a toast is already visible
 
   const displayApiMessage = (msg, type = "success", callback = null) => {
+    console.log("test");
     if (isToastActive.current || msg === lastMessageRef.current) {
       return; // Prevent duplicate toasts
     }
