@@ -10,54 +10,47 @@ import SignUpForm from "../../pages/SignUp/SignUpForm";
 import { USER_ROLES } from "../../utils/constants";
 
 const Header = () => {
-  const { authContextData, logout, services } = useAuth(); // Access services from AuthContext
+  const { authContextData, logout, services = [] } = useAuth(); // Default services to empty array
   const navigate = useNavigate();
 
-  const { isAuthenticated, username, userRole } = authContextData; // Destructure from authContextData
+  const { isAuthenticated, username, userRole } = authContextData;
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
 
   const handleLogout = () => {
-    logout(); // Call the logout function from AuthContext
-    navigate("/"); // Redirect to home page after logout
+    logout();
+    navigate("/");
   };
 
-  // Open modal for adding or updating an event
   const openModal = (event = null) => {
     setIsUpdate(!!event);
     setShowModal(true);
   };
 
+  // Helper function for NavLink styling
+  const getNavLinkClass = (isActive) =>
+    `text-2xl ${
+      isActive ? "text-yellow-400 hover:text-yellow-400" : "hover:text-gray-400 no-underline"
+    }`;
+
   return (
     <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
       <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
-        <NavLink
-          to="/"
-          className="flex items-center space-x-2 text-2xl font-bold color"
-        >
+        <NavLink to="/" className="flex items-center space-x-2 text-2xl font-bold">
           <img src={Logo} alt="Eventify" className="h-10" />
           <span className="flex items-center h-10 text-4xl font-extrabold text-yellow-400 no-underline">
             Eventify
           </span>
         </NavLink>
 
-        {/* Navigation Links: Centered in the middle. */}
+        {/* Navigation Links */}
         <div>
           <nav>
             <ul className="flex space-x-4">
               <li>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `text-2xl ${
-                      isActive || window.location.pathname === "/dashboard"
-                        ? "text-yellow-400 hover:text-yellow-400  "
-                        : "hover:text-gray-400 no-underline"
-                    }`
-                  }
-                >
+                <NavLink to="/" className={({ isActive }) => getNavLinkClass(isActive)}>
                   Home
                 </NavLink>
               </li>
@@ -79,13 +72,10 @@ const Header = () => {
                     />
                   </svg>
                 </div>
-                <ul className="absolute hidden p-2 space-y-2 text-white align-middle bg-gray-700 rounded-md group-hover:block w-max">
+                <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block w-max">
                   {services.map((service, index) => (
                     <li key={index}>
-                      <NavLink
-                        to={`/services/${service.eventType}`}
-                        className="block no-underline"
-                      >
+                      <NavLink to={`/services/${service.eventType}`} className="block no-underline">
                         <button className="block w-full px-4 py-2 text-center hover:bg-gray-600">
                           {service.description}
                         </button>
@@ -95,50 +85,24 @@ const Header = () => {
                 </ul>
               </li>
               <li>
-                <NavLink
-                  to="/about"
-                  className={({ isActive }) =>
-                    `text-2xl ${
-                      isActive
-                        ? "text-yellow-400 hover:text-yellow-400  "
-                        : "hover:text-gray-400 no-underline"
-                    }`
-                  }
-                >
+                <NavLink to="/about" className={({ isActive }) => getNavLinkClass(isActive)}>
                   About
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/contact"
-                  className={({ isActive }) =>
-                    `text-2xl ${
-                      isActive
-                        ? "text-yellow-400 hover:text-yellow-400  "
-                        : "hover:text-gray-400 no-underline"
-                    }`
-                  }
-                >
+                <NavLink to="/contact" className={({ isActive }) => getNavLinkClass(isActive)}>
                   Contact
                 </NavLink>
               </li>
-
               <li>
-              <NavLink
-                to="/gallery"
-                className={({ isActive }) =>
-                  `text-2xl ${isActive ? "text-yellow-400" : "hover:text-gray-400  no-underline"}`
-                }
-              >
-                Gallery
-              </NavLink>
-            </li>
-
+                <NavLink to="/gallery" className={({ isActive }) => getNavLinkClass(isActive)}>
+                  Gallery
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>
 
-        {/* Authentication Buttons: Aligned to the right */}
         <div className="flex space-x-4">
           {isAuthenticated ? (
             <div className="relative">
@@ -146,6 +110,8 @@ const Header = () => {
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center px-4 py-2 space-x-2 text-white transition-all duration-300 bg-gray-700 rounded-full hover:bg-gray-600"
+                aria-haspopup="true"
+                aria-expanded={dropdownOpen}
               >
                 <FaUserCircle className="w-8 h-8 text-gray-300" />
                 <span className="text-lg font-medium">{username}</span>
@@ -163,7 +129,6 @@ const Header = () => {
                       Create User
                     </button>
                   )}
-
                   <button
                     onClick={handleLogout}
                     className="block w-full px-4 py-2 text-left text-white hover:bg-gray-600"
@@ -181,13 +146,13 @@ const Header = () => {
               >
                 Login
               </NavLink>
-              <SignUpButton /> {/* Use the new SignUpButton component */}
+              <SignUpButton />
             </>
           )}
         </div>
       </div>
 
-      {/* Add/Update Event Modal */}
+      {/* Add/Update User Modal */}
       <CommonModal
         showModal={showModal}
         size="lg"
