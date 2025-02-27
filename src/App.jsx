@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { USER_ROLES } from "./utils/constants";
+import { ToastProvider } from "./context/ToastContext";
 
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Header from "./component/Header/Header";
@@ -29,7 +30,6 @@ import SystemUserStatus from "./pages/Reports/SystemUserStatus";
 import InventoryStockReport from "./pages/Reports/InventoryStockReport";
 import LowStockReport from "./pages/Reports/LowStockReport";
 import SalesRevenueReport from "./pages/Reports/SalesRevenueReport";
-import { ToastProvider } from "./context/ToastContext";
 import ResetPassword from "./pages/LogIn/ResetPassword";
 import Package from "./pages/Package/Package";
 
@@ -62,8 +62,6 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const { authContextData } = useAuth();
   const { isAuthenticated, userRole } = authContextData;
-
-  console.log("UserRole:", userRole);
 
   const isAuthPage =
     location.pathname === "/login" ||
@@ -103,8 +101,6 @@ const HomePageWrapper = () => {
   ) {
     return <Navigate to="/dashboard" />;
   }
-
-  // Otherwise, render the Home page
   return <Home />;
 };
 
@@ -117,7 +113,9 @@ const App = () => {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<HomePageWrapper />} />
-              <Route path="/" element={<Home />} />
+              <Route path="/services/:serviceId" element={<Service />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
               <Route
                 path="/LogIn"
                 element={
@@ -142,9 +140,9 @@ const App = () => {
                   </PublicRoute>
                 }
               />
-              <Route path="/services/:serviceId" element={<Service />} />
 
               {/* Protected Routes */}
+              {/* ----------------------------------------Common---------------------------------------- */}
               <Route
                 path="/profile"
                 element={
@@ -154,12 +152,32 @@ const App = () => {
                 }
               />
               <Route
+                path="/package/:packageId"
+                element={
+                  <PrivateRoute>
+                    <Package />
+                  </PrivateRoute>
+                }
+              />
+              
+              {/* ----------------------------------------Admin/Employee---------------------------------------- */}
+              <Route
+                path="/dashboard"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
+                  >
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+              />
+              <Route
                 path="/event-management"
                 element={
                   <PrivateRoute
                     allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
                   >
-                    <Events />
+                    <CreateEvent />
                   </PrivateRoute>
                 }
               />
@@ -183,40 +201,18 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-
               <Route
-                path="/profile"
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route
-                path="/dashboard"
+                path="/transport-management"
                 element={
                   <PrivateRoute
                     allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
                   >
-                    <Dashboard />
+                    <TransportCostManagement />
                   </PrivateRoute>
                 }
               />
 
-              <Route
-                path="/inventory-management"
-                element={
-                  <PrivateRoute
-                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
-                  >
-                    <Inventory />
-                  </PrivateRoute>
-                }
-              />
+              {/* ----------------------------------------Reports---------------------------------------- */}
               <Route
                 path="/system-user-status"
                 element={
@@ -257,41 +253,22 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              <Route
-                path="/create-event"
-                element={
-                  <PrivateRoute
-                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
-                  >
-                    <CreateEvent />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/transport-management"
-                element={
-                  <PrivateRoute
-                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE]}
-                  >
-                    <TransportCostManagement />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/package/:packageId"
-                element={
-                  <PrivateRoute>
-                    <Package />
-                  </PrivateRoute>
-                }
-              />
 
-              {/* 404 Route */}
+              {/* ----------------------------------------404 Route---------------------------------------- */}
               <Route
                 path="*"
                 element={
                   <h1 className="mt-10 text-2xl text-center">
                     404 - Page Not Found
+                  </h1>
+                }
+              />
+              {/* ----------------------------------------Unauthorized Route---------------------------------------- */}
+              <Route
+                path="/unauthorized"
+                element={
+                  <h1 className="mt-10 text-2xl text-center">
+                    Unauthorized - Access Denied
                   </h1>
                 }
               />

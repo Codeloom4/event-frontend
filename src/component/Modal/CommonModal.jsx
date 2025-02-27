@@ -37,7 +37,7 @@ const CommonModal = ({ children, size = "md", title, showModal, handleClose }) =
       </DialogTitle>
 
       {/* Body */}
-      <DialogContent>{children}</DialogContent>
+      <DialogContent style={{ paddingTop: '20px'}}>{children}</DialogContent>
     </Dialog>
   );
 };

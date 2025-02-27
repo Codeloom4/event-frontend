@@ -2,22 +2,23 @@ import React, { useState, useEffect } from "react";
 import TableComponent from "../../component/Tables/TableComponent";
 import CommonModal from "../../component/Modal/CommonModal";
 import TransportCostForm from "./TransportCostForm";
-import TransportCostService from "../../service/TransportCostService"; // Import the service
-import { FaSpinner } from "react-icons/fa"; // Import spinner icon
+import TransportCostService from "../../service/TransportCostService"; 
+import { FaSpinner } from "react-icons/fa"; 
+import { RESPONSE_CODES } from "../../utils/constants";
 
 const TransportCostManagement = () => {
   const [transportCosts, setTransportCosts] = useState([]);
-  const [districts, setDistricts] = useState([]); // Store district list
+  const [districts, setDistricts] = useState([]); 
   const [showModal, setShowModal] = useState(false);
   const [selectedTransportCost, setSelectedTransportCost] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [loadingStates, setLoadingStates] = useState({}); // Track loading state for each item
+  const [loadingStates, setLoadingStates] = useState({});
 
   // Fetch all transport costs
   const fetchTransportCosts = async () => {
     try {
       const response = await TransportCostService.getTransportCostsList();
-      if (response.data.responseCode === "00") {
+      if (response.data.responseCode === RESPONSE_CODES.SUCCESS) {
         setTransportCosts(response.data.content);
       }
     } catch (error) {
@@ -29,7 +30,7 @@ const TransportCostManagement = () => {
   const fetchDistricts = async () => {
     try {
       const response = await TransportCostService.getDistrictsList();
-      if (response.data.responseCode === "00") {
+      if (response.data.responseCode === RESPONSE_CODES.SUCCESS) {
         setDistricts(response.data.content);
       }
     } catch (error) {
@@ -39,21 +40,19 @@ const TransportCostManagement = () => {
 
   useEffect(() => {
     fetchTransportCosts();
-    fetchDistricts(); // Fetch districts on page load
+    fetchDistricts(); 
   }, []);
 
   // Add or Update Transport Cost
   const handleSubmit = async (transportCostData) => {
     try {
       if (isUpdate) {
-        // Update transport cost
         await TransportCostService.updateTransportCost(transportCostData);
       } else {
-        // Add new transport cost
         await TransportCostService.createTransportCost(transportCostData);
       }
-      fetchTransportCosts(); // Refresh the transport cost list
-      setShowModal(false); // Close the modal
+      fetchTransportCosts();
+      setShowModal(false);
     } catch (error) {
       console.error("Failed to save transport cost:", error);
     }
@@ -90,7 +89,7 @@ const TransportCostManagement = () => {
       accessor: "actions",
       Cell: ({ row }) => {
         const id = row.original.id;
-        const isLoading = loadingStates[id] || false; // Get loading state for this item
+        const isLoading = loadingStates[id] || false; 
 
         return (
           <div className="flex space-x-2">
@@ -103,10 +102,10 @@ const TransportCostManagement = () => {
             <button
               onClick={() => handleDelete(id)}
               className="px-3 py-1 text-white bg-red-500 rounded-md hover:bg-red-600 disabled:bg-red-300"
-              disabled={isLoading} // Disable button while loading
+              disabled={isLoading}
             >
               {isLoading ? (
-                <FaSpinner className="animate-spin" /> // Show spinner
+                <FaSpinner className="animate-spin" /> 
               ) : (
                 "Delete"
               )}
@@ -118,9 +117,9 @@ const TransportCostManagement = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+      <div className="w-full p-8 bg-white rounded-lg shadow-lg max-w-7xl">
+        <h1 className="mb-8 text-4xl font-bold text-center text-gray-800">
           Transport Cost Management
         </h1>
 
@@ -149,7 +148,7 @@ const TransportCostManagement = () => {
             onSubmit={handleSubmit}
             initialData={selectedTransportCost}
             isUpdate={isUpdate}
-            districts={districts} // Pass districts to the form
+            districts={districts} 
           />
         </CommonModal>
       </div>
