@@ -122,6 +122,18 @@ const Header = () => {
                   Contact
                 </NavLink>
               </li>
+
+              <li>
+              <NavLink
+                to="/gallery"
+                className={({ isActive }) =>
+                  `text-2xl ${isActive ? "text-yellow-400" : "hover:text-gray-400  no-underline"}`
+                }
+              >
+                Gallery
+              </NavLink>
+            </li>
+
             </ul>
           </nav>
         </div>

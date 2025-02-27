@@ -25,6 +25,7 @@ import Profile from "./pages/Profile/Profile";
 import Service from "./pages/Services/Services";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
+import Gallery from "./pages/Gallery/Gallery";
 import TransportCostManagement from "./pages/TransportCostManagement/TransportCostManagement";
 import SystemUserStatus from "./pages/Reports/SystemUserStatus";
 import InventoryStockReport from "./pages/Reports/InventoryStockReport";
@@ -109,6 +110,7 @@ const App = () => {
     <AuthProvider>
       <Router>
         <Layout>
+
           <ToastProvider>
             <Routes>
               {/* Public Routes */}
@@ -116,6 +118,7 @@ const App = () => {
               <Route path="/services/:serviceId" element={<Service />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route
                 path="/LogIn"
                 element={
@@ -140,6 +143,7 @@ const App = () => {
                   </PublicRoute>
                 }
               />
+
 
               {/* Protected Routes */}
               {/* ----------------------------------------Common---------------------------------------- */}
