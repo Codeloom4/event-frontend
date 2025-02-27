@@ -12,10 +12,10 @@ import { RESPONSE_CODES, USER_ROLES } from "../../utils/constants";
 import EventsService from "../../service/EventsService";
 
 const Header = () => {
-  const { authContextData, logout, services, userRole } = useAuth(); // Access services from AuthContext
+  const { authContextData, logout, services } = useAuth(); // Access services from AuthContext
   const navigate = useNavigate();
 
-  const { isAuthenticated, username } = authContextData; // Destructure from authContextData
+  const { isAuthenticated, username, userRole } = authContextData; // Destructure from authContextData
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
