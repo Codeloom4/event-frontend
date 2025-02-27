@@ -61,7 +61,7 @@ class GalleryService {
   // Get all images
   getAllImages = async () => {
     try {
-      const response = await ApiManager.apiGet("/ems/gallery/all");
+      const response = await ApiManager.apiGetPublic("/api/public/gallery");
       return response;
     } catch (error) {
       console.error("Failed to fetch all images:", error);
