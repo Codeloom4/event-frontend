@@ -10,10 +10,10 @@ import SignUpForm from "../../pages/SignUp/SignUpForm";
 import { USER_ROLES } from "../../utils/constants";
 
 const Header = () => {
-  const { authContextData, logout, services, userRole } = useAuth(); // Access services from AuthContext
+  const { authContextData, logout, services } = useAuth(); // Access services from AuthContext
   const navigate = useNavigate();
 
-  const { isAuthenticated, username } = authContextData;
+  const { isAuthenticated, username, userRole } = authContextData; // Destructure from authContextData
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
