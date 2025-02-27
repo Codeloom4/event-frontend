@@ -1,50 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Import useAuth
+import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assets/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
-import { FaTicketAlt, FaWifi } from "react-icons/fa";
-import { RESPONSE_CODES, USER_ROLES } from "../../utils/constants";
-import EventsService from "../../service/EventsService";
+import { FaUserCircle } from "react-icons/fa";
+import { MdArrowDropDown } from "react-icons/md";
+import CommonModal from "../../component/Modal/CommonModal";
+import SignUpForm from "../../pages/SignUp/SignUpForm";
+import { USER_ROLES } from "../../utils/constants";
 
 const Header = () => {
   const { authContextData, logout, services } = useAuth(); // Access services from AuthContext
   const navigate = useNavigate();
 
-  const { isAuthenticated, userRole } = authContextData; // Destructure from authContextData
+  const { isAuthenticated, username, userRole } = authContextData; // Destructure from authContextData
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const handleLogout = () => {
     logout(); // Call the logout function from AuthContext
     navigate("/"); // Redirect to home page after logout
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [serviceList, setServiceList] = useState([]);
-
-  const retrieveServices = async () => {
-    const serviceResponse = await EventsService.getEventsList();
-    // console.log(serviceResponse);
-    // if (serviceResponse.data.responseCode === RESPONSE_CODES.SUCCESS) {
-    setServiceList(serviceResponse.data);
-    // } else {
-    //   navigate("/");
-    // }
-  };
-
-  useEffect(() => {
-    retrieveServices();
-  }, []);
-
-  // Handle click on a service dropdown item
-  const handleServiceClick = (eventType) => {
-    // You can add further functionality here, e.g., routing or filtering
-    console.log("Selected Event Type:", eventType);
-    // Example: navigate(`/services/${eventType}`);
+  // Open modal for adding or updating an event
+  const openModal = (event = null) => {
+    setIsUpdate(!!event);
+    setShowModal(true);
   };
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full h-23 p-4 text-white bg-gray-800">
-      <div className="container flex items-center justify-between mx-auto">
+    <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
+      <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
         <NavLink
           to="/"
@@ -60,60 +47,20 @@ const Header = () => {
         <div>
           <nav>
             <ul className="flex space-x-4">
-              <li >
+              <li>
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    `text-2xl ${isActive
-                      ? "text-yellow-400 hover:text-yellow-400  "
-                      : "hover:text-gray-400 no-underline"
+                    `text-2xl ${
+                      isActive || window.location.pathname === "/dashboard"
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
                     }`
                   }
                 >
                   Home
                 </NavLink>
               </li>
-
-              {/* Other navigation links */}
-              <li>
-                <NavLink
-                  to="/about"
-                  className={({ isActive }) =>
-                    `text-2xl ${isActive
-                      ? "text-yellow-400 hover:text-yellow-400  "
-                      : "hover:text-gray-400 no-underline"
-                    }`
-                  }
-                >
-                  About
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/contact"
-                  className={({ isActive }) =>
-                    `text-2xl ${isActive
-                      ? "text-yellow-400 hover:text-yellow-400  "
-                      : "hover:text-gray-400 no-underline"
-                    }`
-                  }
-                >
-                  Contact
-                </NavLink>
-              </li>
-
-              <li>
-              <NavLink
-                to="/gallery"
-                className={({ isActive }) =>
-                  `text-2xl ${isActive ? "text-yellow-400" : "hover:text-gray-400"}`
-                }
-              >
-                Gallery
-              </NavLink>
-            </li>
-
-
               {/* Services Dropdown */}
               <li className="relative group">
                 <div className="flex items-center space-x-1 cursor-pointer">
@@ -132,14 +79,14 @@ const Header = () => {
                     />
                   </svg>
                 </div>
-                <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block">
+                <ul className="absolute hidden p-2 space-y-2 text-white align-middle bg-gray-700 rounded-md group-hover:block w-max">
                   {services.map((service, index) => (
                     <li key={index}>
-                      <NavLink to={`/services/${service.eventType}`}>
-                        <button
-                          onClick={() => handleServiceClick(service.eventType)}
-                          className="block w-full px-4 py-2 text-left hover:bg-gray-600"
-                        >
+                      <NavLink
+                        to={`/services/${service.eventType}`}
+                        className="block no-underline"
+                      >
+                        <button className="block w-full px-4 py-2 text-center hover:bg-gray-600">
                           {service.description}
                         </button>
                       </NavLink>
@@ -147,7 +94,45 @@ const Header = () => {
                   ))}
                 </ul>
               </li>
+              <li>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) =>
+                    `text-2xl ${
+                      isActive
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
+                    }`
+                  }
+                >
+                  About
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) =>
+                    `text-2xl ${
+                      isActive
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
+                    }`
+                  }
+                >
+                  Contact
+                </NavLink>
+              </li>
 
+              <li>
+              <NavLink
+                to="/gallery"
+                className={({ isActive }) =>
+                  `text-2xl ${isActive ? "text-yellow-400" : "hover:text-gray-400  no-underline"}`
+                }
+              >
+                Gallery
+              </NavLink>
+            </li>
 
             </ul>
           </nav>
@@ -156,14 +141,38 @@ const Header = () => {
         {/* Authentication Buttons: Aligned to the right */}
         <div className="flex space-x-4">
           {isAuthenticated ? (
-            <>
+            <div className="relative">
+              {/* Profile Button */}
               <button
-                onClick={handleLogout}
-                className="w-10 h-10 px-4 py-2 text-white transition-all duration-300 bg-red-500 rounded-full hover:bg-red-700 hover:shadow-lg hover:scale-105"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center px-4 py-2 space-x-2 text-white transition-all duration-300 bg-gray-700 rounded-full hover:bg-gray-600"
               >
-                Log Out
+                <FaUserCircle className="w-8 h-8 text-gray-300" />
+                <span className="text-lg font-medium">{username}</span>
+                <MdArrowDropDown className="w-6 h-6" />
               </button>
-            </>
+
+              {/* Dropdown Menu */}
+              {dropdownOpen && (
+                <div className="absolute right-0 w-40 mt-2 bg-gray-700 rounded-md shadow-lg">
+                  {userRole === USER_ROLES.ADMIN && (
+                    <button
+                      onClick={openModal}
+                      className="block w-full px-4 py-2 text-left text-white hover:bg-gray-600"
+                    >
+                      Create User
+                    </button>
+                  )}
+
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-left text-white hover:bg-gray-600"
+                  >
+                    Log Out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <NavLink
@@ -177,6 +186,16 @@ const Header = () => {
           )}
         </div>
       </div>
+
+      {/* Add/Update Event Modal */}
+      <CommonModal
+        showModal={showModal}
+        size="lg"
+        handleClose={() => setShowModal(false)}
+        title={isUpdate ? "Update User" : "Add User"}
+      >
+        <SignUpForm />
+      </CommonModal>
     </header>
   );
 };

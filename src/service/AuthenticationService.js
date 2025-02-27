@@ -16,10 +16,9 @@ const AuthenticationService = {
     }
   },
 
-  signUp: async (data) => {
+  resetPassword: async (data) => {
     try {
-      const response = await ApiManager.apiPost(authEndpoint, data);
-
+      const response = await ApiManager.apiPost(`${authEndpoint}/reset`, data);
       return response;
     } catch (error) {
       console.error("Sign-up failed:", error);

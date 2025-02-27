@@ -33,9 +33,15 @@ const Dashboard = () => {
   // Fetch data for charts
   const fetchDashboardData = async () => {
     try {
-      const userSummaryResponse = await ApiManager.apiGet("/ems/dashboard/user-summary");
-      const stockSummaryResponse = await ApiManager.apiGet("/ems/dashboard/stock-summary");
-      const revenueSummaryResponse = await ApiManager.apiGet("/ems/dashboard/revenue-summary");
+      const userSummaryResponse = await ApiManager.apiGet(
+        "/ems/dashboard/user-summary"
+      );
+      const stockSummaryResponse = await ApiManager.apiGet(
+        "/ems/dashboard/stock-summary"
+      );
+      const revenueSummaryResponse = await ApiManager.apiGet(
+        "/ems/dashboard/revenue-summary"
+      );
 
       setSystemSummary({
         userSummary: userSummaryResponse.data,

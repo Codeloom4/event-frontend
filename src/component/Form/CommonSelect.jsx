@@ -1,39 +1,34 @@
 import React from "react";
-import { TextField, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from "@mui/material";
 
 const CommonSelect = ({ 
-  name,  // Added name prop
+  name,  
   value, 
   onChange, 
   label = "Select an option", 
-  children, // Allows passing options from parent
+  children, 
   error = "", 
   className = "" 
 }) => {
   return (
-    <TextField
-      select
-      name={name} // Added name here
-      label={label}
-      value={value}
-      onChange={onChange}
-      fullWidth
-      variant="outlined"
-      error={!!error}
-      helperText={error ? error : ""}
-      className={className}
-      sx={{
-        "& .MuiOutlinedInput-root": {
+    <FormControl fullWidth variant="outlined" error={!!error} className={className}>
+      <InputLabel>{label}</InputLabel>
+      <Select
+        name={name}
+        value={value}
+        onChange={onChange}
+        label={label}
+        sx={{
           borderRadius: "6px",
-          "& fieldset": { borderColor: "#d1d5db" }, // Light gray border
-          "&:hover fieldset": { borderColor: "#9ca3af" }, // Darker gray on hover
-          "&.Mui-focused fieldset": { borderColor: "#4b5563" }, // Soft black on focus
-          "& select": { paddingTop: "10px", paddingBottom: "10px" }, // Fix text cut-off issue
-        },
-      }}
-    >
-      {children} {/* Parent provides <MenuItem> options */}
-    </TextField>
+          "& .MuiOutlinedInput-notchedOutline": { borderColor: "#d1d5db" },
+          "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#9ca3af" },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#4b5563" },
+        }}
+      >
+        {children} {/* Parent provides <MenuItem> options */}
+      </Select>
+      {error && <FormHelperText>{error}</FormHelperText>}
+    </FormControl>
   );
 };
 

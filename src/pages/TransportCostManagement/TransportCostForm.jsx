@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CommonTextField from "../../component/Form/CommonTextField";
 import CommonSelect from "../../component/Form/CommonSelect";
+import { MenuItem } from "@mui/material";
 
 const TransportCostForm = ({ onSubmit, initialData, isUpdate, districts }) => {
   const [formData, setFormData] = useState(
@@ -28,11 +29,11 @@ const TransportCostForm = ({ onSubmit, initialData, isUpdate, districts }) => {
         onChange={handleChange}
         required
       >
-        <option value="">Select District</option>
-        {districts.map((district) => (
-          <option key={district.id} value={district.id}>
+        <MenuItem value="" selected disabled>Select District</MenuItem>
+        {districts.length > 0 && districts.map((district) => (
+          <MenuItem key={district.id} value={district.id}>
             {district.districtName}
-          </option>
+          </MenuItem>
         ))}
       </CommonSelect>
 

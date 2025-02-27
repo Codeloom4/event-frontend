@@ -2,9 +2,10 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import image1 from "../../assets/image/slider/image1.jpg";
-import image2 from "../../assets/image/slider/image2.jpg";
-import image3 from "../../assets/image/slider/image3.jpg";
+import wedding from "../../assets/image/slider/wedding.jpg";
+import birthday from "../../assets/image/slider/birthday.jpg";
+import gathering from "../../assets/image/slider/gathering.jpg";
+import { Typography } from "@mui/material";
 
 const ImgSlider = () => {
   // Slider settings
@@ -21,21 +22,21 @@ const ImgSlider = () => {
   // Slide data (images and text)
   const slides = [
     {
-      image: image1,
-      text: "Discover Exciting Events Near You",
+      image: wedding,
+      text: "Seamless Wedding Planning for Your Special Day",
     },
     {
-      image: image2,
-      text: "Join the Best Events in Your City",
+      image: birthday,
+      text: "Celebrate Birthdays with Unforgettable Experiences",
     },
     {
-      image: image3,
-      text: "Experience Unforgettable Moments",
+      image: gathering,
+      text: "Host Perfect Events, Big or Small",
     },
   ];
 
   return (
-    <div className="w-[1920px] h-[578px] relative">
+    <div className="w-full h-[578px] relative px-4">
       <Slider {...settings}>
         {slides.map((slide, index) => (
           <div key={index} className="relative">
@@ -46,12 +47,27 @@ const ImgSlider = () => {
               className="w-full h-[578px] object-cover"
             />
 
-            {/* Text Overlay (20% from Left) */}
-            <div className="absolute top-1/2 left-[10%] transform -translate-y-1/2 text-white">
-              <h2 className="text-5xl font-bold mb-4">{slide.text}</h2>
-              <p className="text-xl">
+            {/* Text Overlay (Left Bottom) */}
+            <div className="absolute bottom-4 left-4 text-white">
+              <Typography
+                variant="h3"
+                className="mb-2"
+                sx={{
+                  fontWeight: 800,
+                  textShadow: "2px 2px 4px rgba(0, 0, 0, 0.6)",
+                }}
+              >
+                {slide.text}
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 800,
+                  color: "#FACC15"
+                }}
+              >
                 Join us now and be part of the excitement!
-              </p>
+              </Typography>
             </div>
           </div>
         ))}

@@ -2,7 +2,7 @@ import ApiManager from "./Api/ApiManager";
 
 const userEndpoint = "/ems/user";
 
-const UserManagement = {
+const UserManagementService = {
   signUp: async (data) => {
     try {
       const response = await ApiManager.apiPost(
@@ -16,6 +16,16 @@ const UserManagement = {
     }
   },
 
+  getUserList: async () => {
+    try {
+      const response = await ApiManager.apiGet(`${userEndpoint}`);
+      return response;
+    } catch (error) {
+      console.error("Get users failed:", error);
+      throw error;
+    }
+  },
+
   getUsers: async (username) => {
     try {
       const response = await ApiManager.apiGet(`${userEndpoint}/${username}`);
@@ -25,6 +35,16 @@ const UserManagement = {
       throw error;
     }
   },
+
+  deleteUser: async (userId) => {
+    try {
+      const response = await ApiManager.apiDelete(`${userEndpoint}/${userId}`);
+      return response;
+    } catch (error) {
+      console.error("Get users failed:", error);
+      throw error;
+    }
+  },
 };
 
-export default UserManagement;
+export default UserManagementService;

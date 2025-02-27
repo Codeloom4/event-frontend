@@ -54,7 +54,7 @@ const ApiManager = {
   //         Authorization: token ? `Bearer ${token}` : "",
   //       },
   //       params,
-        
+
   //     });
   //     return response;
   //   } catch (error) {
@@ -63,29 +63,29 @@ const ApiManager = {
   //   }
   // },
 
-// GET request
-apiGet: async (endpoint, params = {}, config = {}) => {
-  try {
-    // Retrieve authContextData from sessionStorage
-    const savedAuthData = sessionStorage.getItem("authContextData");
-    const authContextData = savedAuthData ? JSON.parse(savedAuthData) : null;
-    const token = authContextData?.token; // Extract token
+  // GET request
+  apiGet: async (endpoint, params = {}, config = {}) => {
+    try {
+      // Retrieve authContextData from sessionStorage
+      const savedAuthData = sessionStorage.getItem("authContextData");
+      const authContextData = savedAuthData ? JSON.parse(savedAuthData) : null;
+      const token = authContextData?.token; // Extract token
 
-    console.log("Token from authContextData:", token); // Debugging
+      console.log("Token from authContextData:", token); // Debugging
 
-    const response = await axios.get(`${BASE_URL}${endpoint}`, {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-      params, // Query parameters
-      ...config, // Pass additional config (e.g., responseType: "blob")
-    });
-    return response;
-  } catch (error) {
-    console.error("GET request failed:", error);
-    throw error;
-  }
-},
+      const response = await axios.get(`${BASE_URL}${endpoint}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        params, // Query parameters
+        ...config, // Pass additional config (e.g., responseType: "blob")
+      });
+      return response;
+    } catch (error) {
+      console.error("GET request failed:", error);
+      throw error;
+    }
+  },
 
   // New method for public API calls (no token required)
   apiGetPublic: async (endpoint, params = {}, config = {}) => {
