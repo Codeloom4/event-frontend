@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import TableComponent from "../../component/Tables/TableComponent";
 import CommonModal from "../../component/Modal/CommonModal";
 import TransportCostForm from "./TransportCostForm";
-import TransportCostService from "../../service/TransportCostService"; 
-import { FaSpinner } from "react-icons/fa"; 
+import TransportCostService from "../../service/TransportCostService";
+import { FaSpinner } from "react-icons/fa";
 import { RESPONSE_CODES } from "../../utils/constants";
 
 const TransportCostManagement = () => {
   const [transportCosts, setTransportCosts] = useState([]);
-  const [districts, setDistricts] = useState([]); 
+  const [districts, setDistricts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedTransportCost, setSelectedTransportCost] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -16,13 +16,9 @@ const TransportCostManagement = () => {
 
   // Fetch all transport costs
   const fetchTransportCosts = async () => {
-    try {
-      const response = await TransportCostService.getTransportCostsList();
-      if (response.data.responseCode === RESPONSE_CODES.SUCCESS) {
-        setTransportCosts(response.data.content);
-      }
-    } catch (error) {
-      console.error("Failed to fetch transport costs:", error);
+    const response = await TransportCostService.getTransportCostsList();
+    if (response.data.responseCode === RESPONSE_CODES.SUCCESS) {
+      setTransportCosts(response.data.content);
     }
   };
 
@@ -40,7 +36,7 @@ const TransportCostManagement = () => {
 
   useEffect(() => {
     fetchTransportCosts();
-    fetchDistricts(); 
+    fetchDistricts();
   }, []);
 
   // Add or Update Transport Cost
@@ -60,14 +56,14 @@ const TransportCostManagement = () => {
 
   // Delete Transport Cost
   const handleDelete = async (id) => {
-    setLoadingStates((prev) => ({ ...prev, [id]: true })); // Set loading state for this item
+    setLoadingStates((prev) => ({ ...prev, [id]: true }));
     try {
       await TransportCostService.deleteTransportCost(id);
-      fetchTransportCosts(); // Refresh the transport cost list
+      fetchTransportCosts();
     } catch (error) {
       console.error("Failed to delete transport cost:", error);
     } finally {
-      setLoadingStates((prev) => ({ ...prev, [id]: false })); // Reset loading state for this item
+      setLoadingStates((prev) => ({ ...prev, [id]: false }));
     }
   };
 
@@ -89,7 +85,7 @@ const TransportCostManagement = () => {
       accessor: "actions",
       Cell: ({ row }) => {
         const id = row.original.id;
-        const isLoading = loadingStates[id] || false; 
+        const isLoading = loadingStates[id] || false;
 
         return (
           <div className="flex space-x-2">
@@ -104,11 +100,7 @@ const TransportCostManagement = () => {
               className="px-3 py-1 text-white bg-red-500 rounded-md hover:bg-red-600 disabled:bg-red-300"
               disabled={isLoading}
             >
-              {isLoading ? (
-                <FaSpinner className="animate-spin" /> 
-              ) : (
-                "Delete"
-              )}
+              {isLoading ? <FaSpinner className="animate-spin" /> : "Delete"}
             </button>
           </div>
         );
@@ -148,7 +140,7 @@ const TransportCostManagement = () => {
             onSubmit={handleSubmit}
             initialData={selectedTransportCost}
             isUpdate={isUpdate}
-            districts={districts} 
+            districts={districts.filter((district) => !transportCosts.some(cost => cost.districtId === district.id))}
           />
         </CommonModal>
       </div>
