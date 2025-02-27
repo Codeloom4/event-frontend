@@ -12,7 +12,7 @@ const ApiManager = {
       const response = await axios.post(`${BASE_URL}${endpoint}`, data, {
         headers: {
           ...headers,
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           Authorization: token ? `Bearer ${token}` : "",
         },
       });

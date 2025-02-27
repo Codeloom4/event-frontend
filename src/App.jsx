@@ -19,6 +19,7 @@ import Profile from "./pages/Profile/Profile";
 import Service from "./pages/Services/Services";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
+import Gallery from "./pages/Gallery/Gallery";
 import TransportCostManagement from "./pages/TransportCostManagement/TransportCostManagement";
 import SystemUserStatus from "./pages/Reports/SystemUserStatus";
 import InventoryStockReport from "./pages/Reports/InventoryStockReport";
@@ -105,6 +106,7 @@ const App = () => {
             <Route path="/LogIn" element={<PublicRoute><LogIn /></PublicRoute>} />
             <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
             <Route path="/services/:serviceId" element={<Service />} />
+            <Route path="/gallery" element={<Gallery />} />
 
             {/* Protected Routes */}
             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
@@ -176,6 +178,7 @@ const App = () => {
                 </PrivateRoute>
               }
             />
+
 
             {/* 404 Route */}
             <Route path="*" element={<h1 className="mt-10 text-2xl text-center">404 - Page Not Found</h1>} />

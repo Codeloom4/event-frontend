@@ -102,6 +102,17 @@ const Header = () => {
                 </NavLink>
               </li>
 
+              <li>
+              <NavLink
+                to="/gallery"
+                className={({ isActive }) =>
+                  `text-2xl ${isActive ? "text-yellow-400" : "hover:text-gray-400"}`
+                }
+              >
+                Gallery
+              </NavLink>
+            </li>
+
 
               {/* Services Dropdown */}
               <li className="relative group">
