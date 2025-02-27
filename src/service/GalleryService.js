@@ -68,6 +68,25 @@ class GalleryService {
       throw error;
     }
   };
+
+   // Delete a group
+   deleteGroup(groupName) {
+    return ApiManager.apiDelete(`/ems/gallery/group/${groupName}`);
+  }
+
+  // Update a group
+  updateGroup(groupName, images) {
+    const formData = new FormData();
+    formData.append("groupName", groupName);
+    images.forEach((image) => formData.append("images", image));
+
+    return ApiManager.apiPut(`/ems/gallery/group/${groupName}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
 }
 
 export default new GalleryService();

@@ -112,7 +112,7 @@ const ApiManager = {
       const token = authContextData?.token; // Extract token
       const response = await axios.put(`${BASE_URL}${endpoint}`, data, {
         headers: {
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           Authorization: token ? `Bearer ${token}` : "",
         },
       });
