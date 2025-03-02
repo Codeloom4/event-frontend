@@ -9,6 +9,7 @@ const buttonColors = {
   delete: { bg: "error", disabled: "error.light" },
   confirm: { bg: "secondary", disabled: "secondary.light" },
   reject: { bg: "grey", disabled: "grey.500" },
+  downloadBarcode: { bg: "info", disabled: "info.light" }, // New button type
 };
 
 const CommonButton = ({ 

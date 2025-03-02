@@ -8,6 +8,7 @@ import React, {
 import TableComponent from "../../component/Tables/TableComponent"; // Adjust the import path
 import InventoryService from "../../service/InventoryService";
 import InventoryAddUpdate from "../Inventory/InventoryAddUpdate";
+import BarcodeDownloadPage from "../Inventory/BarcodeDownloadPage";
 import CommonModal from "../../component/Modal/CommonModal";
 import CommonTextField from "../../component/Form/CommonTextField"; // Adjust the import path
 import CommonSelect from "../../component/Form/CommonSelect"; // Adjust the import path
@@ -39,6 +40,14 @@ const Inventory = () => {
    * @InventoryManagement state use to search params
    */
   const [inventoryManagement, setInventoryManagement] = useState({});
+
+    /**
+   * @showDownloadBarcodeModal to open ADD - Update modal and send Data when update a record
+   */
+    const [showDownloadBarcodeModal, setShowDownloadBarcodeModal] = useState({
+      show: false,
+      data: {},
+    });
 
   /**
    * @showAddUpdateModal to open ADD - Update modal and send Data when update a record
@@ -176,11 +185,18 @@ const Inventory = () => {
   };
 
   //Update
-  const onClickUpdate = (data) => {
-    setIsUpdate(true);
-    setShowAddUpdateModal({ show: true, data: data });
+  const onClickDownloadBarcode = (data) => {
+    // setIsUpdate(true);
+    setShowDownloadBarcodeModal({ show: true, data: data });
     // onClickViewBack();
   };
+
+    //Update
+    const onClickUpdate = (data) => {
+      setIsUpdate(true);
+      setShowAddUpdateModal({ show: true, data: data });
+      // onClickViewBack();
+    };
 
   const onClickBackUpdate = () => {
     setIsUpdate(false);
@@ -257,19 +273,29 @@ const Inventory = () => {
         Header: "Actions",
         accessor: "actions",
         Cell: ({ row }) => (
-          <div className="flex space-x-2">
-            <CommonButton
-              type="update"
-              label="update"
-              onClick={() => onClickUpdate(row.original)}
-            />
+          (
+            <div className="flex flex-row space-x-2 justify-end">
+              {row.original.isRefundable && (
+                <CommonButton
+                  type="downloadBarcode"
+                  label="Download Barcode"
+                  onClick={() => onClickDownloadBarcode(row.original)}
+                />
+              )}
 
-            <CommonButton
-              type="delete"
-              label="Delete"
-              onClick={() => onClickDelete(row.original.id)}
-            />
-          </div>
+              <CommonButton
+                type="update"
+                label="update"
+                onClick={() => onClickUpdate(row.original)}
+              />
+
+              <CommonButton
+                type="delete"
+                label="Delete"
+                onClick={() => onClickDelete(row.original.id)}
+              />
+            </div>
+          )
         ),
       },
     ],
@@ -543,6 +569,37 @@ const Inventory = () => {
           }}
         />
       </CommonModal>
+
+      {/* add update modal */}
+      <CommonModal
+        showModal={showDownloadBarcodeModal.show}
+        size="xl"
+        handleClose={() => {
+          setShowDownloadBarcodeModal({
+            show: false,
+            data: {},
+          });
+        }}
+        title={"Barcode"}
+      >
+        {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
+        <BarcodeDownloadPage/>
+        {/* <InventoryAddUpdate
+          isUpdate={isUpdate}
+          data={isUpdate ? showDownloadBarcodeModal.data : {}}
+          DropdownItemDetails={DropdownItemDetails}
+          close={() => {
+            setShowDownloadBarcodeModal({
+              show: false,
+              data: {},
+            });
+          }}
+          completed={() => {
+            retriveData(search);
+          }}
+        /> */}
+      </CommonModal>
+
 
       {/* Table Component */}
       <TableComponent
