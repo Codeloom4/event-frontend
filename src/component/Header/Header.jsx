@@ -87,43 +87,18 @@ const Header = () => {
                       </NavLink>
                     </li>
                   ))}
-                  {/* </ul> */}
-
-                  <li>
-                    <NavLink
-                      to="/about"
-                      className={({ isActive }) => getNavLinkClass(isActive)}
-                    >
-                      About
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/contact"
-                      className={({ isActive }) => getNavLinkClass(isActive)}
-                    >
-                      Contact
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/gallery"
-                      className={({ isActive }) => getNavLinkClass(isActive)}
-                    >
-                      Gallery
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/grouping-management"
-                      className={({ isActive }) => getNavLinkClass(isActive)}
-                    >
-                      Participant Grouping
-                    </NavLink>
-                  </li>
                 </ul>
               )}
             </div>
+            <NavLink to="/about" className={getNavLinkClass}>
+              About
+            </NavLink>
+            <NavLink to="/contact" className={getNavLinkClass}>
+              Contact
+            </NavLink>
+            <NavLink to="/gallery" className={getNavLinkClass}>
+              Gallery
+            </NavLink>
           </nav>
         </div>
 
