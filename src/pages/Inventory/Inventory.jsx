@@ -15,6 +15,7 @@ import CommonRadioGroup from "../../component/Form/CommonRadioGroup"; // Adjust 
 import CommonButton from "../../component/Form/CommonButton"; // Adjust the import path
 import { MenuItem } from "@mui/material";
 import { FormControlLabel, Radio } from "@mui/material";
+import { FaSpinner } from "react-icons/fa"; // Import spinner icon
 
 const Inventory = () => {
   const defaultPageLimit = 5; // Define the default page limit
@@ -77,6 +78,8 @@ const Inventory = () => {
    */
   const resetState = useRef(false);
 
+  const [loading, setLoading] = useState(true); // Add loading state
+
   //initial step
   useEffect(() => {
     getDropdownItemDetails();
@@ -97,6 +100,8 @@ const Inventory = () => {
       setDropdownItemDetails(result?.data?.content || []);
     } catch (e) {
       console.log("setDropdownItemDetails Error : ", e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -325,10 +330,16 @@ const Inventory = () => {
   );
   console.log("inventoryManagement  state 222222------>>>>> ", state);
   console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
+  console.log("loading  ------->>>>> ", loading);
 
-
-
-
+  // Show spinner while loading
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <FaSpinner className="animate-spin text-4xl text-blue-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6 App bg-gray-50">
@@ -377,8 +388,8 @@ const Inventory = () => {
           onClick={() => alert("Reject Clicked")}
         /> */}
 
-        {/* Disabled Button Example */}
-        {/* <CommonButton type="add" label="Disabled Add" disabled />
+      {/* Disabled Button Example */}
+      {/* <CommonButton type="add" label="Disabled Add" disabled />
       </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -520,6 +531,7 @@ const Inventory = () => {
         <InventoryAddUpdate
           isUpdate={isUpdate}
           data={isUpdate ? showAddUpdateModal.data : {}}
+          DropdownItemDetails={DropdownItemDetails}
           close={() => {
             setShowAddUpdateModal({
               show: false,
