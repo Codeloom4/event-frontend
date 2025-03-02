@@ -78,8 +78,10 @@ const Layout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen mt-6">
       {/* Conditionally render Header and SubHeader */}
+      <div className="mb-12">
       {!isAuthPage && <Header />}
       {!isAuthPage && showSubHeader && <SubHeader />}
+      </div>
 
       {/* Main Content with Padding for Fixed Header */}
       <main className={`flex-grow ${!isAuthPage ? "pt-16 py-4 mt-14" : ""}`}>

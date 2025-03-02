@@ -7,6 +7,7 @@ import CommonSelect from "../../component/Form/CommonSelect"; // Adjust the impo
 import CommonRadioGroup from "../../component/Form/CommonRadioGroup"; // Adjust the import path
 import ItemService from "../../service/ItemService"; // Adjust the import path
 import CommonButton from "../../component/Form/CommonButton"; // Adjust the import path
+import { displayApiMessage } from "../../context/ToastContext";
 
 const ItemAddUpdate = ({ isUpdate, data, close, completed }) => {
   const userRoleTypeList = [
@@ -112,6 +113,7 @@ const ItemAddUpdate = ({ isUpdate, data, close, completed }) => {
       onReset();
       close();
     }
+    displayApiMessage(result.data.responseMsg);
     completed()
   };
   const updateHandler = async (itemManagement) => {
@@ -121,6 +123,7 @@ const ItemAddUpdate = ({ isUpdate, data, close, completed }) => {
       onReset()
       close()
     }
+    displayApiMessage(result.data.responseMsg);
     completed()
   };
 
@@ -204,20 +207,6 @@ const ItemAddUpdate = ({ isUpdate, data, close, completed }) => {
           label="Quantity"
           type="number"
           value={itemManagement.quantity}
-          onChange={formOnChange}
-        />
-        <CommonTextField
-          id="updatedAt"
-          name="updatedAt"
-          label="Updated Date-Time"
-          value={itemManagement?.updatedAt}
-          onChange={formOnChange}
-        />
-        <CommonTextField
-          id="createdUser"
-          name="createdUser"
-          label="Created User"
-          value={itemManagement?.createdUser}
           onChange={formOnChange}
         />
       </div>

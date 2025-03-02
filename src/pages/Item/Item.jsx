@@ -476,7 +476,7 @@ const Item = () => {
       {/* Table Component */}
       <TableComponent
         columns={columns}
-        data={state.length > 0 ? state : []}
+        data={state?.list || []}
         loading={false}
         fetchData={retriveData}
         onFilter={handleFilter}
