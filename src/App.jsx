@@ -10,6 +10,8 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { USER_ROLES } from "./utils/constants";
 import { ToastProvider } from "./context/ToastContext";
 
+import CreateGrouping from "./pages/Grouping/CreateGrouping"; // Import the new page
+
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Header from "./component/Header/Header";
 import SubHeader from "./component/Header/SubHeader";
@@ -163,7 +165,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              
+
               {/* ----------------------------------------Admin/Employee---------------------------------------- */}
               <Route
                 path="/dashboard"
@@ -258,6 +260,16 @@ const App = () => {
                 }
               />
 
+<Route
+                path="/grouping-management"
+                element={
+                  <PrivateRoute
+                    allowedRoles={[USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE,USER_ROLES.CLIENT]}
+                  >
+                    <CreateGrouping />
+                  </PrivateRoute>
+                }
+              />
               {/* ----------------------------------------404 Route---------------------------------------- */}
               <Route
                 path="*"

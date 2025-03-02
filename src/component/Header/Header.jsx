@@ -99,6 +99,14 @@ const Header = () => {
                   Gallery
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/grouping-management"
+                  className={({ isActive }) => getNavLinkClass(isActive)}
+                >
+                  Participant Grouping
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>
