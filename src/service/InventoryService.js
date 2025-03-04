@@ -18,7 +18,7 @@ class InventoryService {
     // } else {
     //   request_string = request_string + `&auditOnly=${true}`
     // }
-    return ApiManager.apiGet(`/ems/item/getall`, {})
+    return ApiManager.apiGet(`/ems/item/itemdropdown`, {})
   }
 
   confirm = async (code) => {

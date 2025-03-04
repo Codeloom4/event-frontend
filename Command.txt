@@ -13,3 +13,5 @@ npm install @material-tailwind/react
 
 /* Install material-tailwind__react */
 npm install --save-dev @types/material-tailwind__react
+
+npm install react-barcode html-to-image

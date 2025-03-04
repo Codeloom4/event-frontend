@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assets/logo/mainLogo.svg";
@@ -10,13 +10,27 @@ import SignUpForm from "../../pages/SignUp/SignUpForm";
 import { USER_ROLES } from "../../utils/constants";
 
 const Header = () => {
-  const { authContextData, logout, services = [] } = useAuth(); // Default services to empty array
+  const { authContextData, logout, services = [] } = useAuth();
   const navigate = useNavigate();
-
   const { isAuthenticated, username, userRole } = authContextData;
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const servicesRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
+        setServicesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -28,29 +42,43 @@ const Header = () => {
     setShowModal(true);
   };
 
-  // Helper function for NavLink styling
-  const getNavLinkClass = (isActive) =>
-    `text-2xl ${
-      isActive ? "text-yellow-400 hover:text-yellow-400" : "hover:text-gray-400 no-underline"
-    }`;
+  const getNavLinkClass = ({ isActive }) =>
+    `text-xl font-semibold px-4 py-2 rounded-md transition-all duration-300 ${
+      isActive ? "text-yellow-400 bg-gray-700" : "hover:text-yellow-400"
+    } no-underline`;
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
+    <header
+      className="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-gray-800 shadow-lg"
+      text-white
+    >
       <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
-        <NavLink to="/" className="flex items-center space-x-2 text-2xl font-bold">
-          <img src={Logo} alt="Eventify" className="h-10" />
-          <span className="flex items-center h-10 text-4xl font-extrabold text-yellow-400 no-underline">
+        <NavLink
+          to="/"
+          className="flex items-center space-x-2 text-2xl font-bold no-underline"
+        >
+          <img src={Logo} alt="Eventify" className="h-12" />
+          <span className="text-5xl font-extrabold text-yellow-400">
             Eventify
           </span>
         </NavLink>
 
-        {/* Navigation Links */}
+        {/* Navigation Links: Centered in the middle. */}
         <div>
           <nav>
-            <ul className="flex space-x-4">
+            <ul className="flex space-x-4 m-0">
               <li>
-                <NavLink to="/" className={({ isActive }) => getNavLinkClass(isActive)}>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `text-2xl ${
+                      isActive || window.location.pathname === "/dashboard"
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
+                    }`
+                  }
+                >
                   Home
                 </NavLink>
               </li>
@@ -72,61 +100,44 @@ const Header = () => {
                     />
                   </svg>
                 </div>
-                <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block w-max">
+                <ul className="absolute hidden p-2 space-y-2 text-white align-middle bg-gray-700 rounded-md group-hover:block w-max">
                   {services.map((service, index) => (
                     <li key={index}>
-                      <NavLink to={`/services/${service.eventType}`} className="block no-underline">
-                        <button className="block w-full px-4 py-2 text-center hover:bg-gray-600">
-                          {service.description}
-                        </button>
+                      <NavLink
+                        to={`/services/${service.eventType}`}
+                        className="block px-4 py-2 text-white rounded-md hover:bg-gray-600 no-underline"
+                      >
+                        {service.description}
                       </NavLink>
                     </li>
                   ))}
                 </ul>
               </li>
-              <li>
-                <NavLink to="/about" className={({ isActive }) => getNavLinkClass(isActive)}>
-                  About
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/contact" className={({ isActive }) => getNavLinkClass(isActive)}>
-                  Contact
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/gallery" className={({ isActive }) => getNavLinkClass(isActive)}>
-                  Gallery
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/grouping-management"
-                  className={({ isActive }) => getNavLinkClass(isActive)}
-                >
-                  Participant Grouping
-                </NavLink>
-              </li>
             </ul>
+            <NavLink to="/about" className={getNavLinkClass}>
+              About
+            </NavLink>
+            <NavLink to="/contact" className={getNavLinkClass}>
+              Contact
+            </NavLink>
+            <NavLink to="/gallery" className={getNavLinkClass}>
+              Gallery
+            </NavLink>
           </nav>
         </div>
 
-        <div className="flex space-x-4">
+        {/* Auth Section */}
+        <div className="flex space-x-4 items-center">
           {isAuthenticated ? (
             <div className="relative">
-              {/* Profile Button */}
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center px-4 py-2 space-x-2 text-white transition-all duration-300 bg-gray-700 rounded-full hover:bg-gray-600"
-                aria-haspopup="true"
-                aria-expanded={dropdownOpen}
+                className="flex items-center px-4 py-2 text-white transition-all duration-300 bg-gray-700 rounded-full hover:bg-gray-600"
               >
                 <FaUserCircle className="w-8 h-8 text-gray-300" />
-                <span className="text-lg font-medium">{username}</span>
-                <MdArrowDropDown className="w-6 h-6" />
+                <span className="text-lg font-medium ml-2">{username}</span>
+                <MdArrowDropDown className="w-6 h-6 ml-1" />
               </button>
-
-              {/* Dropdown Menu */}
               {dropdownOpen && (
                 <div className="absolute right-0 w-40 mt-2 bg-gray-700 rounded-md shadow-lg">
                   {userRole === USER_ROLES.ADMIN && (
@@ -147,15 +158,15 @@ const Header = () => {
               )}
             </div>
           ) : (
-            <>
+            <div className="flex space-x-6">
               <NavLink
                 to="/login"
-                className="px-6 py-2 text-2xl transition-all duration-300 rounded-lg hover:text-white hover:shadow-lg"
+                className="px-6 py-2 text-xl transition-all duration-300 rounded-lg hover:text-yellow-400 no-underline"
               >
                 Login
               </NavLink>
               <SignUpButton />
-            </>
+            </div>
           )}
         </div>
       </div>
