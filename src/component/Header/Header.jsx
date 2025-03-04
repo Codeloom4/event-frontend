@@ -48,8 +48,11 @@ const Header = () => {
     } no-underline`;
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-gray-800 shadow-lg">
-      <div className="flex">
+    <header
+      className="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-gray-800 shadow-lg"
+      text-white
+    >
+      <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
         <NavLink
           to="/"
@@ -61,22 +64,43 @@ const Header = () => {
           </span>
         </NavLink>
 
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          {/* Navigation Links */}
-          <nav className="hidden md:flex space-x-6">
-            <NavLink to="/" className={getNavLinkClass}>
-              Home
-            </NavLink>
-            <div className="relative" ref={servicesRef}>
-              <button
-                onClick={() => setServicesOpen(!servicesOpen)}
-                className="text-xl font-semibold text-blue-600 px-4 py-2 rounded-md transition-all duration-300 hover:text-yellow-400 flex items-center space-x-1"
-              >
-                <span>Services</span>
-                <MdArrowDropDown className="w-6 h-6" />
-              </button>
-              {servicesOpen && (
-                <ul className="absolute left-0 p-2 mt-2 space-y-2 bg-gray-700 rounded-md shadow-lg min-w-[150px]">
+        {/* Navigation Links: Centered in the middle. */}
+        <div>
+          <nav>
+            <ul className="flex space-x-4 m-0">
+              <li>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `text-2xl ${
+                      isActive || window.location.pathname === "/dashboard"
+                        ? "text-yellow-400 hover:text-yellow-400  "
+                        : "hover:text-gray-400 no-underline"
+                    }`
+                  }
+                >
+                  Home
+                </NavLink>
+              </li>
+              {/* Services Dropdown */}
+              <li className="relative group">
+                <div className="flex items-center space-x-1 cursor-pointer">
+                  <span className="text-2xl">Services</span>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+                <ul className="absolute hidden p-2 space-y-2 text-white align-middle bg-gray-700 rounded-md group-hover:block w-max">
                   {services.map((service, index) => (
                     <li key={index}>
                       <NavLink
@@ -88,8 +112,8 @@ const Header = () => {
                     </li>
                   ))}
                 </ul>
-              )}
-            </div>
+              </li>
+            </ul>
             <NavLink to="/about" className={getNavLinkClass}>
               About
             </NavLink>

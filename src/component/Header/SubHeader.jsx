@@ -29,10 +29,10 @@ const SubHeader = () => {
   }, [dropdownRef]);
 
   return (
-    <div className="fixed left-0 z-40 w-full p-3 text-white bg-gray-800 top-20 shadow-md">
+    <div className="fixed left-0 z-40 w-full p-3 text-white bg-gray-700 top-20">
       <div className="container mx-auto">
         <nav>
-          <ul className="flex justify-center space-x-6">
+          <ul className="flex justify-center m-0 space-x-6">
             {isAuthenticated &&
               (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
                 <>
