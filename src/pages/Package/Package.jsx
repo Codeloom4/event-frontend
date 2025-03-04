@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Tabs, Tab, Box } from "@mui/material";
 import UpdatableTableComponent from "../../component/Tables/UpdatableTableComponent";
 import CommonTextField from "../../component/Form/CommonTextField";
+import BasicInformation from "./tabs/BasicInformation";
 
 const Package = () => {
   const { packageId } = useParams();
@@ -87,27 +88,7 @@ const Package = () => {
           </Tabs>
 
           <div role="tabpanel" hidden={value !== "1"}>
-            {value === "1" && (
-              <Box p={3} className="space-y-4">
-                <CommonTextField
-                  id="eventType"
-                  name="eventType"
-                  label="Event Type"
-                  value={packageDetails.name}
-                  // onChange={handleChange}
-                  required
-                />
-
-                <CommonTextField
-                  id="eventType"
-                  name="eventType"
-                  label="Event Type"
-                  value={packageDetails.description}
-                  // onChange={handleChange}
-                  required
-                />
-              </Box>
-            )}
+            {value === "1" && <BasicInformation />}
           </div>
 
           <div role="tabpanel" hidden={value !== "2"}>

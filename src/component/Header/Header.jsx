@@ -70,7 +70,7 @@ const Header = () => {
         </NavLink>
 
         <nav>
-          <ul className="flex space-x-14 m-0">
+          <ul className="flex items-center space-x-14 m-0">
             <li>
               <NavLink
                 to={
@@ -85,25 +85,20 @@ const Header = () => {
                 Home
               </NavLink>
             </li>
-            <li
-              className="relative"
-              ref={servicesRef}
-              onClick={() => setServicesOpen(!servicesOpen)}
-            >
-              <NavLink
-                to="#"
-                className={`${
-                  location.pathname.startsWith("/services/")
-                    ? "text-yellow-400 bg-gray-700 shadow-md"
-                    : "hover:text-yellow-400"
-                } ${getNavLinkClass({
-                  isActive: servicesOpen,
-                })} cursor-pointer`}
+            <li className="relative flex items-center" ref={servicesRef}>
+              <button
+                onClick={() => setServicesOpen(!servicesOpen)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && setServicesOpen(!servicesOpen)
+                }
+                className="text-xl font-semibold px-6 py-2 rounded-md transition-all duration-300 cursor-pointer hover:text-yellow-400 flex items-center"
+                aria-expanded={servicesOpen}
               >
-                Services <MdArrowDropDown className="inline-block ml-1" />
-              </NavLink>
+                Services <MdArrowDropDown className="ml-1" />
+              </button>
+
               {servicesOpen && (
-                <ul className="absolute left-0 w-48 mt-2 bg-gray-700 rounded-md shadow-lg text-white">
+                <ul className="absolute left-0 w-48 mt-1 bg-gray-700 rounded-md shadow-lg text-white top-full">
                   {services.map((service, index) => (
                     <li key={index}>
                       <NavLink
@@ -122,6 +117,7 @@ const Header = () => {
                 </ul>
               )}
             </li>
+
             {isAuthenticated &&
               (userRole === USER_ROLES.ADMIN ||
                 userRole === USER_ROLES.EMPLOYEE) && (
