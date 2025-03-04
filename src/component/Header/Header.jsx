@@ -48,9 +48,7 @@ const Header = () => {
     } no-underline`;
 
   return (
-    <header
-      className="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-gray-800 shadow-lg text-white"
-    >
+    <header className="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-gray-800 shadow-lg text-white">
       <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
         <NavLink
@@ -81,6 +79,7 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
+
               {/* Services Dropdown */}
               <li className="relative group">
                 <div className="flex items-center space-x-1 cursor-pointer">
@@ -112,16 +111,6 @@ const Header = () => {
                   ))}
                 </ul>
               </li>
-            </ul>
-            <NavLink to="/about" className={getNavLinkClass}>
-              About
-            </NavLink>
-            <NavLink to="/contact" className={getNavLinkClass}>
-              Contact
-            </NavLink>
-            <NavLink to="/gallery" className={getNavLinkClass}>
-              Gallery
-            </NavLink>
 
             {/* Package NavLink (Only for Admin & Employee) */}
             {isAuthenticated &&
@@ -141,6 +130,7 @@ const Header = () => {
             <NavLink to="/gallery" className={getNavLinkClass}>
               Gallery
             </NavLink>
+            </ul>
           </nav>
         </div>
 
