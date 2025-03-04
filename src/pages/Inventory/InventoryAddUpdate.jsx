@@ -7,14 +7,15 @@ import CommonSelect from "../../component/Form/CommonSelect"; // Adjust the impo
 import CommonRadioGroup from "../../component/Form/CommonRadioGroup"; // Adjust the import path
 import InventoryService from "../../service/InventoryService"; // Adjust the import path
 import CommonButton from "../../component/Form/CommonButton"; // Adjust the import path
+import { displayApiMessage } from "../../context/ToastContext";
 
-const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
-  const userRoleTypeList = [
-    { value: "admin", label: "Admin" },
-    { value: "editor", label: "Editor" },
-    { value: "viewer", label: "Viewer" },
-  ];
-  const [selectedRole, setSelectedRole] = useState("");
+const InventoryAddUpdate = ({
+  isUpdate,
+  data,
+  DropdownItemDetails,
+  close,
+  completed,
+}) => {
 
   const [formData, setFormData] = useState({
     code: data?.code || "",
@@ -41,12 +42,13 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
   const [inventoryManagementErrors, setInventoryManagementErrors] = useState(
     {} // State to hold validation errors
   );
-  const [DropdownItemDetails, setDropdownItemDetails] = useState([]);
+  // const [DropdownItemDetails, setDropdownItemDetails] = useState([]);
 
   //initial step
   useEffect(() => {
     onReset();
-    getDropdownItemDetails();
+    // setDropdownItemDetails()
+    // getDropdownItemDetails();
     // getBankName()
     // if (
     //   statusList.length === 0 ||
@@ -63,7 +65,7 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
   const getDropdownItemDetails = async () => {
     try {
       const result = await InventoryService.access();
-      setDropdownItemDetails(result?.data?.content);
+      // setDropdownItemDetails(result?.data?.content);
       console.log("getDropdownItemDetails result : ", result);
     } catch (e) {
       console.log("setDropdownItemDetails Error : ", e);
@@ -115,16 +117,18 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
       onReset();
       close();
     }
-    completed()
+    displayApiMessage(result.data.responseMsg);
+    completed();
   };
   const updateHandler = async (inventoryManagement) => {
-    const result = await InventoryService.edit(inventoryManagement)
+    const result = await InventoryService.edit(inventoryManagement);
     // handleNotification(result, result.data.responseMsg)
-    if (result.data.responseCode !== '01') {
-      onReset()
-      close()
+    if (result.data.responseCode !== "01") {
+      onReset();
+      close();
     }
-    completed()
+    displayApiMessage(result.data.responseMsg);
+    completed();
   };
 
   //   const formOnChange = (e) => {
@@ -167,34 +171,79 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
       /> */}
           {/* Is Refundable - Radio Group */}
           {/* Item Name - Select Dropdown */}
-          
-          <select
+
+          {/* <select
             name="id"
             value={inventoryManagement?.itemId || ""}
             onChange={(e) => {
               const newValue = produce(inventoryManagement, (draft) => {
                 draft.itemId = e.target.value;
-                var i = e.target.selectedIndex
-                draft.itemName = e.target[i].text
+                var i = e.target.selectedIndex;
+                draft.itemName = e.target[i].text;
               });
               setInventoryManagement(newValue);
             }}
             className="w-full px-3 py-2 border rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            {/* Placeholder option */}
-            <option value="" disabled selected={!inventoryManagement?.itemId}>
+          > */}
+          {/* Placeholder option */}
+          {/* <option value="" disabled selected={!inventoryManagement?.itemId}>
               Select an item
-            </option>
+            </option> */}
 
-            {/* Dropdown items */}
-            {DropdownItemDetails.length > 0 &&
+          {/* Dropdown items */}
+          {/* {DropdownItemDetails.length > 0 &&
               DropdownItemDetails.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.itemName}
                 </option>
               ))}
-          </select>
+          </select> */}
 
+          {/* <CommonSelect
+        id="itemName"
+        name="itemName"
+        label="Item Name"
+        value={inventoryManagement?.itemId || ""}
+        onChange={handleChange}
+        required
+      >
+        <MenuItem value="" selected disabled>Select District</MenuItem>
+        {DropdownItemDetails?.length > 0 && DropdownItemDetails.map((item) => (
+          <MenuItem key={item.id} value={item.id}>
+            {item.districtName}
+          </MenuItem>
+        ))}
+      </CommonSelect> */}
+
+          {/* Item Name - Select Dropdown */}
+          <CommonSelect
+            id="itemId"
+            name="itemId"
+            label="Item Name"
+            value={inventoryManagement?.itemId || ""}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+
+              // Find the selected item from the dropdown list
+              const selectedItem = DropdownItemDetails.find(item => item.id === selectedId);
+              
+              const newValue = produce(inventoryManagement, (draft) => {
+                draft.itemId = e.target.value;
+                console.log("e.target: ", e);
+                draft.itemName = selectedItem ? selectedItem.itemName : "";
+                // var i = e.target.selectedIndex;
+                // draft.itemName = e.target[i].text;
+              });
+              setInventoryManagement(newValue);
+            }}
+          >
+            {DropdownItemDetails?.length > 0 &&
+              DropdownItemDetails.map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.itemName}
+                </MenuItem>
+              ))}
+          </CommonSelect>
 
           {/* Item Name - Select Dropdown */}
           {/* <CommonSelect
@@ -320,14 +369,14 @@ const InventoryAddUpdate = ({ isUpdate, data, close, completed }) => {
             onChange={formOnChange}
           />
 
-          {/* Created User */}
+          {/* Created User
           <CommonTextField
             id="createdUser"
             name="createdUser"
             label="Created User"
             value={inventoryManagement?.createdUser}
             onChange={formOnChange}
-          />
+          /> */}
         </div>
         <div className="flex justify-end space-x-4">
           <button

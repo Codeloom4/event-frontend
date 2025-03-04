@@ -8,6 +8,7 @@ import React, {
 import TableComponent from "../../component/Tables/TableComponent"; // Adjust the import path
 import InventoryService from "../../service/InventoryService";
 import InventoryAddUpdate from "../Inventory/InventoryAddUpdate";
+import BarcodeDownloadPage from "../Inventory/BarcodeDownloadPage";
 import CommonModal from "../../component/Modal/CommonModal";
 import CommonTextField from "../../component/Form/CommonTextField"; // Adjust the import path
 import CommonSelect from "../../component/Form/CommonSelect"; // Adjust the import path
@@ -15,6 +16,7 @@ import CommonRadioGroup from "../../component/Form/CommonRadioGroup"; // Adjust 
 import CommonButton from "../../component/Form/CommonButton"; // Adjust the import path
 import { MenuItem } from "@mui/material";
 import { FormControlLabel, Radio } from "@mui/material";
+import { FaSpinner } from "react-icons/fa"; // Import spinner icon
 
 const Inventory = () => {
   const defaultPageLimit = 5; // Define the default page limit
@@ -38,6 +40,14 @@ const Inventory = () => {
    * @InventoryManagement state use to search params
    */
   const [inventoryManagement, setInventoryManagement] = useState({});
+
+    /**
+   * @showDownloadBarcodeModal to open ADD - Update modal and send Data when update a record
+   */
+    const [showDownloadBarcodeModal, setShowDownloadBarcodeModal] = useState({
+      show: false,
+      data: {},
+    });
 
   /**
    * @showAddUpdateModal to open ADD - Update modal and send Data when update a record
@@ -77,6 +87,8 @@ const Inventory = () => {
    */
   const resetState = useRef(false);
 
+  const [loading, setLoading] = useState(true); // Add loading state
+
   //initial step
   useEffect(() => {
     getDropdownItemDetails();
@@ -97,6 +109,8 @@ const Inventory = () => {
       setDropdownItemDetails(result?.data?.content || []);
     } catch (e) {
       console.log("setDropdownItemDetails Error : ", e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -171,11 +185,18 @@ const Inventory = () => {
   };
 
   //Update
-  const onClickUpdate = (data) => {
-    setIsUpdate(true);
-    setShowAddUpdateModal({ show: true, data: data });
+  const onClickDownloadBarcode = (data) => {
+    // setIsUpdate(true);
+    setShowDownloadBarcodeModal({ show: true, data: data });
     // onClickViewBack();
   };
+
+    //Update
+    const onClickUpdate = (data) => {
+      setIsUpdate(true);
+      setShowAddUpdateModal({ show: true, data: data });
+      // onClickViewBack();
+    };
 
   const onClickBackUpdate = () => {
     setIsUpdate(false);
@@ -252,19 +273,29 @@ const Inventory = () => {
         Header: "Actions",
         accessor: "actions",
         Cell: ({ row }) => (
-          <div className="flex space-x-2">
-            <CommonButton
-              type="update"
-              label="update"
-              onClick={() => onClickUpdate(row.original)}
-            />
+          (
+            <div className="flex flex-row space-x-2 justify-end">
+              {row.original.isRefundable && (
+                <CommonButton
+                  type="downloadBarcode"
+                  label="Download Barcode"
+                  onClick={() => onClickDownloadBarcode(row.original)}
+                />
+              )}
 
-            <CommonButton
-              type="delete"
-              label="Delete"
-              onClick={() => onClickDelete(row.original.id)}
-            />
-          </div>
+              <CommonButton
+                type="update"
+                label="update"
+                onClick={() => onClickUpdate(row.original)}
+              />
+
+              <CommonButton
+                type="delete"
+                label="Delete"
+                onClick={() => onClickDelete(row.original.id)}
+              />
+            </div>
+          )
         ),
       },
     ],
@@ -325,10 +356,16 @@ const Inventory = () => {
   );
   console.log("inventoryManagement  state 222222------>>>>> ", state);
   console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
+  console.log("loading  ------->>>>> ", loading);
 
-
-
-
+  // Show spinner while loading
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <FaSpinner className="animate-spin text-4xl text-blue-500" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6 App bg-gray-50">
@@ -377,8 +414,8 @@ const Inventory = () => {
           onClick={() => alert("Reject Clicked")}
         /> */}
 
-        {/* Disabled Button Example */}
-        {/* <CommonButton type="add" label="Disabled Add" disabled />
+      {/* Disabled Button Example */}
+      {/* <CommonButton type="add" label="Disabled Add" disabled />
       </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -520,6 +557,7 @@ const Inventory = () => {
         <InventoryAddUpdate
           isUpdate={isUpdate}
           data={isUpdate ? showAddUpdateModal.data : {}}
+          DropdownItemDetails={DropdownItemDetails}
           close={() => {
             setShowAddUpdateModal({
               show: false,
@@ -531,6 +569,37 @@ const Inventory = () => {
           }}
         />
       </CommonModal>
+
+      {/* add update modal */}
+      <CommonModal
+        showModal={showDownloadBarcodeModal.show}
+        size="xl"
+        handleClose={() => {
+          setShowDownloadBarcodeModal({
+            show: false,
+            data: {},
+          });
+        }}
+        title={"Barcode"}
+      >
+        {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
+        <BarcodeDownloadPage/>
+        {/* <InventoryAddUpdate
+          isUpdate={isUpdate}
+          data={isUpdate ? showDownloadBarcodeModal.data : {}}
+          DropdownItemDetails={DropdownItemDetails}
+          close={() => {
+            setShowDownloadBarcodeModal({
+              show: false,
+              data: {},
+            });
+          }}
+          completed={() => {
+            retriveData(search);
+          }}
+        /> */}
+      </CommonModal>
+
 
       {/* Table Component */}
       <TableComponent

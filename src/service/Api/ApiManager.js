@@ -9,6 +9,8 @@ const ApiManager = {
       const savedAuthData = sessionStorage.getItem("authContextData");
       const authContextData = savedAuthData ? JSON.parse(savedAuthData) : null;
       const token = authContextData?.token; // Extract token
+      console.log("token issssssssssss");
+      console.log(token);
       const response = await axios.post(`${BASE_URL}${endpoint}`, data, {
         headers: {
           ...headers,
