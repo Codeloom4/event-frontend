@@ -74,13 +74,13 @@ const Layout = ({ children }) => {
     (userRole === USER_ROLES.ADMIN || userRole === USER_ROLES.EMPLOYEE);
 
   return (
-    <div className="flex flex-col min-h-screen mt-6">
+    <div className="flex flex-col min-h-screen">
       {/* Conditionally render Header and SubHeader */}
       {!isAuthPage && <Header />}
       {!isAuthPage && showSubHeader && <SubHeader />}
 
       {/* Main Content with Padding for Fixed Header */}
-      <main className={`flex-grow ${!isAuthPage ? "pt-16 py-4 mt-14" : ""}`}>
+      <main className={`flex-grow ${!isAuthPage ? "pt-16 py-4 mt-32 px-24" : ""}`}>
         {children}
       </main>
 

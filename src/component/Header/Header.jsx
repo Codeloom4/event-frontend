@@ -30,7 +30,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
+    <header className="fixed top-0 left-0 z-50 w-full px-4 py-3 text-white bg-gray-800">
       <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
         <NavLink
@@ -46,7 +46,7 @@ const Header = () => {
         {/* Navigation Links: Centered in the middle. */}
         <div>
           <nav>
-            <ul className="flex space-x-4">
+            <ul className="flex space-x-4 m-0">
               <li>
                 <NavLink
                   to="/"
