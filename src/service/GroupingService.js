@@ -54,10 +54,15 @@ class GroupingService {
         return ApiManager.apiDelete(`${groupingEndpoint}/${id}`);
     };
 
-    // Process a grouping (generate PDF)
-    processGrouping = async (id) => {
-        return ApiManager.apiPost(`${groupingEndpoint}/${id}/process`);
-    };
+
+
+     // Process a grouping (generate PDF)
+  processGrouping = async (id) => {
+    return ApiManager.apiGet(`${groupingEndpoint}/${id}/process`, {}, {
+      responseType: "blob", // Ensure the response is handled as a binary file
+    });
+  };
+
 }
 
 export default new GroupingService();
