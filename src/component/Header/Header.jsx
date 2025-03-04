@@ -31,14 +31,19 @@ const Header = () => {
   // Helper function for NavLink styling
   const getNavLinkClass = (isActive) =>
     `text-2xl ${
-      isActive ? "text-yellow-400 hover:text-yellow-400" : "hover:text-gray-400 no-underline"
+      isActive
+        ? "text-yellow-400 hover:text-yellow-400"
+        : "hover:text-gray-400 no-underline"
     }`;
 
   return (
     <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
       <div className="flex items-center justify-between w-full">
         {/* Logo Section */}
-        <NavLink to="/" className="flex items-center space-x-2 text-2xl font-bold">
+        <NavLink
+          to="/"
+          className="flex items-center space-x-2 text-2xl font-bold"
+        >
           <img src={Logo} alt="Eventify" className="h-10" />
           <span className="flex items-center h-10 text-4xl font-extrabold text-yellow-400 no-underline">
             Eventify
@@ -50,7 +55,10 @@ const Header = () => {
           <nav>
             <ul className="flex space-x-4">
               <li>
-                <NavLink to="/" className={({ isActive }) => getNavLinkClass(isActive)}>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) => getNavLinkClass(isActive)}
+                >
                   Home
                 </NavLink>
               </li>
@@ -75,7 +83,10 @@ const Header = () => {
                 <ul className="absolute hidden p-2 space-y-2 text-white bg-gray-700 rounded-md group-hover:block w-max">
                   {services.map((service, index) => (
                     <li key={index}>
-                      <NavLink to={`/services/${service.eventType}`} className="block no-underline">
+                      <NavLink
+                        to={`/services/${service.eventType}`}
+                        className="block no-underline"
+                      >
                         <button className="block w-full px-4 py-2 text-center hover:bg-gray-600">
                           {service.description}
                         </button>
@@ -84,18 +95,39 @@ const Header = () => {
                   ))}
                 </ul>
               </li>
+              {isAuthenticated &&
+                (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                  <li>
+                    <NavLink
+                      to="/package"
+                      className={({ isActive }) => getNavLinkClass(isActive)}
+                    >
+                      Package
+                    </NavLink>
+                  </li>
+                )}
+
               <li>
-                <NavLink to="/about" className={({ isActive }) => getNavLinkClass(isActive)}>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) => getNavLinkClass(isActive)}
+                >
                   About
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/contact" className={({ isActive }) => getNavLinkClass(isActive)}>
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) => getNavLinkClass(isActive)}
+                >
                   Contact
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/gallery" className={({ isActive }) => getNavLinkClass(isActive)}>
+                <NavLink
+                  to="/gallery"
+                  className={({ isActive }) => getNavLinkClass(isActive)}
+                >
                   Gallery
                 </NavLink>
               </li>
