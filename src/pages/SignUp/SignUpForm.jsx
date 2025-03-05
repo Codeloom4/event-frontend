@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { displayApiMessage } from "../../context/ToastContext";
 import CommonRadioGroup from "../../component/Form/CommonRadioGroup";
 import { FormControlLabel, Radio } from "@mui/material";
-import { useAuth } from "../../context/AuthContext"; // Import useAuth to get user role
+import { useAuth } from "../../context/AuthContext";
 import TableComponent from "../../component/Tables/TableComponent";
 import { FaSpinner } from "react-icons/fa";
 
 const SignUpForm = () => {
   const { authContextData } = useAuth();
-  const userRole = authContextData?.userRole; // Get the logged-in user's role
+  const userRole = authContextData?.userRole;
+  const token = authContextData?.token;
 
   const [userSignUp, setUserSignUp] = useState({});
   const [error, setError] = useState("");
@@ -22,8 +23,10 @@ const SignUpForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllUserList();
-  }, []);
+    if (userRole === "ADMIN") {
+      getAllUserList();
+    }
+  }, [userRole]);
 
   const formOnChange = (e) => {
     const { name, value, type } = e.target;
@@ -43,7 +46,10 @@ const SignUpForm = () => {
         roles: [userRole === "ADMIN" ? userSignUp.role : "CLIENT"],
       };
 
-      const response = await UserManagementService.signUp(requestData);
+      const response = await UserManagementService.signUp(
+        requestData,
+        userRole === "ADMIN" ? token : null
+      );
       console.log("response:", response.data);
 
       const { responseMsg, responseCode } = response.data;
@@ -51,10 +57,8 @@ const SignUpForm = () => {
       if (responseCode === "00") {
         displayApiMessage(responseMsg);
         navigate("/login");
-      } else if (responseCode === "01") {
-        displayApiMessage(responseMsg, "warning");
       } else {
-        setError("Sign-up failed. Please try again.");
+        displayApiMessage(responseMsg, "warning");
       }
     } catch (err) {
       setError("Sign-up failed. Please try again.");
@@ -73,59 +77,17 @@ const SignUpForm = () => {
     }
   };
 
-  // Delete Event
   const handleDelete = async (id) => {
-    setLoadingStates((prev) => ({ ...prev, [id]: true })); // Set loading state for this item
+    setLoadingStates((prev) => ({ ...prev, [id]: true }));
     try {
       await UserManagementService.deleteUser(id);
-      getAllUserList(); // Refresh the event list
+      getAllUserList();
     } catch (error) {
       console.error("Failed to delete event:", error);
     } finally {
-      setLoadingStates((prev) => ({ ...prev, [id]: false })); // Reset loading state for this item
+      setLoadingStates((prev) => ({ ...prev, [id]: false }));
     }
   };
-
-  const columns = [
-    { Header: "UserName", accessor: "username" },
-    { Header: "Email", accessor: "email" },
-    { Header: "Position", accessor: "position" },
-    { Header: "Mobile No.", accessor: "mobileNo" },
-    {
-      Header: "Role",
-      accessor: (row) => row.roles.map((role) => role.name).join(", "),
-    },
-    {
-      Header: "Actions",
-      accessor: "actions",
-      Cell: ({ row }) => {
-        const id = row.original.id;
-        const isLoading = loadingStates[id] || false; // Get loading state for this item
-
-        return (
-          <div className="flex space-x-2">
-            {/* <button
-              onClick={() => openModal(row.original)}
-              className="px-3 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-            >
-              Edit
-            </button> */}
-            <button
-              onClick={() => handleDelete(id)}
-              className="px-3 py-1 text-white bg-red-500 rounded-md hover:bg-red-600 disabled:bg-red-300"
-              disabled={isLoading} // Disable button while loading
-            >
-              {isLoading ? (
-                <FaSpinner className="animate-spin" /> // Show spinner
-              ) : (
-                "Delete"
-              )}
-            </button>
-          </div>
-        );
-      },
-    },
-  ];
 
   return (
     <form className="w-full max-md min-sm">
@@ -137,7 +99,6 @@ const SignUpForm = () => {
           value={userSignUp.username || ""}
           onChange={formOnChange}
         />
-
         <CommonTextField
           id="email"
           name="email"
@@ -146,7 +107,6 @@ const SignUpForm = () => {
           value={userSignUp.email || ""}
           onChange={formOnChange}
         />
-
         <CommonTextField
           id="password"
           name="password"
@@ -165,7 +125,6 @@ const SignUpForm = () => {
               value={userSignUp.position || ""}
               onChange={formOnChange}
             />
-
             <CommonRadioGroup
               name="role"
               label="Role"
@@ -177,19 +136,16 @@ const SignUpForm = () => {
                 value="ADMIN"
                 control={<Radio />}
                 label="Administration"
-                className="text-gray-500 text"
               />
               <FormControlLabel
                 value="EMPLOYEE"
                 control={<Radio />}
                 label="Employee"
-                className="text-gray-500 text"
               />
               <FormControlLabel
                 value="CUSTOMER"
                 control={<Radio />}
                 label="Customer"
-                className="text-gray-500 text"
               />
             </CommonRadioGroup>
           </>
@@ -202,7 +158,6 @@ const SignUpForm = () => {
           value={userSignUp.mobileNo || ""}
           onChange={formOnChange}
         />
-
         <CommonTextField
           id="address"
           name="address"
@@ -214,7 +169,6 @@ const SignUpForm = () => {
       {error && (
         <p className="text-red-500 text-sm text-center mb-4">{error}</p>
       )}
-
       <div className="w-full">
         <CommonButton
           type="button"
@@ -224,12 +178,7 @@ const SignUpForm = () => {
         />
       </div>
 
-      {userRole === "ADMIN" && (
-        <div className="overflow-x-auto">
-          <TableComponent columns={columns} data={events} />
-        </div>
-      )}
-
+      {/* {userRole === "ADMIN" && <TableComponent columns={[...]} data={events} />} TableComponent should have actual columns */}
       {userRole !== "ADMIN" && (
         <p className="mt-4 text-sm text-gray-600">
           Already have an account?{" "}

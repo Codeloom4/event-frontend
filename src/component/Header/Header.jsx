@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assets/logo/mainLogo.svg";
 import SignUpButton from "../Buttons/SignUpButton";
@@ -12,12 +12,14 @@ import { USER_ROLES } from "../../utils/constants";
 const Header = () => {
   const { authContextData, logout, services = [] } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuthenticated, username, userRole } = authContextData;
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
   const servicesRef = useRef(null);
 
   useEffect(() => {
@@ -43,19 +45,22 @@ const Header = () => {
   };
 
   const getNavLinkClass = ({ isActive }) =>
-    `text-xl font-semibold px-4 py-2 rounded-md transition-all duration-300 ${
-      isActive ? "text-yellow-400 bg-gray-700" : "hover:text-yellow-400"
+    `text-xl font-semibold px-6 py-2 rounded-md transition-all duration-300 ${
+      isActive
+        ? "text-yellow-400 bg-gray-700 shadow-md"
+        : "hover:text-yellow-400"
     } no-underline`;
 
   return (
-    <header
-      className="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-gray-800 shadow-lg"
-      text-white
-    >
+    <header className="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-gray-800 shadow-lg text-white">
       <div className="flex items-center justify-between w-full">
-        {/* Logo Section */}
         <NavLink
-          to="/"
+          to={
+            isAuthenticated &&
+            (userRole === USER_ROLES.ADMIN || userRole === USER_ROLES.EMPLOYEE)
+              ? "/dashboard"
+              : "/"
+          }
           className="flex items-center space-x-2 text-2xl font-bold no-underline"
         >
           <img src={Logo} alt="Eventify" className="h-12" />
@@ -64,69 +69,82 @@ const Header = () => {
           </span>
         </NavLink>
 
-        {/* Navigation Links: Centered in the middle. */}
-        <div>
-          <nav>
-            <ul className="flex space-x-4 m-0">
-              <li>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `text-2xl ${
-                      isActive || window.location.pathname === "/dashboard"
-                        ? "text-yellow-400 hover:text-yellow-400  "
-                        : "hover:text-gray-400 no-underline"
-                    }`
-                  }
-                >
-                  Home
-                </NavLink>
-              </li>
-              {/* Services Dropdown */}
-              <li className="relative group">
-                <div className="flex items-center space-x-1 cursor-pointer">
-                  <span className="text-2xl">Services</span>
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </div>
-                <ul className="absolute hidden p-2 space-y-2 text-white align-middle bg-gray-700 rounded-md group-hover:block w-max">
+        <nav>
+          <ul className="flex items-center space-x-14 m-0">
+            <li>
+              <NavLink
+                to={
+                  isAuthenticated &&
+                  (userRole === USER_ROLES.ADMIN ||
+                    userRole === USER_ROLES.EMPLOYEE)
+                    ? "/dashboard"
+                    : "/"
+                }
+                className={getNavLinkClass}
+              >
+                Home
+              </NavLink>
+            </li>
+            <li className="relative flex items-center" ref={servicesRef}>
+              <button
+                onClick={() => setServicesOpen(!servicesOpen)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && setServicesOpen(!servicesOpen)
+                }
+                className="text-xl font-semibold px-6 py-2 rounded-md transition-all duration-300 cursor-pointer hover:text-yellow-400 flex items-center"
+                aria-expanded={servicesOpen}
+              >
+                Services <MdArrowDropDown className="ml-1" />
+              </button>
+
+              {servicesOpen && (
+                <ul className="absolute left-0 w-48 mt-1 bg-gray-700 rounded-md shadow-lg text-white top-full">
                   {services.map((service, index) => (
                     <li key={index}>
                       <NavLink
                         to={`/services/${service.eventType}`}
-                        className="block px-4 py-2 text-white rounded-md hover:bg-gray-600 no-underline"
+                        className={`block px-4 py-2 no-underline ${
+                          selectedService === service.eventType
+                            ? "bg-gray-600"
+                            : "hover:bg-gray-600"
+                        }`}
+                        onClick={() => setSelectedService(service.eventType)}
                       >
                         {service.description}
                       </NavLink>
                     </li>
                   ))}
                 </ul>
-              </li>
-            </ul>
-            <NavLink to="/about" className={getNavLinkClass}>
-              About
-            </NavLink>
-            <NavLink to="/contact" className={getNavLinkClass}>
-              Contact
-            </NavLink>
-            <NavLink to="/gallery" className={getNavLinkClass}>
-              Gallery
-            </NavLink>
-          </nav>
-        </div>
+              )}
+            </li>
 
-        {/* Auth Section */}
+            {isAuthenticated &&
+              (userRole === USER_ROLES.ADMIN ||
+                userRole === USER_ROLES.EMPLOYEE) && (
+                <li>
+                  <NavLink to="/package" className={getNavLinkClass}>
+                    Package
+                  </NavLink>
+                </li>
+              )}
+            <li>
+              <NavLink to="/about" className={getNavLinkClass}>
+                About
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact" className={getNavLinkClass}>
+                Contact
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/gallery" className={getNavLinkClass}>
+                Gallery
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+
         <div className="flex space-x-4 items-center">
           {isAuthenticated ? (
             <div className="relative">
@@ -171,7 +189,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Add/Update User Modal */}
       <CommonModal
         showModal={showModal}
         size="lg"

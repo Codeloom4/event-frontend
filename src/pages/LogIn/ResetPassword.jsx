@@ -6,11 +6,12 @@ import CommonTextField from "../../component/Form/CommonTextField";
 import CommonButton from "../../component/Form/CommonButton";
 import { displayApiMessage } from "../../context/ToastContext";
 
-const ResetPassword = () => {
+const ResetPassword = ({ username }) => {
   const { authContextData } = useAuth();
   const [passwordData, setPasswordData] = useState({
+    userName: username || "",
     oldPassword: "",
-    newPassword: "",
+    password: "",
     confirmNewPassword: "",
   });
   const [error, setError] = useState("");
@@ -24,7 +25,7 @@ const ResetPassword = () => {
     }));
 
     // Password Strength Validation
-    // if (name === "newPassword") {
+    // if (name === "password") {
     //   if (value.length < 8) {
     //     setError("Password must be at least 8 characters long.");
     //   } else if (!/[A-Z]/.test(value)) {
@@ -42,7 +43,7 @@ const ResetPassword = () => {
 
     // // Confirm Password Matching
     // if (name === "confirmNewPassword") {
-    //   if (value !== passwordData.newPassword) {
+    //   if (value !== passwordData.password) {
     //     setError("Passwords do not match.");
     //   } else {
     //     setError(""); // Clear error if they match
@@ -51,20 +52,23 @@ const ResetPassword = () => {
   };
 
   const handleResetPassword = async () => {
-    if (passwordData.newPassword !== passwordData.confirmNewPassword) {
+    if (passwordData.password !== passwordData.confirmNewPassword) {
       setError("New passwords do not match.");
       return;
     }
 
-    try {
-      const response = await AuthenticationService.resetPassword(
-        passwordData.oldPassword,
-        passwordData.newPassword
-      );
+    // Create data in the correct format for the API
+    const resetData = {
+      userName: passwordData.userName, // Ensure the field matches with the API
+      oldPassword: passwordData.oldPassword,
+      password: passwordData.password, // Make sure to send password as "password" in the API body
+    };
 
+    try {
+      const response = await AuthenticationService.resetPassword(resetData);
       if (response.status === 200) {
         displayApiMessage("Password reset successful.");
-        navigate("/");
+        // navigate("/");
       } else {
         setError("Failed to reset password.");
       }
@@ -83,7 +87,7 @@ const ResetPassword = () => {
             id="username"
             name="username"
             label="Username"
-            value={authContextData.username}
+            value={passwordData.userName}
             disabled
           />
           <CommonTextField
@@ -95,11 +99,11 @@ const ResetPassword = () => {
             onChange={formOnChange}
           />
           <CommonTextField
-            id="newPassword"
-            name="newPassword"
+            id="password"
+            name="password"
             label="New Password"
             type="password"
-            value={passwordData.newPassword}
+            value={passwordData.password}
             onChange={formOnChange}
           />
           <CommonTextField

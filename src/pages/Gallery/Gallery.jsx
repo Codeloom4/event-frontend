@@ -96,14 +96,15 @@ const Gallery = () => {
         </h1>
 
         {/* Upload Button */}
-        {isAuthenticated && (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
-          <button
-            onClick={handleUploadClick}
-            className="px-4 py-2 mb-8 text-white bg-green-500 rounded-md hover:bg-green-600"
-          >
-            Upload Images
-          </button>
-        )}
+        {isAuthenticated &&
+          (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+            <button
+              onClick={handleUploadClick}
+              className="px-4 py-2 mb-8 text-white bg-green-500 rounded-md hover:bg-green-600"
+            >
+              Upload Images
+            </button>
+          )}
 
         {/* Image Grid */}
         {loading ? (
@@ -117,12 +118,13 @@ const Gallery = () => {
                 {groupedImages[eventType].description}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {Object.keys(groupedImages[eventType].groups).map((groupName) => (
-                  <div
-                    key={groupName}
-                    className="bg-white p-4 rounded-lg shadow-md"
-                  >
-                    <div className="grid grid-cols-2 gap-2">
+                {Object.keys(groupedImages[eventType].groups).map(
+                  (groupName) => (
+                    <div
+                      key={groupName}
+                      className="bg-white p-4 rounded-lg shadow-md"
+                    >
+                      {/* <div className="grid grid-cols-2 gap-2">
                       {groupedImages[eventType].groups[groupName]
                         .slice(0, 4)
                         .map((image) => (
@@ -134,28 +136,30 @@ const Gallery = () => {
                             onClick={() => handleGroupClick(groupedImages[eventType].groups[groupName])}
                           />
                         ))}
+                    </div> */}
+                      <p className="mt-2 text-center text-sm text-gray-600">
+                        {groupName}
+                      </p>
+                      {isAuthenticated &&
+                        (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
+                          <div className="flex justify-center space-x-2 mt-2">
+                            <button
+                              onClick={() => handleUpdateGroup(groupName)}
+                              className="px-2 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                            >
+                              <FaEdit />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteGroup(groupName)}
+                              className="px-2 py-1 text-white bg-red-500 rounded-md hover:bg-red-600"
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                        )}
                     </div>
-                    <p className="mt-2 text-center text-sm text-gray-600">
-                      {groupName}
-                    </p>
-                    {isAuthenticated && (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
-                      <div className="flex justify-center space-x-2 mt-2">
-                        <button
-                          onClick={() => handleUpdateGroup(groupName)}
-                          className="px-2 py-1 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteGroup(groupName)}
-                          className="px-2 py-1 text-white bg-red-500 rounded-md hover:bg-red-600"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             </div>
           ))

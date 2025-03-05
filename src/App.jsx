@@ -160,7 +160,7 @@ const App = () => {
                 }
               />
               <Route
-                path="/package/:packageId"
+                path="/package"
                 element={
                   <PrivateRoute>
                     <Package />
