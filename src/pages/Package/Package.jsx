@@ -4,6 +4,7 @@ import { Tabs, Tab, Box } from "@mui/material";
 import UpdatableTableComponent from "../../component/Tables/UpdatableTableComponent";
 import CommonTextField from "../../component/Form/CommonTextField";
 import BasicInformation from "./tabs/BasicInformation";
+import ItemSelect from "./tabs/ItemSelect";
 
 const Package = () => {
   const { packageId } = useParams();
@@ -88,20 +89,11 @@ const Package = () => {
           </Tabs>
 
           <div role="tabpanel" hidden={value !== "1"}>
-            {value === "1" && <BasicInformation />}
+            {value === "1" && <BasicInformation setValue={setValue} />}
           </div>
 
           <div role="tabpanel" hidden={value !== "2"}>
-            {value === "2" && (
-              <Box p={3}>
-                <UpdatableTableComponent
-                  columns={columns}
-                  data={events}
-                  updateAction={handleUpdate}
-                  editableColumns={["Event Type", "Description"]}
-                />
-              </Box>
-            )}
+          {value === "1" && <ItemSelect setValue={setValue} />}
           </div>
 
           <div role="tabpanel" hidden={value !== "3"}>

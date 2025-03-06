@@ -3,12 +3,9 @@ import ApiManager from "./Api/ApiManager";
 const packageEndpoint = "/ems/package";
 
 const PackageManagementService = {
-  signUp: async (data) => {
+  createPackage: async (data) => {
     try {
-      const response = await ApiManager.apiPost(
-        `${packageEndpoint}/register`,
-        data
-      );
+      const response = await ApiManager.apiPost(`${packageEndpoint}`, data);
       return response;
     } catch (error) {
       console.error("Sign-up failed:", error);
@@ -28,7 +25,9 @@ const PackageManagementService = {
 
   getUsers: async (username) => {
     try {
-      const response = await ApiManager.apiGet(`${packageEndpoint}/${username}`);
+      const response = await ApiManager.apiGet(
+        `${packageEndpoint}/${username}`
+      );
       return response;
     } catch (error) {
       console.error("Get users failed:", error);
@@ -38,7 +37,9 @@ const PackageManagementService = {
 
   deleteUser: async (userId) => {
     try {
-      const response = await ApiManager.apiDelete(`${packageEndpoint}/${userId}`);
+      const response = await ApiManager.apiDelete(
+        `${packageEndpoint}/${userId}`
+      );
       return response;
     } catch (error) {
       console.error("Get users failed:", error);
