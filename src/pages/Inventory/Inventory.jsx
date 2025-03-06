@@ -41,13 +41,13 @@ const Inventory = () => {
    */
   const [inventoryManagement, setInventoryManagement] = useState({});
 
-    /**
+  /**
    * @showDownloadBarcodeModal to open ADD - Update modal and send Data when update a record
    */
-    const [showDownloadBarcodeModal, setShowDownloadBarcodeModal] = useState({
-      show: false,
-      data: {},
-    });
+  const [showDownloadBarcodeModal, setShowDownloadBarcodeModal] = useState({
+    show: false,
+    data: {},
+  });
 
   /**
    * @showAddUpdateModal to open ADD - Update modal and send Data when update a record
@@ -138,8 +138,6 @@ const Inventory = () => {
    * @retriveData for table
    */
   const retriveData = async (pageDetails) => {
-    // setLoading(true)
-    // set state api call set
     setSearch(pageDetails);
     const dataState = await onClickSearch(
       pageDetails.pageIndex,
@@ -195,7 +193,6 @@ const Inventory = () => {
     const onClickUpdate = (data) => {
       setIsUpdate(true);
       setShowAddUpdateModal({ show: true, data: data });
-      // onClickViewBack();
     };
 
   const onClickBackUpdate = () => {
@@ -211,17 +208,12 @@ const Inventory = () => {
   //Delete Record
   const onClickDelete = async (data) => {
     const result = await InventoryService.delete(data);
-    // handleNotification(result, result.data.responseMsg)
     await retriveData(search);
   };
 
   //Filter
   const onChangeFilter = (arg) => {
-    // const filterdList: any[] = filterArray(initialPageList, arg)
-    // const newState = produce(state, (draft) => {
-    //   draft.list = filterdList
-    // })
-    // setState(newState)
+    // Implement filtering logic here if needed
   };
 
   const resetRef = () => {
@@ -253,7 +245,6 @@ const Inventory = () => {
       {
         Header: "purchase Price",
         accessor: "purchasePrice",
-        // Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
       },
       {
         Header: "sales Price",
@@ -262,40 +253,36 @@ const Inventory = () => {
       {
         Header: "order Quantity",
         accessor: "orderQuantity",
-        // Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
       },
       {
         Header: "created Date-Time",
         accessor: "createdAt",
-        // Cell: ({ value }) => `Rs${value.toFixed(2)}`, // Format price as currency
       },
       {
         Header: "Actions",
         accessor: "actions",
         Cell: ({ row }) => (
-          (
-            <div className="flex flex-row space-x-2 justify-end">
-              {row.original.isRefundable && (
-                <CommonButton
-                  type="downloadBarcode"
-                  label="Download Barcode"
-                  onClick={() => onClickDownloadBarcode(row.original)}
-                />
-              )}
-
+          <div className="flex flex-row space-x-2 justify-end">
+            {row.original.isRefundable && (
               <CommonButton
-                type="update"
-                label="update"
-                onClick={() => onClickUpdate(row.original)}
+                type="downloadBarcode"
+                label="Download Barcode"
+                onClick={() => onClickDownloadBarcode(row.original)}
               />
+            )}
 
-              <CommonButton
-                type="delete"
-                label="Delete"
-                onClick={() => onClickDelete(row.original.id)}
-              />
-            </div>
-          )
+            <CommonButton
+              type="update"
+              label="update"
+              onClick={() => onClickUpdate(row.original)}
+            />
+
+            <CommonButton
+              type="delete"
+              label="Delete"
+              onClick={() => onClickDelete(row.original.id)}
+            />
+          </div>
         ),
       },
     ],
@@ -317,22 +304,15 @@ const Inventory = () => {
   };
 
   const handleDelete = (id) => {
-    // setData((prevData) => prevData.filter((item) => item.id !== id));
+    // Implement delete logic here if needed
   };
 
   const handleSave = (newItem) => {
     if (editingItem) {
       // Update existing item
-      // setData((prevData) =>
-      //   prevData.map((item) => (item.id === editingItem.id ? newItem : item))
-      // );
       setEditingItem(null);
     } else {
-      // // Add new item
-      // setData((prevData) => [
-      //   ...prevData,
-      //   { ...newItem, id: prevData.length + 1 },
-      // ]);
+      // Add new item
     }
     setIsAdding(false);
   };
@@ -350,10 +330,7 @@ const Inventory = () => {
     }));
   };
 
-  console.log(
-    "inventoryManagement  111111111------->>>>> ",
-    inventoryManagement
-  );
+  console.log("inventoryManagement  111111111------->>>>> ", inventoryManagement);
   console.log("inventoryManagement  state 222222------>>>>> ", state);
   console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
   console.log("loading  ------->>>>> ", loading);
@@ -361,15 +338,16 @@ const Inventory = () => {
   // Show spinner while loading
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-dark">
         <FaSpinner className="animate-spin text-4xl text-blue-500" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen p-6 App bg-gray-50">
-      <h1 className="mb-6 text-3xl font-bold text-gray-800">
+    <div className="min-h-screen p-6 App bg-gradient-dark">
+      <div className="max-w-7xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+      <h1 className="mb-6 text-3xl font-bold text-white">
         Inventory Management
       </h1>
 
@@ -381,42 +359,6 @@ const Inventory = () => {
           onClick={() => onClickAdd()}
         />
       </div>
-
-      {/* <div className="p-6 flex gap-4">
-        <CommonButton
-          type="search"
-          label="Search"
-          onClick={() => alert("Search Clicked")}
-        />
-        <CommonButton
-          type="add"
-          label="Add"
-          onClick={() => alert("Add Clicked")}
-        />
-        <CommonButton
-          type="update"
-          label="Update"
-          onClick={() => alert("Update Clicked")}
-        />
-        <CommonButton
-          type="delete"
-          label="Delete"
-          onClick={() => alert("Delete Clicked")}
-        />
-        <CommonButton
-          type="confirm"
-          label="Confirm"
-          onClick={() => alert("Confirm Clicked")}
-        />
-        <CommonButton
-          type="reject"
-          label="Reject"
-          onClick={() => alert("Reject Clicked")}
-        /> */}
-
-      {/* Disabled Button Example */}
-      {/* <CommonButton type="add" label="Disabled Add" disabled />
-      </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* ID Field */}
@@ -447,21 +389,19 @@ const Inventory = () => {
         <CommonRadioGroup
           name="isRefundable"
           label="Is Refundable?"
-          // value={inventoryManagement.isRefundable.toString()}
-          // onChange={formOnChange}
           row
         >
           <FormControlLabel
             value="true"
             control={<Radio />}
             label="Yes"
-            className="text text-gray-500"
+            className="text text-gray-300"
           />
           <FormControlLabel
             value="false"
             control={<Radio />}
             label="No"
-            className="text text-gray-500"
+            className="text text-gray-300"
           />
         </CommonRadioGroup>
 
@@ -553,7 +493,6 @@ const Inventory = () => {
         }}
         title={isUpdate ? "Update Inventory" : "Add Inventory"}
       >
-        {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
         <InventoryAddUpdate
           isUpdate={isUpdate}
           data={isUpdate ? showAddUpdateModal.data : {}}
@@ -582,24 +521,8 @@ const Inventory = () => {
         }}
         title={"Barcode"}
       >
-        {/* <p>This is a reusable modal component using Tailwind CSS.</p> */}
-        <BarcodeDownloadPage/>
-        {/* <InventoryAddUpdate
-          isUpdate={isUpdate}
-          data={isUpdate ? showDownloadBarcodeModal.data : {}}
-          DropdownItemDetails={DropdownItemDetails}
-          close={() => {
-            setShowDownloadBarcodeModal({
-              show: false,
-              data: {},
-            });
-          }}
-          completed={() => {
-            retriveData(search);
-          }}
-        /> */}
+        <BarcodeDownloadPage />
       </CommonModal>
-
 
       {/* Table Component */}
       <TableComponent
@@ -611,8 +534,12 @@ const Inventory = () => {
         onClickRow={handleRowClick}
         totalCount={state?.count}
         pageCount={state?.pagecount}
+        headerClassName="bg-gray-700 text-gray-300"
+        rowClassName="hover:bg-gray-600 transition-colors duration-200"
+        cellClassName="px-6 py-4 text-sm text-gray-300"
       />
     </div>
+  </div>
   );
 };
 

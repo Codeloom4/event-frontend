@@ -58,40 +58,44 @@ const Dashboard = () => {
   // Show spinner while loading
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-dark">
         <FaSpinner className="animate-spin text-4xl text-blue-500" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-dark py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold text-center text-white mb-8">
           Dashboard
         </h1>
 
         {/* User Summary Chart */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">System Users Summary</h2>
+          <h2 className="text-xl font-semibold mb-4 text-white">
+            System Users Summary
+          </h2>
           <BarChart
             width={600}
             height={300}
             data={systemSummary.userSummary}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="role" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
+            <CartesianGrid strokeDasharray="3 3" stroke="#4A5568" />
+            <XAxis dataKey="role" stroke="#CBD5E0" />
+            <YAxis stroke="#CBD5E0" />
+            <Tooltip contentStyle={{ backgroundColor: "#2D3748", color: "#CBD5E0" }} />
+            <Legend wrapperStyle={{ color: "#CBD5E0" }} />
             <Bar dataKey="count" fill="#8884d8" />
           </BarChart>
         </div>
 
         {/* Stock Summary Chart */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Stock Summary</h2>
+          <h2 className="text-xl font-semibold mb-4 text-white">
+            Stock Summary
+          </h2>
           <PieChart width={400} height={400}>
             <Pie
               data={systemSummary.stockSummary}
@@ -103,24 +107,26 @@ const Dashboard = () => {
               fill="#82ca9d"
               label
             />
-            <Tooltip />
+            <Tooltip contentStyle={{ backgroundColor: "#2D3748", color: "#CBD5E0" }} />
           </PieChart>
         </div>
 
         {/* Revenue Summary Chart */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Revenue Summary</h2>
+          <h2 className="text-xl font-semibold mb-4 text-white">
+            Revenue Summary
+          </h2>
           <LineChart
             width={600}
             height={300}
             data={systemSummary.revenueSummary}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
+            <CartesianGrid strokeDasharray="3 3" stroke="#4A5568" />
+            <XAxis dataKey="date" stroke="#CBD5E0" />
+            <YAxis stroke="#CBD5E0" />
+            <Tooltip contentStyle={{ backgroundColor: "#2D3748", color: "#CBD5E0" }} />
+            <Legend wrapperStyle={{ color: "#CBD5E0" }} />
             <Line type="monotone" dataKey="revenue" stroke="#ff7300" />
           </LineChart>
         </div>

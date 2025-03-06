@@ -2,24 +2,24 @@ import React from "react";
 
 const Contact = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-dark py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold text-center text-white mb-8">
           Contact Us
         </h1>
-        <div className="space-y-6 text-lg text-gray-700">
+        <div className="space-y-6 text-lg text-gray-300">
           <p>
             We'd love to hear from you! Whether you have a question, feedback, or need assistance, our team is here to help.
           </p>
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-800">
+            <h2 className="text-2xl font-semibold text-white">
               Get in Touch
             </h2>
             <p>
               <strong>Email:</strong>{" "}
               <a
                 href="mailto:support@eventify.com"
-                className="text-yellow-500 hover:underline"
+                className="text-yellow-400 hover:underline"
               >
                 support@eventify.com
               </a>
@@ -28,7 +28,7 @@ const Contact = () => {
               <strong>Phone:</strong>{" "}
               <a
                 href="tel:+11234567890"
-                className="text-yellow-500 hover:underline"
+                className="text-yellow-400 hover:underline"
               >
                 +1 (123) 456-7890
               </a>
@@ -38,7 +38,7 @@ const Contact = () => {
             </p>
           </div>
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold text-gray-800">
+            <h2 className="text-2xl font-semibold text-white">
               Office Hours
             </h2>
             <p>

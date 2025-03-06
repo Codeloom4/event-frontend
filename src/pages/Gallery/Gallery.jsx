@@ -89,9 +89,9 @@ const Gallery = () => {
   const groupedImages = groupImages(images);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-dark py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold text-center text-white mb-8">
           Gallery
         </h1>
 
@@ -108,19 +108,19 @@ const Gallery = () => {
         {/* Image Grid */}
         {loading ? (
           <div className="flex justify-center">
-            <FaSpinner className="animate-spin text-4xl" />
+            <FaSpinner className="animate-spin text-4xl text-white" />
           </div>
         ) : (
           Object.keys(groupedImages).map((eventType) => (
             <div key={eventType} className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-2xl font-bold mb-4 text-white">
                 {groupedImages[eventType].description}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {Object.keys(groupedImages[eventType].groups).map((groupName) => (
                   <div
                     key={groupName}
-                    className="bg-white p-4 rounded-lg shadow-md"
+                    className="bg-gray-700 p-4 rounded-lg shadow-md"
                   >
                     <div className="grid grid-cols-2 gap-2">
                       {groupedImages[eventType].groups[groupName]
@@ -135,7 +135,7 @@ const Gallery = () => {
                           />
                         ))}
                     </div>
-                    <p className="mt-2 text-center text-sm text-gray-600">
+                    <p className="mt-2 text-center text-sm text-gray-300">
                       {groupName}
                     </p>
                     {isAuthenticated && (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
@@ -164,7 +164,7 @@ const Gallery = () => {
         {/* Slideshow Modal */}
         {selectedGroup && (
           <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg w-full max-w-4xl">
+            <div className="bg-gray-800 p-6 rounded-lg w-full max-w-4xl">
               <button
                 onClick={closeSlideshow}
                 className="absolute top-4 right-4 text-white text-2xl"

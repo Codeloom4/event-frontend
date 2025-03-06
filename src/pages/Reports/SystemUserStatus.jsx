@@ -75,9 +75,9 @@ const SystemUserStatusReport = () => {
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-dark py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold text-center text-white mb-8">
           System User Status Report
         </h1>
         <div className="flex justify-center space-x-4 mb-6">
@@ -86,12 +86,14 @@ const SystemUserStatusReport = () => {
             label="Search"
             onClick={fetchData}
             disabled={loading}
+            className="bg-blue-500 hover:bg-blue-600 text-white"
           />
           {/* Generate Excel Button */}
           <CommonButton
             label={isGeneratingExcel ? <FaSpinner className="animate-spin" /> : "Generate Excel"}
             onClick={handleGenerateExcel}
             disabled={isGeneratingExcel}
+            className="bg-green-500 hover:bg-green-600 text-white"
           />
         </div>
         {/* Table Component */}
@@ -101,6 +103,10 @@ const SystemUserStatusReport = () => {
           loading={loading}
           totalCount={data.length}
           pageCount={Math.ceil(data.length / 10)}
+          className="w-full"
+          headerClassName="bg-gray-700 text-gray-300"
+          rowClassName="hover:bg-gray-600 transition-colors duration-200"
+          cellClassName="px-6 py-4 text-sm text-gray-300"
         />
       </div>
     </div>

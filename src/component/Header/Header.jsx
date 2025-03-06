@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assets/logo/mainLogo.svg";
-import SignUpButton from "../Buttons/SignUpButton";
 import { FaUserCircle } from "react-icons/fa";
 import { MdArrowDropDown } from "react-icons/md";
 import CommonModal from "../../component/Modal/CommonModal";
@@ -46,24 +45,24 @@ const Header = () => {
 
   const getNavLinkClass = ({ isActive }) =>
     `text-xl font-semibold px-4 py-2 rounded-md transition-all duration-300 items-center ${
-      isActive ? "text-white bg-[#1a6b6c]" : "text-gray-300 hover:text-white"
+      isActive ? "text-white bg-[#0e4d5e]" : "text-gray-300 hover:text-white"
     } no-underline`;
 
   return (
     <header
       className="fixed top-0 left-0 z-50 w-full px-4 py-3 text-white shadow-lg"
-      style={{ background: "linear-gradient(135deg, #105657, #121a1f)" }}
+      style={{ background: "linear-gradient(135deg, #001B2B, #003E4F)" }}
     >
       <div className="flex items-center justify-between w-full">
         <NavLink
           to="/home"
-          className="flex items-center space-x-2 text-2xl font-bold no-underline"
+          className="flex items-center space-x-2 text-2xl font-bold no-underline hover:scale-105 transition-transform duration-300"
         >
           <img src={Logo} alt="Eventify" className="h-12" />
           <span className="text-5xl font-extrabold text-white">Eventify</span>
         </NavLink>
 
-        {/* Navigation Links: Centered in the middle. */}
+        {/* Navigation Links */}
         <div>
           <nav>
             <ul className="flex items-center m-0 space-x-4">
@@ -88,7 +87,7 @@ const Header = () => {
                 </div>
                 <ul
                   className="absolute hidden p-2 space-y-2 text-center text-white transform -translate-x-1/2 bg-gradient-to-r from-[#105657] to-[#121a1f] border border-gray-700 rounded-md shadow-lg left-1/2 group-hover:block w-max"
-                  style={{ background: "linear-gradient(135deg, #105657, #121a1f)" }}
+                  style={{ background: "linear-gradient(135deg, #001B2B, #003E4F)" }}
                 >
                   {services.map((service, index) => (
                     <li key={index}>
@@ -128,7 +127,7 @@ const Header = () => {
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center px-4 py-2 text-gray-300 transition-all duration-300 bg-[#1a6b6c] rounded-full hover:bg-gray-700"
+                className="flex items-center px-4 py-2 text-gray-300 transition-all duration-300 bg-[#0e4d5e] rounded-full hover:bg-gray-700"
               >
                 <FaUserCircle className="w-8 h-8" />
                 <span className="ml-2 text-lg font-medium">{username}</span>
@@ -137,7 +136,7 @@ const Header = () => {
               {dropdownOpen && (
                 <div
                   className="absolute right-0 w-40 mt-2 bg-gradient-to-r from-[#105657] to-[#121a1f] border border-gray-700 rounded-md shadow-lg"
-                  style={{ background: "linear-gradient(135deg, #105657, #121a1f)" }}
+                  style={{ background: "linear-gradient(135deg, #001B2B, #003E4F)" }}
                 >
                   {userRole === USER_ROLES.ADMIN && (
                     <button
@@ -164,12 +163,18 @@ const Header = () => {
               >
                 Login
               </NavLink>
-              <SignUpButton />
+              <NavLink
+                to="/signup"
+                className="px-6 py-2 text-xl text-white bg-[#0e4d5e] rounded-lg hover:bg-[#105657] transition-colors duration-300"
+              >
+                Sign Up
+              </NavLink>
             </div>
           )}
         </div>
       </div>
 
+      {/* Add/Update User Modal */}
       <CommonModal
         showModal={showModal}
         size="lg"

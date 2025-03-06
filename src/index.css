@@ -1,3 +1,16 @@
+/* src/index.css */
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+/* Apply the gradient background globally */
+body {
+  background: linear-gradient(135deg, #001B2B, #003E4F);
+  color: #ffffff; /* Ensure text is white for contrast */
+  min-height: 100vh; /* Ensure the gradient covers the entire viewport */
+}
+
+/* Ensure the root element also has the gradient background */
+#root {
+  min-height: 100vh; /* Make sure the root element covers the full height */
+}

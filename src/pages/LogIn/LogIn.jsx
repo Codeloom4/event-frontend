@@ -107,16 +107,17 @@ const LogIn = () => {
   return (
     <>
       {/* Header */}
-      <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
+      <header
+        className="fixed top-0 left-0 z-50 w-full p-4 text-white shadow-lg"
+        style={{ background: "linear-gradient(135deg, #001B2B, #003E4F)"  }}
+      >
         <div className="container flex items-center justify-between mx-auto">
           <NavLink
             to="/home"
-            className="flex items-center space-x-2 text-2xl font-bold"
+            className="flex items-center space-x-2 text-2xl font-bold hover:scale-105 transition-transform duration-300"
           >
             <img src={Logo} alt="Eventify" className="h-10" />
-            <span className="text-4xl font-extrabold text-yellow-400">
-              Eventify
-            </span>
+            <span className="text-4xl font-extrabold text-white">Eventify</span>
           </NavLink>
         </div>
       </header>
@@ -124,7 +125,10 @@ const LogIn = () => {
       {/* Main Content */}
       <div className="flex items-stretch h-screen bg-gray-100">
         {/* Left Section */}
-        <div className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-[45%] flex flex-col justify-center bg-gray-800 p-4">
+        <div
+          className="fixed top-16 left-0 h-[calc(100vh-4rem)] w-[45%] flex flex-col justify-center p-4"
+          style={{ background: "linear-gradient(135deg, #001B2B, #003E4F)"  }}
+        >
           <h4 className="mb-8 text-3xl font-bold text-center text-white">
             Discover tailored events. Sign in for personalized recommendations
             today!
@@ -162,7 +166,7 @@ const LogIn = () => {
                 type="button"
                 label="Login"
                 onClick={onClickAdd}
-                className="w-full"
+                className="w-full bg-[#105657] hover:bg-[#1a6b6c] text-white transition-colors duration-300"
               />
             </div>
 
@@ -170,7 +174,7 @@ const LogIn = () => {
               Don’t have an account?{" "}
               <NavLink
                 to="/signup"
-                className="text-blue-500 hover:text-blue-700"
+                className="text-[#105657] hover:text-[#1a6b6c] transition-colors duration-300"
               >
                 Sign Up
               </NavLink>

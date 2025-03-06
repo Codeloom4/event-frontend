@@ -109,9 +109,9 @@ const TransportCostManagement = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
-      <div className="w-full p-8 bg-white rounded-lg shadow-lg max-w-7xl">
-        <h1 className="mb-8 text-4xl font-bold text-center text-gray-800">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-dark sm:px-6 lg:px-8">
+      <div className="w-full p-8 bg-gray-800 rounded-lg shadow-lg max-w-7xl">
+        <h1 className="mb-8 text-4xl font-bold text-center text-white">
           Transport Cost Management
         </h1>
 
@@ -127,7 +127,14 @@ const TransportCostManagement = () => {
 
         {/* Transport Cost Table */}
         <div className="overflow-x-auto">
-          <TableComponent columns={columns} data={transportCosts} />
+          <TableComponent
+            columns={columns}
+            data={transportCosts}
+            className="w-full"
+            headerClassName="bg-gray-700 text-gray-300"
+            rowClassName="hover:bg-gray-600 transition-colors duration-200"
+            cellClassName="px-6 py-4 text-sm text-gray-300"
+          />
         </div>
 
         {/* Add/Update Transport Cost Modal */}
@@ -140,7 +147,10 @@ const TransportCostManagement = () => {
             onSubmit={handleSubmit}
             initialData={selectedTransportCost}
             isUpdate={isUpdate}
-            districts={districts.filter((district) => !transportCosts.some(cost => cost.districtId === district.id))}
+            districts={districts.filter(
+              (district) =>
+                !transportCosts.some((cost) => cost.districtId === district.id)
+            )}
           />
         </CommonModal>
       </div>
