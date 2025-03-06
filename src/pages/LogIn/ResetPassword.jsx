@@ -68,7 +68,7 @@ const ResetPassword = ({ username }) => {
       const response = await AuthenticationService.resetPassword(resetData);
       if (response.status === 200) {
         displayApiMessage("Password reset successful.");
-        // navigate("/");
+        navigate("/home");
       } else {
         setError("Failed to reset password.");
       }
@@ -82,7 +82,7 @@ const ResetPassword = ({ username }) => {
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <form className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <h2 className="mb-4 text-2xl font-bold text-center">Reset Password</h2>
-        <div className="mb-4 flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mb-4">
           <CommonTextField
             id="username"
             name="username"
