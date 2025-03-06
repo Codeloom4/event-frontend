@@ -27,8 +27,7 @@ const SubHeader = () => {
   }, [dropdownRef]);
 
   const getNavLinkClass = ({ isActive }) =>
-    `text-sm font-semibold px-3 py-1 rounded-md transition-all duration-300 items-center ${
-      isActive ? "text-white bg-[#1a6b6c]" : "text-gray-300 hover:text-white"
+    `text-sm font-semibold px-3 py-1 rounded-md transition-all duration-300 items-center ${isActive ? "text-white bg-[#1a6b6c]" : "text-gray-300 hover:text-white"
     } no-underline`;
 
   return (
@@ -37,7 +36,7 @@ const SubHeader = () => {
       style={{
         background: "linear-gradient(135deg, #001B2B, #003E4F)",
         top: "5rem", // Adjusted to match Header height
-      }} 
+      }}
     >
       <div className="container mx-auto">
         <nav>
@@ -123,10 +122,22 @@ const SubHeader = () => {
                           Sales Revenue Report
                         </NavLink>
                       </li>
+                      
+
                     </ul>
                   </li>
                 </>
               )}
+
+{isAuthenticated &&
+                        (userRole === "ADMIN" || userRole === "EMPLOYEE" || userRole === "CLIENT" ) && (
+                          <li className="flex items-center">
+                            <NavLink to="/grouping-management" className={getNavLinkClass}>
+                            Grouping
+                            </NavLink>
+                          </li>
+                        )}
+
           </ul>
         </nav>
       </div>

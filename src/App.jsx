@@ -260,7 +260,7 @@ const App = () => {
                 }
               />
 
-<Route
+              <Route
                 path="/grouping-management"
                 element={
                   <PrivateRoute
