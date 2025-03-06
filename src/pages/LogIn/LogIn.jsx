@@ -6,6 +6,7 @@ import Logo from "../../assets/logo/mainLogo.svg";
 import CommonTextField from "../../component/Form/CommonTextField";
 import CommonButton from "../../component/Form/CommonButton";
 import { displayApiMessage } from "../../context/ToastContext";
+import { USER_ROLES } from "../../utils/constants";
 
 const LogIn = () => {
   const [userLogIn, setUserLogIn] = useState({});
@@ -48,7 +49,15 @@ const LogIn = () => {
         if (accessCode === "0") {
           console.log("Navigating to Home");
           displayApiMessage(accessMsg);
-          navigate("/");
+          console.log("User Role:", userRole);
+          if (
+            userRole == USER_ROLES.ADMIN ||
+            userRole == USER_ROLES.EMPLOYEE
+          ) {
+            navigate("/dashboard");
+          } else {
+            navigate("/home");
+          }
         } else if (accessCode === "1") {
           console.log("Navigating to Reset Password");
           // navigate("/reset-password");
@@ -75,7 +84,7 @@ const LogIn = () => {
       <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
         <div className="container flex items-center justify-between mx-auto">
           <NavLink
-            to="/"
+            to="/home"
             className="flex items-center space-x-2 text-2xl font-bold"
           >
             <img src={Logo} alt="Eventify" className="h-10" />
@@ -99,7 +108,7 @@ const LogIn = () => {
         {/* Right Section */}
         <div className="ml-[45%] w-[55%] bg-white shadow-lg flex flex-col justify-center items-center px-8 h-screen">
           <form className="w-full max-w-md min-w-sm">
-            <div className="mb-4 flex flex-col gap-4">
+            <div className="flex flex-col gap-4 mb-4">
               <CommonTextField
                 id="username"
                 name="username"

@@ -57,7 +57,7 @@ const PublicRoute = ({ children }) => {
   const { authContextData } = useAuth();
   const { isAuthenticated } = authContextData;
 
-  return isAuthenticated ? <Navigate to="/" /> : children;
+  return isAuthenticated ? <Navigate to="/home" /> : children;
 };
 
 // Layout component to conditionally render Header, SubHeader, and Footer
@@ -77,14 +77,11 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Conditionally render Header and SubHeader */}
-      <div className="mb-12">
       {!isAuthPage && <Header />}
       {!isAuthPage && showSubHeader && <SubHeader />}
-      </div>
 
       {/* Main Content with Padding for Fixed Header */}
-      <main className={`flex-grow ${!isAuthPage ? "pt-16 py-4 mt-32 px-24" : ""}`}>
+      <main className={`flex-grow ${!isAuthPage ? "mt-40 px-24" : ""}`}>
         {children}
       </main>
 
@@ -95,19 +92,19 @@ const Layout = ({ children }) => {
 };
 
 // HomePageWrapper component (to handle redirection after login)
-const HomePageWrapper = () => {
-  const { authContextData } = useAuth();
-  const { isAuthenticated, userRole } = authContextData;
+// const HomePageWrapper = () => {
+//   const { authContextData } = useAuth();
+//   const { isAuthenticated, userRole } = authContextData;
 
-  // If the user is authenticated and is an ADMIN or EMPLOYEE, redirect to the Dashboard
-  if (
-    isAuthenticated &&
-    [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole)
-  ) {
-    return <Navigate to="/dashboard" />;
-  }
-  return <Home />;
-};
+//   // If the user is authenticated and is an ADMIN or EMPLOYEE, redirect to the Dashboard
+//   if (
+//     isAuthenticated &&
+//     [USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(userRole)
+//   ) {
+//     return <Navigate to="/dashboard" />;
+//   }
+//   return <Home />;
+// };
 
 const App = () => {
   return (
@@ -118,7 +115,8 @@ const App = () => {
           <ToastProvider>
             <Routes>
               {/* Public Routes */}
-              <Route path="/" element={<HomePageWrapper />} />
+              <Route path="/" element={<Navigate to="/home" replace />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/services/:serviceId" element={<Service />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
