@@ -60,6 +60,7 @@ const LogIn = () => {
           console.log("Navigating to Home");
           displayApiMessage(accessMsg);
           console.log("User Role:", userRole);
+          login(authData);
           if (
             userRole == USER_ROLES.ADMIN ||
             userRole == USER_ROLES.EMPLOYEE
