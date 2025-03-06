@@ -7,12 +7,16 @@ import CommonTextField from "../../component/Form/CommonTextField";
 import CommonButton from "../../component/Form/CommonButton";
 import { displayApiMessage } from "../../context/ToastContext";
 import { USER_ROLES } from "../../utils/constants";
+import CommonModal from "../../component/Modal/CommonModal";
+import ResetPassword from "./ResetPassword";
 
 const LogIn = () => {
   const [userLogIn, setUserLogIn] = useState({});
+  const [resetPasswordUsername, setResetPasswordUsername] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { authContextData, login } = useAuth(); // ✅ Get authContextData from AuthContext
 
   const formOnChange = (e) => {
     const { name, value, type } = e.target;
@@ -22,9 +26,18 @@ const LogIn = () => {
     }));
   };
 
+  const openModal = () => {
+    console.log("Opening Reset Password Modal...");
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    console.log("Closing Modal...");
+    setShowModal(false);
+  };
+
   const onClickAdd = async () => {
     try {
-      // Call AuthenticationService to log in the user
       const response = await AuthenticationService.login(
         userLogIn.username,
         userLogIn.password
@@ -36,16 +49,13 @@ const LogIn = () => {
           isAuthenticated: true,
           token: accessToken,
           userRole,
-          accessCode, // Keep as string if API sends it as a string
+          accessCode,
           username: userLogIn.username,
         };
 
-        login(authData);
-
-        // Debugging: Check the value of accessCode
+        console.log("Login Response:", response.data);
         console.log("Access Code:", accessCode);
 
-        // Navigate based on accessCode
         if (accessCode === "0") {
           console.log("Navigating to Home");
           displayApiMessage(accessMsg);
@@ -59,9 +69,25 @@ const LogIn = () => {
             navigate("/home");
           }
         } else if (accessCode === "1") {
-          console.log("Navigating to Reset Password");
-          // navigate("/reset-password");
-          displayApiMessage(accessMsg);
+          if (userRole === "CLIENT") {
+            console.log("Navigating to Home");
+            displayApiMessage(userLogIn.username + ' Log in successful! Redirecting to home...');
+            login(authData);
+            navigate("/");
+          } else {
+            console.log("Opening modal for Reset Password...");
+            setResetPasswordUsername(userLogIn.username);
+            setShowModal(true); // ✅ Ensure modal state updates before login
+            displayApiMessage(accessMsg, "warning");
+
+            // ✅ Update token in AuthContext without calling login(authData)
+            const updatedAuthData = {
+              ...authContextData, // Keep existing authContextData
+              token: authData.token, // Set the new token
+            };
+
+            login(updatedAuthData); // ✅ Update context without overriding accessCode
+          }
         } else if (accessCode === "2") {
           console.log("Displaying message for accessCode 2");
           displayApiMessage(
@@ -70,7 +96,6 @@ const LogIn = () => {
         }
       } else {
         setError("Invalid username or password");
-        return;
       }
     } catch (err) {
       setError("Login failed. Please try again.");
@@ -80,7 +105,7 @@ const LogIn = () => {
 
   return (
     <>
-      {/* Fixed Header */}
+      {/* Header */}
       <header className="fixed top-0 left-0 z-50 w-full p-4 text-white bg-gray-800">
         <div className="container flex items-center justify-between mx-auto">
           <NavLink
@@ -131,7 +156,6 @@ const LogIn = () => {
               <p className="mb-4 text-sm text-center text-red-500">{error}</p>
             )}
 
-            {/* Ensure button width matches input fields */}
             <div className="w-full">
               <CommonButton
                 type="button"
@@ -153,6 +177,15 @@ const LogIn = () => {
           </form>
         </div>
       </div>
+
+      {/* Modal for Reset Password */}
+      <CommonModal
+        showModal={showModal}
+        handleClose={closeModal}
+        title="Reset Password"
+      >
+        <ResetPassword username={resetPasswordUsername} />
+      </CommonModal>
     </>
   );
 };
