@@ -223,7 +223,7 @@ const SubHeader = () => {
     >
       <div className="container mx-auto">
         <nav>
-          <ul className="flex justify-center m-0 space-x-6">
+          <ul className="flex justify-center m-0 space-x-1">
             {isAuthenticated &&
               (userRole === "ADMIN" || userRole === "EMPLOYEE") && (
                 <>

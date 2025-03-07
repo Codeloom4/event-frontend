@@ -16,7 +16,7 @@ const LogIn = () => {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { authContextData, login } = useAuth(); // ✅ Get authContextData from AuthContext
+  const { authContextData, login } = useAuth();
 
   const formOnChange = (e) => {
     const { name, value, type } = e.target;
@@ -57,21 +57,28 @@ const LogIn = () => {
         console.log("Access Code:", accessCode);
 
         if (accessCode === "0") {
-          console.log("Navigating to Home");
           displayApiMessage(accessMsg);
-          console.log("User Role:", userRole);
+          console.log(
+            "User Role--------------------------------------:",
+            response.data.userRole
+          );
+          login(authData);
           if (
-            userRole == USER_ROLES.ADMIN ||
-            userRole == USER_ROLES.EMPLOYEE
+            response.data.userRole === "ADMIN" ||
+            response.data.userRole === "EMPLOYEE"
           ) {
+            console.log("Navigating to Dashboard");
             navigate("/dashboard");
           } else {
+            console.log("Navigating to Home");
             navigate("/home");
           }
         } else if (accessCode === "1") {
           if (userRole === "CLIENT") {
             console.log("Navigating to Home");
-            displayApiMessage(userLogIn.username + ' Log in successful! Redirecting to home...');
+            displayApiMessage(
+              userLogIn.username + " Log in successful! Redirecting to home..."
+            );
             login(authData);
             navigate("/");
           } else {
