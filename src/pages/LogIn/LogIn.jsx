@@ -145,6 +145,10 @@ const LogIn = () => {
                 label="Username"
                 value={userLogIn.username || ""}
                 onChange={formOnChange}
+                labelColor="105657" 
+                borderColor="105657"
+                textColor="black"
+                autofillBgColor="white" 
               />
 
               <CommonTextField
@@ -154,6 +158,10 @@ const LogIn = () => {
                 type="password"
                 value={userLogIn.password || ""}
                 onChange={formOnChange}
+                labelColor="105657" 
+                borderColor="105657"
+                textColor="black"
+                autofillBgColor="white" 
               />
             </div>
 

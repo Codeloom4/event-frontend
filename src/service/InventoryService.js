@@ -6,7 +6,7 @@ class InventoryService {
     return ApiManager.apiPost(`${inventoryManagementReq}/create`, inventoryDto)
   }
   edit = async (inventoryId) => {
-    return ApiManager.apiPost(`${inventoryManagementReq}/${inventoryId.id}`, inventoryId)
+    return ApiManager.apiPut(`${inventoryManagementReq}/${inventoryId.id}`, inventoryId)
   }
   delete = async (inventoryId) => {
     return ApiManager.apiDelete(`${inventoryManagementReq}/${inventoryId}`, {})
@@ -97,6 +97,14 @@ class InventoryService {
     return ApiManager.apiGet(
       `${inventoryManagementReq}/getall`)
   }
+
+  getListByname = async (
+    itemName
+  ) => {
+    return ApiManager.apiGet(
+      `${inventoryManagementReq}/${itemName}`)
+  }
+
   getDualAuthList = async (
     page,
     size,

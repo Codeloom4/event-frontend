@@ -46,7 +46,7 @@ const SubHeader = () => {
                 <>
                   <li className="flex items-center">
                     <NavLink to="/event-management" className={getNavLinkClass}>
-                      Event Management
+                      Events
                     </NavLink>
                   </li>
                   <li className="flex items-center">
@@ -54,12 +54,12 @@ const SubHeader = () => {
                       to="/inventory-management"
                       className={getNavLinkClass}
                     >
-                      Inventory Management
+                      Inventory
                     </NavLink>
                   </li>
                   <li className="flex items-center">
                     <NavLink to="/item-management" className={getNavLinkClass}>
-                      Item Management
+                      Items
                     </NavLink>
                   </li>
                   <li className="flex items-center">
@@ -67,12 +67,17 @@ const SubHeader = () => {
                       to="/transport-management"
                       className={getNavLinkClass}
                     >
-                      Delivery Charges
+                      Delivery
                     </NavLink>
                   </li>
                   <li className="flex items-center">
                     <NavLink to="/order-management" className={getNavLinkClass}>
-                      Order Management
+                      Orders
+                    </NavLink>
+                  </li>
+                  <li className="flex items-center">
+                    <NavLink to="/package" className={getNavLinkClass}>
+                      Packages 
                     </NavLink>
                   </li>
                   <li className="relative group" ref={dropdownRef}>

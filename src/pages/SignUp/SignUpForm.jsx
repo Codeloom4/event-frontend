@@ -98,6 +98,10 @@ const SignUpForm = () => {
           label="Username"
           value={userSignUp.username || ""}
           onChange={formOnChange}
+          labelColor="105657" 
+          borderColor="105657"
+          textColor="black"
+          autofillBgColor="white" 
         />
         <CommonTextField
           id="email"
@@ -106,6 +110,10 @@ const SignUpForm = () => {
           type="email"
           value={userSignUp.email || ""}
           onChange={formOnChange}
+          labelColor="105657" 
+          borderColor="105657"
+          textColor="black"
+          autofillBgColor="white" 
         />
         <CommonTextField
           id="password"
@@ -114,6 +122,10 @@ const SignUpForm = () => {
           type="password"
           value={userSignUp.password || ""}
           onChange={formOnChange}
+          labelColor="105657" 
+          borderColor="105657"
+          textColor="black"
+          autofillBgColor="white" 
         />
 
         {userRole === "ADMIN" && (
@@ -124,6 +136,10 @@ const SignUpForm = () => {
               label="Position"
               value={userSignUp.position || ""}
               onChange={formOnChange}
+              labelColor="105657" 
+              borderColor="105657"
+              textColor="black"
+              autofillBgColor="white" 
             />
             <CommonRadioGroup
               name="role"
@@ -157,6 +173,10 @@ const SignUpForm = () => {
           label="Mobile Number"
           value={userSignUp.mobileNo || ""}
           onChange={formOnChange}
+          labelColor="105657" 
+          borderColor="105657"
+          textColor="black"
+          autofillBgColor="white" 
         />
         <CommonTextField
           id="address"
@@ -164,6 +184,10 @@ const SignUpForm = () => {
           label="Address"
           value={userSignUp.address || ""}
           onChange={formOnChange}
+          labelColor="105657" 
+          borderColor="105657"
+          textColor="black"
+          autofillBgColor="white" 
         />
       </div>
       {error && (

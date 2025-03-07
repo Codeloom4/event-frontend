@@ -292,18 +292,18 @@ const InventoryAddUpdate = ({
           <CommonRadioGroup
             name="isRefundable"
             label="Is Refundable?"
-            // value={inventoryManagement.isRefundable.toString()}
+            value={inventoryManagement.isRefundable}
             onChange={formOnChange}
             row
           >
             <FormControlLabel
-              value="true"
+              value={true}
               control={<Radio />}
               label="Yes"
               className="text-gray-500 text"
             />
             <FormControlLabel
-              value="false"
+              value={false}
               control={<Radio />}
               label="No"
               className="text-gray-500 text"

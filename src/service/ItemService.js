@@ -3,13 +3,13 @@ import ApiManager from './Api/ApiManager'
 const itemManagementReq = '/ems/item'
 class ItemService {
   add = async (inventoryDto) => {
-    return ApiManager.apiPost(`${itemManagementReq}/create`, inventoryDto)
+    return ApiManager.apiPost(`${itemManagementReq}`, inventoryDto)
   }
   edit = async (inventoryId) => {
-    return ApiManager.apiPost(`${itemManagementReq}/${inventoryId.id}`, inventoryId)
+    return ApiManager.apiPut(`${itemManagementReq}`, inventoryId)
   }
-  delete = async (inventoryId) => {
-    return ApiManager.apiDelete(`${itemManagementReq}/${inventoryId}`, {})
+  delete = async (itemId) => {
+    return ApiManager.apiDelete(`${itemManagementReq}/${itemId}`, {})
   }
   access = async () => {
     // var request_string = ``
