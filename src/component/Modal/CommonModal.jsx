@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from "@mui/material";
+import React from "react";
+import { Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 const sizeMap = {
@@ -19,6 +19,7 @@ const CommonModal = ({ children, size = "md", title, showModal, handleClose }) =
       sx={{
         backdropFilter: "blur(2px)", // Apply blur effect
         backgroundColor: "rgba(0, 0, 0, 0.1)", // Optional slight darkening
+        "& .MuiPaper-root": { backgroundColor: "#1f2937", color: "white" }, // bg-gray-800 equivalent
       }}
     >
       {/* Header */}
@@ -27,17 +28,20 @@ const CommonModal = ({ children, size = "md", title, showModal, handleClose }) =
           display: "flex", 
           justifyContent: "space-between", 
           alignItems: "center", 
-          fontWeight: "bold" // Make title bold
+          fontWeight: "bold",
+          color: "white" // Ensure title is visible
         }}
       >
         {title}
-        <IconButton onClick={handleClose} size="small">
+        <IconButton onClick={handleClose} size="small" sx={{ color: "white" }}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
 
       {/* Body */}
-      <DialogContent style={{ paddingTop: '20px'}}>{children}</DialogContent>
+      <DialogContent sx={{ paddingTop: "20px" }}>
+        {children}
+      </DialogContent>
     </Dialog>
   );
 };
