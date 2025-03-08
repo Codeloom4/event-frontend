@@ -72,7 +72,12 @@ const SubHeader = () => {
                   </li>
                   <li className="flex items-center">
                     <NavLink to="/order-management" className={getNavLinkClass}>
-                      Order Management
+                      Orders
+                    </NavLink>
+                  </li>
+                  <li className="flex items-center">
+                    <NavLink to="/package" className={getNavLinkClass}>
+                     packages
                     </NavLink>
                   </li>
                   <li className="relative group" ref={dropdownRef}>
