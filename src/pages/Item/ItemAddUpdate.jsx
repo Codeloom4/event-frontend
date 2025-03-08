@@ -31,9 +31,10 @@ const ItemAddUpdate = ({ isUpdate, data, close, completed }) => {
 
   const onReset = () => {
     setItemManagement({
-      itemName: "",
-      isRefundable: "",
-      minOrderQty: "",
+      id: isUpdate ? data?.id : "",
+      itemName: isUpdate ? data?.itemName : "",
+      isRefundable: isUpdate ? data?.isRefundable : "",
+      minOrderQty: isUpdate ? data?.minOrderQty : "",
     });
   };
 
@@ -48,13 +49,11 @@ const ItemAddUpdate = ({ isUpdate, data, close, completed }) => {
   const saveHandler = async (itemManagement) => {
     try {
       const result = await ItemService.add(itemManagement);
-      if (result.data.responseCode === "01") {
-        displayApiMessage(result.data.responseMsg);
+      displayApiMessage(result.data.responseMsg);
+      if (result.data.responseCode === "00") {
         onReset();
         close();
         completed();
-      } else {
-        displayApiMessage(result.data.responseMsg, "error");
       }
     } catch (error) {
       displayApiMessage("Failed to save item. Please try again.", "error");
@@ -64,14 +63,12 @@ const ItemAddUpdate = ({ isUpdate, data, close, completed }) => {
   const updateHandler = async (itemManagement) => {
     try {
       const result = await ItemService.edit(itemManagement);
-      if (result.data.responseCode === "01") {
-        displayApiMessage(result.data.responseMsg);
+      displayApiMessage(result.data.responseMsg);
+      if (result.data.responseCode === "00") {
         onReset();
         close();
         completed();
-      } else {
-        displayApiMessage(result.data.responseMsg, "error");
-      }
+      } 
     } catch (error) {
       displayApiMessage("Failed to update item. Please try again.", "error");
     }

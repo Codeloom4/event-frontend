@@ -11,7 +11,11 @@ const CommonTextField = ({
   defaultValue, 
   onChange, 
   helperText, 
-  className = "" 
+  className = "", 
+  labelColor = "white",  
+  borderColor = "#d1d5db",  
+  textColor = "white",
+  autofillBgColor = "#1f2937" // Default autofill background color
 }) => {
   return (
     <TextField
@@ -26,22 +30,28 @@ const CommonTextField = ({
       helperText={helperText}
       variant="outlined"
       fullWidth
+      autoComplete="on" // Enable autofill
       InputProps={{
-        className: `text-gray-800 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 ${className}`,
-        style: { backgroundColor: "transparent" }, // Removes field background
+        className: `rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 ${className}`,
+        style: { 
+          backgroundColor: "transparent", 
+          color: textColor,
+        },
       }}
       InputLabelProps={{
-        style: { color: "white" }, // Label color white
+        style: { color: labelColor },
       }}
       sx={{
         "& .MuiOutlinedInput-root": {
-          backgroundColor: "transparent", // Removes background color
-          "& fieldset": { borderColor: "#d1d5db" },
-          "&:hover fieldset": { borderColor: "#9ca3af" },
-          "&.Mui-focused fieldset": { borderColor: "#4b5563" },
+          backgroundColor: "transparent",
+          "& fieldset": { borderColor: borderColor },
+          "&:hover fieldset": { borderColor: borderColor },
+          "&.Mui-focused fieldset": { borderColor: borderColor },
         },
-        "& .MuiInputLabel-root": {
-          color: "white !important", // Label remains white
+        "& input:-webkit-autofill": {
+          WebkitBoxShadow: `0 0 0px 1000px ${autofillBgColor} inset !important`, // Customizable autofill bg
+          WebkitTextFillColor: `${textColor} !important`, // Keep text color
+          transition: "background-color 5000s ease-in-out 0s !important",
         },
       }}
     />

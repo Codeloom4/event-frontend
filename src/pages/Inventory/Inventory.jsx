@@ -157,18 +157,24 @@ const Inventory = () => {
 
   //Search
   const onClickSearch = async (page, size, sortCol, sortType) => {
-    const result = await InventoryService
-      .getList
-      // page,
-      // size,
-      // sortCol,
-      // sortType,
-      // isSearch,
-      // inventoryManagement
-      ();
-    // handleNotification(result, result.data.responseMsg)
-    // addToChips()
-    return result;
+    console.log("inventoryManagement", inventoryManagement);
+    if (inventoryManagement?.itemName === "") {
+      const result = await InventoryService
+        .getList
+        // page,
+        // size,
+        // sortCol,
+        // sortType,
+        // isSearch,
+        // inventoryManagement
+        ();
+      // handleNotification(result, result.data.responseMsg)
+      // addToChips()
+      return result;
+    } else {
+      const result = await InventoryService.getListByname(inventoryManagement?.itemName);
+      return result;
+    }
   };
 
   //view
@@ -189,11 +195,11 @@ const Inventory = () => {
     // onClickViewBack();
   };
 
-    //Update
-    const onClickUpdate = (data) => {
-      setIsUpdate(true);
-      setShowAddUpdateModal({ show: true, data: data });
-    };
+  //Update
+  const onClickUpdate = (data) => {
+    setIsUpdate(true);
+    setShowAddUpdateModal({ show: true, data: data });
+  };
 
   const onClickBackUpdate = () => {
     setIsUpdate(false);
@@ -330,9 +336,11 @@ const Inventory = () => {
     }));
   };
 
-  console.log("inventoryManagement  111111111------->>>>> ", inventoryManagement);
+  console.log(
+    "inventoryManagement  111111111------->>>>> ",
+    inventoryManagement
+  );
   console.log("inventoryManagement  state 222222------>>>>> ", state);
-  console.log("inventoryManagement  ------->>>>> ", inventoryManagement);
   console.log("loading  ------->>>>> ", loading);
 
   // Show spinner while loading
@@ -347,199 +355,195 @@ const Inventory = () => {
   return (
     <div className="min-h-screen p-6 App bg-gradient-dark">
       <div className="max-w-7xl w-full bg-gray-800 p-8 rounded-lg shadow-lg">
-      <h1 className="mb-6 text-3xl font-bold text-white">
-        Inventory Management
-      </h1>
+        <h1 className="mb-6 text-3xl font-bold text-white">
+          Inventory Management
+        </h1>
 
-      {/* Add New Item Button */}
-      <div className="flex flex-row-reverse mb-4">
-        <CommonButton
-          type="add"
-          label="Add New Inventory"
-          onClick={() => onClickAdd()}
-        />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* ID Field */}
-        <CommonTextField
-          id="id"
-          name="id"
-          label="ID"
-          value={inventoryManagement?.id}
-          onChange={formOnChange}
-        />
-
-        {/* Item Name - Select Dropdown */}
-        <CommonSelect
-          name="itemName"
-          label="Item Name"
-          value={inventoryManagement?.itemName || ""}
-          onChange={formOnChange}
-        >
-          {DropdownItemDetails?.length > 0 &&
-            DropdownItemDetails.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.itemName}
-              </MenuItem>
-            ))}
-        </CommonSelect>
-
-        {/* Is Refundable - Radio Group */}
-        <CommonRadioGroup
-          name="isRefundable"
-          label="Is Refundable?"
-          row
-        >
-          <FormControlLabel
-            value="true"
-            control={<Radio />}
-            label="Yes"
-            className="text text-gray-300"
+        {/* Add New Item Button */}
+        <div className="flex flex-row-reverse mb-4">
+          <CommonButton
+            type="add"
+            label="Add New Inventory"
+            onClick={() => onClickAdd()}
           />
-          <FormControlLabel
-            value="false"
-            control={<Radio />}
-            label="No"
-            className="text text-gray-300"
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* ID Field */}
+          {/* <CommonTextField
+            id="id"
+            name="id"
+            label="ID"
+            value={inventoryManagement?.id}
+            onChange={formOnChange}
+          /> */}
+
+          {/* Item Name - Select Dropdown */}
+          <CommonSelect
+            name="itemName"
+            label="Item Name"
+            value={inventoryManagement?.itemName || ""}
+            onChange={formOnChange}
+          >
+            {DropdownItemDetails?.length > 0 &&
+              DropdownItemDetails.map((item) => (
+                <MenuItem key={item.id} value={item.itemName}>
+                  {item.itemName}
+                </MenuItem>
+              ))}
+          </CommonSelect>
+
+          {/* Is Refundable - Radio Group */}
+          {/* <CommonRadioGroup name="isRefundable" label="Is Refundable?" row>
+            <FormControlLabel
+              value="true"
+              control={<Radio />}
+              label="Yes"
+              className="text text-gray-300"
+            />
+            <FormControlLabel
+              value="false"
+              control={<Radio />}
+              label="No"
+              className="text text-gray-300"
+            />
+          </CommonRadioGroup> */}
+
+          {/* Description */}
+          {/* <CommonTextField
+            id="description"
+            name="description"
+            label="Description"
+            value={inventoryManagement.description}
+            onChange={formOnChange}
+          /> */}
+
+          {/* Purchase Price */}
+          {/* <CommonTextField
+            id="purchasePrice"
+            name="purchasePrice"
+            label="Purchase Price"
+            type="number"
+            value={inventoryManagement.purchasePrice}
+            onChange={formOnChange}
+          /> */}
+
+          {/* Sales Price */}
+          {/* <CommonTextField
+            id="salesPrice"
+            name="salesPrice"
+            label="Sales Price"
+            type="number"
+            value={inventoryManagement.salesPrice}
+            onChange={formOnChange}
+          /> */}
+
+          {/* Order Quantity */}
+          {/* <CommonTextField
+            id="orderQuantity"
+            name="orderQuantity"
+            label="Order Quantity"
+            type="number"
+            value={inventoryManagement.orderQuantity}
+            onChange={formOnChange}
+          /> */}
+
+          {/* Sales Quantity */}
+          {/* <CommonTextField
+            id="salesQuantity"
+            name="salesQuantity"
+            label="Sales Quantity"
+            type="number"
+            value={inventoryManagement.salesQuantity}
+            onChange={formOnChange}
+          /> */}
+
+          {/* Balance Quantity */}
+          {/* <CommonTextField
+            id="balanceQuantity"
+            name="balanceQuantity"
+            label="Balance Quantity"
+            type="number"
+            value={inventoryManagement.balanceQuantity}
+            onChange={formOnChange}
+          /> */}
+
+          {/* Created User */}
+          {/* <CommonTextField
+            id="createdUser"
+            name="createdUser"
+            label="Created User"
+            value={inventoryManagement.createdUser}
+            onChange={formOnChange}
+          /> */}
+        </div>
+        <div className="mt-4">
+          <CommonButton
+            type="search"
+            label="Search"
+            onClick={() => retriveData(search)}
           />
-        </CommonRadioGroup>
+        </div>
 
-        {/* Description */}
-        <CommonTextField
-          id="description"
-          name="description"
-          label="Description"
-          value={inventoryManagement.description}
-          onChange={formOnChange}
-        />
-
-        {/* Purchase Price */}
-        <CommonTextField
-          id="purchasePrice"
-          name="purchasePrice"
-          label="Purchase Price"
-          type="number"
-          value={inventoryManagement.purchasePrice}
-          onChange={formOnChange}
-        />
-
-        {/* Sales Price */}
-        <CommonTextField
-          id="salesPrice"
-          name="salesPrice"
-          label="Sales Price"
-          type="number"
-          value={inventoryManagement.salesPrice}
-          onChange={formOnChange}
-        />
-
-        {/* Order Quantity */}
-        <CommonTextField
-          id="orderQuantity"
-          name="orderQuantity"
-          label="Order Quantity"
-          type="number"
-          value={inventoryManagement.orderQuantity}
-          onChange={formOnChange}
-        />
-
-        {/* Sales Quantity */}
-        <CommonTextField
-          id="salesQuantity"
-          name="salesQuantity"
-          label="Sales Quantity"
-          type="number"
-          value={inventoryManagement.salesQuantity}
-          onChange={formOnChange}
-        />
-
-        {/* Balance Quantity */}
-        <CommonTextField
-          id="balanceQuantity"
-          name="balanceQuantity"
-          label="Balance Quantity"
-          type="number"
-          value={inventoryManagement.balanceQuantity}
-          onChange={formOnChange}
-        />
-
-        {/* Created User */}
-        <CommonTextField
-          id="createdUser"
-          name="createdUser"
-          label="Created User"
-          value={inventoryManagement.createdUser}
-          onChange={formOnChange}
-        />
-      </div>
-      <div className="mt-4">
-        <CommonButton
-          type="search"
-          label="Search"
-          onClick={() => alert("Search Not working")}
-        />
-      </div>
-
-      {/* add update modal */}
-      <CommonModal
-        showModal={showAddUpdateModal.show}
-        size="xl"
-        handleClose={() => {
-          setShowAddUpdateModal({
-            show: false,
-            data: {},
-          });
-        }}
-        title={isUpdate ? "Update Inventory" : "Add Inventory"}
-      >
-        <InventoryAddUpdate
-          isUpdate={isUpdate}
-          data={isUpdate ? showAddUpdateModal.data : {}}
-          DropdownItemDetails={DropdownItemDetails}
-          close={() => {
+        {/* add update modal */}
+        <CommonModal
+          showModal={showAddUpdateModal.show}
+          size="xl"
+          handleClose={() => {
             setShowAddUpdateModal({
               show: false,
               data: {},
             });
           }}
-          completed={() => {
-            retriveData(search);
+          title={isUpdate ? "Update Inventory" : "Add Inventory"}
+        >
+          <InventoryAddUpdate
+            isUpdate={isUpdate}
+            data={isUpdate ? showAddUpdateModal.data : {}}
+            DropdownItemDetails={DropdownItemDetails}
+            close={() => {
+              setShowAddUpdateModal({
+                show: false,
+                data: {},
+              });
+            }}
+            completed={() => {
+              retriveData(search);
+            }}
+          />
+        </CommonModal>
+
+        {/* add update modal */}
+        <CommonModal
+          showModal={showDownloadBarcodeModal.show}
+          size="xl"
+          handleClose={() => {
+            setShowDownloadBarcodeModal({
+              show: false,
+              data: {},
+            });
           }}
+          title={"Barcode"}
+        >
+          <BarcodeDownloadPage />
+        </CommonModal>
+
+        {/* Table Component */}
+        <TableComponent
+          columns={columns}
+          data={state?.list || []}
+          loading={false}
+          fetchData={retriveData}
+          onFilter={handleFilter}
+          onClickRow={handleRowClick}
+          totalCount={state?.count}
+          pageCount={state?.pagecount}
+          headerClassName="bg-gray-700 text-gray-300"
+          rowClassName="hover:bg-gray-600 transition-colors duration-200"
+          cellClassName="px-6 py-4 text-sm text-gray-300"
         />
-      </CommonModal>
-
-      {/* add update modal */}
-      <CommonModal
-        showModal={showDownloadBarcodeModal.show}
-        size="xl"
-        handleClose={() => {
-          setShowDownloadBarcodeModal({
-            show: false,
-            data: {},
-          });
-        }}
-        title={"Barcode"}
-      >
-        <BarcodeDownloadPage />
-      </CommonModal>
-
-      {/* Table Component */}
-      <TableComponent
-        columns={columns}
-        data={state?.list || []}
-        loading={false}
-        fetchData={retriveData}
-        onFilter={handleFilter}
-        onClickRow={handleRowClick}
-        totalCount={state?.count}
-        pageCount={state?.pagecount}
-        headerClassName="bg-gray-700 text-gray-300"
-        rowClassName="hover:bg-gray-600 transition-colors duration-200"
-        cellClassName="px-6 py-4 text-sm text-gray-300"
-      />
+      </div>
     </div>
-  </div>
   );
 };
 

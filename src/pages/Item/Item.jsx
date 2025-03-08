@@ -9,6 +9,7 @@ import CommonRadioGroup from "../../component/Form/CommonRadioGroup";
 import CommonButton from "../../component/Form/CommonButton";
 import { MenuItem } from "@mui/material";
 import { FormControlLabel, Radio } from "@mui/material";
+import { displayApiMessage } from "../../context/ToastContext";
 
 const Item = () => {
   const defaultPageLimit = 5; // Define the default page limit
@@ -106,6 +107,7 @@ const Item = () => {
 
   const onClickDelete = async (data) => {
     const result = await ItemService.delete(data);
+    displayApiMessage(result.data.responseMsg);
     await retriveData(search);
   };
 
@@ -200,8 +202,9 @@ const Item = () => {
           />
         </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Form Fields */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6"> */}
           {/* Commented out other fields */}
           {/* <CommonTextField
             id="id"
@@ -219,23 +222,19 @@ const Item = () => {
             onChange={formOnChange}
             className="bg-gray-700 text-white"
           />
-          <CommonRadioGroup
-            name="isRefundable"
-            label="Is Refundable?"
-            row
-            className="bg-gray-700 text-white"
-          >
+          {/* Is Refundable - Radio Group */}
+          <CommonRadioGroup name="isRefundable" label="Is Refundable?" row>
             <FormControlLabel
               value="true"
               control={<Radio />}
               label="Yes"
-              className="text-gray-300"
+              className="text text-gray-300"
             />
             <FormControlLabel
               value="false"
               control={<Radio />}
               label="No"
-              className="text-gray-300"
+              className="text text-gray-300"
             />
           </CommonRadioGroup>
           {/* Commented out other fields */}
@@ -276,14 +275,14 @@ const Item = () => {
         </div>
 
         {/* Search Button */}
-        <div className="flex justify-center mb-6">
+        {/* <div className="flex justify-center mb-6"> */}
           <CommonButton
             type="search"
             label="Search"
             onClick={() => alert("Search Not working")}
             className="bg-blue-500 hover:bg-blue-600 text-white"
           />
-        </div>
+        {/* </div> */}
 
         {/* Add/Update Modal */}
         <CommonModal
