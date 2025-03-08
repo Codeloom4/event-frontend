@@ -1,45 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Tabs, Tab, Box } from "@mui/material";
-import UpdatableTableComponent from "../../component/Tables/UpdatableTableComponent";
-import CommonTextField from "../../component/Form/CommonTextField";
 import BasicInformation from "./tabs/BasicInformation";
 import ItemSelect from "./tabs/ItemSelect";
+import { FaSpinner } from "react-icons/fa"; // Import spinner icon
 
 const Package = () => {
   const { packageId } = useParams();
   const [value, setValue] = useState("1"); // The value to control which tab is active
-  const [events, setEvents] = useState([]);
   const [packageDetails, setPackageDetails] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
 
-  // Simulate fetching package details (Uncomment to fetch from API)
+  // Simulate fetching package details
   const fetchPackageDetails = async () => {
-    // For demonstration, using hardcoded data
-    setPackageDetails({
-      name: "Premium Package",
-      description: "This is a premium package with amazing features.",
-      pricing: "500 USD",
-    });
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Simulate fetching events data
-    const mockEvents = [
-      {
-        eventType: "Type A",
-        description: "Description A",
-        createdAt: "2023-01-01",
-      },
-      {
-        eventType: "Type B",
-        description: "Description B",
-        createdAt: "2023-01-02",
-      },
-      {
-        eventType: "Type C",
-        description: "Description C",
-        createdAt: "2023-01-03",
-      },
-    ];
-    setEvents(mockEvents); // Populate the events state with mock data
+      // For demonstration, using hardcoded data
+      setPackageDetails({
+        name: "Premium Package",
+        description: "This is a premium package with amazing features.",
+        pricing: "500 USD",
+      });
+    } catch (error) {
+      console.error("Failed to fetch package details:", error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching
+    }
   };
 
   useEffect(() => {
@@ -50,60 +38,64 @@ const Package = () => {
     setValue(newValue);
   };
 
-  if (!packageDetails) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center  bg-gradient-dark">
+        <FaSpinner className="animate-spin text-4xl text-blue-500" />
+      </div>
+    );
   }
 
-  // Table columns
-  const columns = [
-    { Header: "Event Type", accessor: "eventType" },
-    { Header: "Description", accessor: "description" },
-    { Header: "Created At", accessor: "createdAt" },
-  ];
-
-  const handleUpdate = (updatedRow) => {
-    setEvents((prev) =>
-      prev.map((row) =>
-        row.eventType === updatedRow.eventType ? updatedRow : row
-      )
-    );
-  };
+  if (!packageDetails) {
+    return <div>No package details found.</div>;
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 ">
-      <div className="max-w-7xl w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <div className="min-h-screen flex items-center justify-center  bg-gradient-dark  py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl w-full  bg-gray-800   p-8 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold text-center text-white mb-8">
           Package Management
         </h1>
 
         {/* Tabs Section */}
         <Box sx={{ width: "100%", typography: "body1" }}>
-          <Tabs
-            value={value}
-            onChange={handleTabChange}
-            aria-label="package tabs"
-          >
-            <Tab label="Basic Details" value="1" />
-            <Tab label="Item" value="2" />
-            <Tab label="Upload Images" value="3" />
-          </Tabs>
+  <Tabs
+    value={value}
+    onChange={handleTabChange}
+    aria-label="package tabs"
+    sx={{ '& .MuiTab-root': { color: 'white' } }} // Apply white color to tabs
+  >
+    <Tab label="Basic Details" value="1" sx={{ color: "white" }} />
+    <Tab label="Item" value="2" sx={{ color: "white" }} />
+    <Tab label="Upload Images" value="3" sx={{ color: "white" }} />
+  </Tabs>
 
-          <div role="tabpanel" hidden={value !== "1"}>
-            {value === "1" && <BasicInformation setValue={setValue} />}
-          </div>
+  {/* Tab Panels */}
+  <div role="tabpanel" hidden={value !== "1"}>
+    {value === "1" && (
+      <Box p={3}>
+        <BasicInformation setValue={setValue} />
+      </Box>
+    )}
+  </div>
 
-          <div role="tabpanel" hidden={value !== "2"}>
-          {value === "1" && <ItemSelect setValue={setValue} />}
-          </div>
+  <div role="tabpanel" hidden={value !== "2"}>
+    {value === "2" && (
+      <Box p={3}>
+        <ItemSelect setValue={setValue} />
+      </Box>
+    )}
+  </div>
 
-          <div role="tabpanel" hidden={value !== "3"}>
-            {value === "3" && (
-              <Box p={3}>
-                <p>Pricing: {packageDetails.pricing}</p>
-              </Box>
-            )}
-          </div>
-        </Box>
+  <div role="tabpanel" hidden={value !== "3"}>
+    {value === "3" && (
+      <Box p={3}>
+        <p className="text-gray-700">Pricing: {packageDetails.pricing}</p>
+      </Box>
+    )}
+  </div>
+</Box>
+
       </div>
     </div>
   );

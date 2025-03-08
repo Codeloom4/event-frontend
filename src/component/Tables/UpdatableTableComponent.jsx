@@ -70,14 +70,14 @@ const UpdatableTableComponent = ({
   };
 
   return (
-    <div className="p-4 overflow-hidden" style={style}>
-      {title && <h6 className="mb-4 text-lg font-semibold">{title}</h6>}
+    <div className="p-4 overflow-hidden bg-gray-900 rounded-lg shadow-lg" style={style}>
+      {title && <h6 className="mb-4 text-lg font-semibold text-white">{title}</h6>}
       <div className="overflow-x-auto">
         <table
           className="min-w-full border-separate rounded-md table-auto border-spacing-0"
           {...getTableProps()}
         >
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-800">
             {headerGroups.map((headerGroup, index) => (
               <tr
                 key={`header-${index}`}
@@ -87,27 +87,27 @@ const UpdatableTableComponent = ({
                   <th
                     key={`header-tr-${index}`}
                     {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={`px-4 py-2 text-sm text-gray-600 ${
+                    className={`px-4 py-2 text-sm text-gray-300 ${
                       column.isSorted
                         ? column.isSortedDesc
-                          ? "text-blue-600"
-                          : "text-blue-800"
+                          ? "text-blue-400"
+                          : "text-blue-400"
                         : ""
                     }`}
                   >
-                    <div className="px-4 text-sm text-gray-600">
+                    <div className="flex items-center justify-between">
                       {column.render("Header")}
                       {column.isSorted &&
                         (column.isSortedDesc ? (
-                          <KeyboardArrowDownIcon />
+                          <KeyboardArrowDownIcon className="text-blue-400" />
                         ) : (
-                          <KeyboardArrowUpIcon />
+                          <KeyboardArrowUpIcon className="text-blue-400" />
                         ))}
                     </div>
                   </th>
                 ))}
                 {/* Actions Column with Same Styling */}
-                <th className="px-4 py-2 text-sm text-gray-600">Actions</th>
+                <th className="px-4 py-2 text-sm text-gray-300">Actions</th>
               </tr>
             ))}
           </thead>
@@ -119,7 +119,7 @@ const UpdatableTableComponent = ({
                 <tr
                   key={`row-${row.id}`}
                   {...row.getRowProps()}
-                  className="cursor-pointer hover:bg-gray-100"
+                  className="cursor-pointer hover:bg-gray-700"
                 >
                   {row.cells.map((cell) => {
                     const columnId = cell.column.id;
@@ -130,7 +130,7 @@ const UpdatableTableComponent = ({
                       <td
                         key={`cell-${row.id}-${columnId}`}
                         {...cell.getCellProps()}
-                        className="px-4 py-2 text-sm text-gray-700"
+                        className="px-4 py-2 text-sm text-gray-300"
                       >
                         {editableRow === row.id && isEditable ? (
                           <input
@@ -139,7 +139,7 @@ const UpdatableTableComponent = ({
                             onChange={(e) =>
                               handleChange(columnId, e.target.value)
                             }
-                            className="w-full px-2 py-1 border rounded-md"
+                            className="w-full px-2 py-1 text-gray-900 bg-gray-200 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         ) : (
                           cell.render("Cell")
@@ -147,7 +147,7 @@ const UpdatableTableComponent = ({
                       </td>
                     );
                   })}
-                  <td>
+                  <td className="px-4 py-2">
                     {editableRow === row.id ? (
                       <button
                         onClick={handleSave}
@@ -173,10 +173,10 @@ const UpdatableTableComponent = ({
 
       {/* Pagination */}
       <div className="flex items-center justify-between mt-4">
-        <div className="flex items-center text-sm text-gray-600">
+        <div className="flex items-center text-sm text-gray-300">
           <span>Show</span>
           <select
-            className="p-1 ml-2 text-sm border rounded-md"
+            className="p-1 ml-2 text-sm border border-gray-500 rounded-md bg-gray-800 text-gray-300"
             onChange={(e) => setPageSize(Number(e.target.value))}
             value={pageSize}
           >
@@ -188,9 +188,9 @@ const UpdatableTableComponent = ({
         </div>
 
         {loading ? (
-          <span className="text-sm text-gray-500">Loading...</span>
+          <span className="text-sm text-gray-400">Loading...</span>
         ) : (
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-300">
             Showing {page.length} of {totalCount} results
           </span>
         )}
@@ -199,14 +199,14 @@ const UpdatableTableComponent = ({
           <button
             onClick={() => previousPage()}
             disabled={!canPreviousPage}
-            className="px-2 py-1 mr-2 border rounded-md"
+            className="px-2 py-1 mr-2 border border-gray-500 rounded-md text-gray-300 hover:bg-gray-700"
           >
             Previous
           </button>
           <button
             onClick={() => nextPage()}
             disabled={!canNextPage}
-            className="px-2 py-1 ml-2 border rounded-md"
+            className="px-2 py-1 ml-2 border border-gray-500 rounded-md text-gray-300 hover:bg-gray-700"
           >
             Next
           </button>
